@@ -2,7 +2,7 @@ package user;
 
 import java.util.Date;
 
-public abstract class user {
+public abstract class User {
 
     public abstract String getUserName();
 
