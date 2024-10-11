@@ -17,6 +17,14 @@ public class Admin extends User{
     }
 
     //Parameterized constructor
+    /**
+     * Parameterized constructor, takes in variables and sets them to the corresponding user variables
+     * @param username Passed in username
+     * @param password Passed in password
+     * @param firstName Passed in first name
+     * @param lastName Passed in last name
+     * @param userId Passed in user id
+     */
     public Admin(String username, String password, String firstName, String lastName, String userId) {
         super(username, password, firstName, lastName, userId);
     }
