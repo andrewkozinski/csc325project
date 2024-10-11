@@ -1,5 +1,9 @@
 package user;
 
+/**
+ * Class which stores data of a user of the professor type
+ *
+ */
 public class Professor extends User{
 
     private String department;
