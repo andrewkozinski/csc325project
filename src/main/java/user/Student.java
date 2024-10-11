@@ -37,6 +37,39 @@ public class Student extends User {
         this.major = major;
     }
 
+    //Method definitions:
+
+    /**
+     * Gets a students major
+     * @return
+     */
+    public String getMajor() {
+        return major;
+    }
+
+    /**
+     * Sets a students major
+     * @param major
+     */
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    /**
+     * Gets the classification of a student
+     * @return
+     */
+    public String getClassification() {
+        return classification;
+    }
+
+    /**
+     * Sets the classification of a student
+     * @param classification
+     */
+    public void setClassification(String classification) {
+        this.classification = classification;
+    }
 
     /**
      * Returns a string containing information about the user
