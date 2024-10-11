@@ -4,93 +4,43 @@ import java.util.Date;
 
 public class Student extends User {
 
+    private String major;
+    //Classification refers to what year a student is
+    //Example: Senior
+    private String classification;
+
+    //Default constructor
     /**
-     * Returns Student username when called
-     * @return
+     * Default constructor, just sets variable values to default (null)
      */
-    @Override
-    public String getUserName() {
-        return "";
+    public Student() {
+        super();
+        classification = "null";
     }
 
-    /**
-     * Takes in a string and sets Student username
-     * @param userName
-     */
-    @Override
-    public void setUserName(String userName) {
-
-    }
+    //Parametrized Constructor
 
     /**
-     * Returns Student user id when called
-     * @return
-     */
-    @Override
-    public String getUserId() {
-        return "";
-    }
-
-    /**
-     * Sets student user id when called
-     * @param userId
-     */
-    @Override
-    public void setUserId(String userId) {
-
-    }
-
-    /**
-     * Gets Student's first name when called
-     * @return
-     */
-    @Override
-    public String getFirstName() {
-        return "";
-    }
-
-    /**
-     * Sets Student first name when called
+     *
+     * @param username
+     * @param password
      * @param firstName
-     */
-    @Override
-    public void setFirstName(String firstName) {
-
-    }
-
-    /**
-     * Returns Student last name when called
-     * @return
-     */
-    @Override
-    public String getLastName() {
-        return "";
-    }
-
-    /**
-     * Sets Student last name when called
      * @param lastName
+     * @param userId
+     * @param classification
      */
-    @Override
-    public void setLastName(String lastName) {
-
+    public Student(String username, String password, String firstName, String lastName, String userId, String classification) {
+        super(username, password, firstName, lastName, userId);
+        this.classification = classification;
     }
 
+
     /**
-     * Gets student birthdate when called
+     * Returns a string containing information about the user
      * @return
      */
     @Override
-    public Date getBirthDate() {
-        return null;
-    }
-
-    /**
-     * Sets student birthdate when called
-     * @param birthDate
-     */
-    @Override
-    public void setBirthDate(Date birthDate) {
-
+    public String userInfo() {
+        return String.format("Username: %s UserID: %s Major: %s Classification: %s", username, userId, classification);
     }
 }

@@ -4,23 +4,117 @@ import java.util.Date;
 
 public abstract class User {
 
-    public abstract String getUserName();
+    //User variables
+    protected String username;
+    protected String password;
+    protected String firstName;
+    protected String lastName;
+    protected String userId;
 
-    public abstract void setUserName(String userName);
+    //Default constructor
+    /**
+     * Default constructor, just sets variable values to default (null)
+     */
+    public User() {
+        username = "Null";
+        password = "Null";
+        firstName = "Null";
+        lastName = "Null";
+        userId = "Null";
+    }
+    //Parameterized Constructor
 
-    public abstract String getUserId();
+    /**
+     * Parameterized constructor, takes in variables and sets them to the corresponding user variables
+     * @param username Passed in username
+     * @param password Passed in password
+     * @param firstName Passed in firstname
+     * @param lastName Passed in lastname
+     * @param userId Passed in userId
+     */
+    public User(String username, String password, String firstName, String lastName, String userId) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userId = userId;
+    }
 
-    public abstract void setUserId(String userId);
 
-    public abstract String getFirstName();
+    //Default implementation of User methods below
 
-    public abstract void setFirstName(String firstName);
+    /**
+     * Returns username upon call
+     * @return username
+     */
+    public String getUserName() {
+        return username;
+    }
 
-    public abstract String getLastName();
+    /**
+     * Sets username upon call
+     * @param userName username we wish to set
+     */
+    public void setUserName(String userName) {
+        this.username = userName;
+    }
 
-    public abstract void setLastName(String lastName);
+    /**
+     * Gets user id of a user
+     * @return userId
+     */
+    public String getUserId() {
+        return userId;
+    }
 
-    public abstract Date getBirthDate();
+    /**
+     * Sets user id of a user
+     * @param userId user id of a given user
+     */
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    public abstract void setBirthDate(Date birthDate);
+    /**
+     * Sets the first name of a user
+     * @return first name of a user
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * Sets the first name of a user
+     * @param firstName first name to be set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Returns the last name of a user
+     * @return Last name of a given user
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Sets the last name of a user
+     * @param lastName last name to be set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    //Abstract methods below
+
+    /**
+     * Returns user information
+     * This methods implementation depends on the user type
+     * For example, a student would have a "major" variable while an admin would not
+     * @return User information
+     */
+    public abstract String userInfo();
+
 }
