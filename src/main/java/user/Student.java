@@ -16,6 +16,7 @@ public class Student extends User {
     public Student() {
         super();
         classification = "null";
+        major = "null";
     }
 
     //Parametrized Constructor
