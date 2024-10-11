@@ -7,4 +7,7 @@ package user;
  * @author Andrew Kozinski
  */
 public class Admin {
+
+
+
 }

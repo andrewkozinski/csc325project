@@ -2,7 +2,9 @@ package user;
 
 /**
  * Class which stores data of a user of the professor type
- *
+ * Contains information about a professor
+ * Including but not limited to: department, name, etc.
+ * @author Andrew Kozinski
  */
 public class Professor extends User{
 
@@ -18,8 +20,6 @@ public class Professor extends User{
     }
 
     //Parameterized constructor
-
-
     /**
      * Parameterized constructor, takes in variables and sets them to the corresponding user variables
      * @param username Passed in username
