@@ -36,6 +36,22 @@ public class Professor extends User{
     }
 
     /**
+     * Gets a professors department
+     * @return Department
+     */
+    public String getDepartment() {
+        return department;
+    }
+
+    /**
+     * Set a professors department
+     * @param department Department to be set to
+     */
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    /**
      * Returns a string containing information about the user
      * @return String containing user information
      */
