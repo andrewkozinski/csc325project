@@ -2,8 +2,14 @@ package user;
 
 import java.util.Date;
 
+/**
+ * Class which stores data of a user of the student type
+ * Contains information about a student
+ * Including but not limited to: major, classification, name, etc.
+ */
 public class Student extends User {
 
+    //Student major
     private String major;
     //Classification refers to what year a student is
     //Example: Senior
@@ -20,7 +26,6 @@ public class Student extends User {
     }
 
     //Parametrized Constructor
-
     /**
      * Parameterized constructor, takes in variables and sets them to the corresponding user variables
      * @param username Passed in username
@@ -73,7 +78,7 @@ public class Student extends User {
 
     /**
      * Returns a string containing information about the user
-     * @return
+     * @return String containing user information
      */
     @Override
     public String userInfo() {
