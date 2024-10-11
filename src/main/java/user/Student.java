@@ -6,6 +6,7 @@ import java.util.Date;
  * Class which stores data of a user of the student type
  * Contains information about a student
  * Including but not limited to: major, classification, name, etc.
+ * @author Andrew Kozinski
  */
 public class Student extends User {
 

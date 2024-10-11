@@ -2,6 +2,13 @@ package user;
 
 import java.util.Date;
 
+/**
+ * Abstract class representing a user in the registration system
+ * Users can include but are not limited to: Student, Professor and Admin
+ * Stores information regarding the user such as username, id, etc.
+ * Various methods with default behavior of a user are defined below.
+ * @author Andrew Kozinski
+ */
 public abstract class User {
 
     //User variables
