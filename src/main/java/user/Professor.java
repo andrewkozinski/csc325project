@@ -8,6 +8,7 @@ package user;
  */
 public class Professor extends User{
 
+    //Department a Professor is apart of
     private String department;
 
     //Default constructor
