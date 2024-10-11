@@ -57,7 +57,7 @@ public class Student extends User {
 
     /**
      * Gets the classification of a student
-     * @return
+     * @return The classification of a student
      */
     public String getClassification() {
         return classification;
@@ -65,7 +65,7 @@ public class Student extends User {
 
     /**
      * Sets the classification of a student
-     * @param classification
+     * @param classification given classification of a student
      */
     public void setClassification(String classification) {
         this.classification = classification;
