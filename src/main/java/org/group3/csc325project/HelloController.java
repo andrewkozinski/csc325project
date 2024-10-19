@@ -3,6 +3,11 @@ package org.group3.csc325project;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+/**
+ * Controller for login.fxml
+ * All methods related to the login should likely go here.
+ * Note: May be a good idea to rename this file to something other than "HelloController.java", not the best description
+ */
 public class HelloController {
     @FXML
     private Label welcomeText;
@@ -12,16 +17,25 @@ public class HelloController {
         welcomeText.setText("Welcome to JavaFX Application! - test push");
     }
 
+    /**
+     * On call, switches scene to student.fxml
+     */
     public void studentTest() {
 
     }
 
+    /**
+     * On call, switches scene to professor.fxml
+     */
     public void professorTest() {
 
     }
 
+    /**
+     * On call, switches scene to admin.fxml
+     */
     public void adminTest() {
-        
+
     }
 
 }
