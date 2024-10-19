@@ -43,7 +43,7 @@ public class HelloApplication extends Application {
      * @param fxml passed in fxml file name
      * @throws IOException If IO error occurs, just throws.
      */
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
