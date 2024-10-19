@@ -3,8 +3,6 @@ package org.group3.csc325project;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import java.io.IOException;
-
 /**
  * Controller for login.fxml
  * All methods related to the login should likely go here.
@@ -23,21 +21,21 @@ public class HelloController {
      * On call, switches scene to student.fxml
      */
     public void switchToStudent() {
-        HelloApplication.setRoot("student");
+        RegistrationApp.setRoot("student");
     }
 
     /**
      * On call, switches scene to professor.fxml
      */
     public void switchToProfessor() {
-        HelloApplication.setRoot("professor");
+        RegistrationApp.setRoot("professor");
     }
 
     /**
      * On call, switches scene to admin.fxml
      */
     public void switchToAdmin() {
-        HelloApplication.setRoot("admin");
+        RegistrationApp.setRoot("admin");
     }
 
 }

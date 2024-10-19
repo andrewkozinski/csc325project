@@ -9,7 +9,7 @@ public class AdminController {
      * Upon call, switches scene back to login.fxml.
      */
     public void returnToLogin() {
-        HelloApplication.returnToLogin();
+        RegistrationApp.returnToLogin();
     }
 
 }
