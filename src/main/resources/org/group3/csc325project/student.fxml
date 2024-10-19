@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.StudentController">
    <children>
-      <Label layoutX="25.0" layoutY="26.0" text="Student Scene" />
+      <Label layoutX="47.0" layoutY="30.0" text="Student Scene" />
+      <Button layoutX="37.0" layoutY="55.0" mnemonicParsing="false" onAction="#returnToLogin" text="Return to login" />
    </children>
 </AnchorPane>
