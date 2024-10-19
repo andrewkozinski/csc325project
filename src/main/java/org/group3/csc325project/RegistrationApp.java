@@ -51,9 +51,8 @@ public class RegistrationApp extends Application {
     }
 
     /**
-     * Method that can be called to return to login scene.
+     * Method that can be called to return to log in scene.
      * Intended to be used in Student, Professor and Admin controllers
-     * @throws IOException
      */
     public static void returnToLogin() {
         setRoot("login");
