@@ -41,10 +41,13 @@ public class HelloApplication extends Application {
      * Sets the scenes root, changes the scene to a specified scene
      * Again, if there's a better way of doing this, feel free to update or replace this method and loadFXML
      * @param fxml passed in fxml file name
-     * @throws IOException If IO error occurs, just throws.
      */
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+    public static void setRoot(String fxml) {
+        try {
+            scene.setRoot(loadFXML(fxml));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -52,7 +55,7 @@ public class HelloApplication extends Application {
      * Intended to be used in Student, Professor and Admin controllers
      * @throws IOException
      */
-    public static void returnToLogin() throws IOException {
+    public static void returnToLogin() {
         setRoot("login");
     }
 
