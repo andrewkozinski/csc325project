@@ -20,21 +20,21 @@ public class HelloController {
     /**
      * On call, switches scene to student.fxml
      */
-    public void studentTest() {
+    public void switchToStudent() {
 
     }
 
     /**
      * On call, switches scene to professor.fxml
      */
-    public void professorTest() {
+    public void switchToProfessor() {
 
     }
 
     /**
      * On call, switches scene to admin.fxml
      */
-    public void adminTest() {
+    public void switchToAdmin() {
 
     }
 
