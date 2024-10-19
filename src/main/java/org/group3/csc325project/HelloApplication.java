@@ -26,7 +26,7 @@ public class HelloApplication extends Application {
     }
 
     /**
-     * On call, loads a specified .fxml file
+     * Helper method for setRoot. On call, loads a specified .fxml file
      * May be a better way of doing this, I'm open to anyone to rewriting this and setRoot()
      * @param fxml passed in fxml file name
      * @return result of fxmlLoader load
@@ -45,6 +45,15 @@ public class HelloApplication extends Application {
      */
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+    }
+
+    /**
+     * Method that can be called to return to login scene.
+     * Intended to be used in Student, Professor and Admin controllers
+     * @throws IOException
+     */
+    public static void returnToLogin() throws IOException {
+        setRoot("login");
     }
 
 }
