@@ -11,4 +11,17 @@ public class HelloController {
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application! - test push");
     }
+
+    public void studentTest() {
+
+    }
+
+    public void professorTest() {
+
+    }
+
+    public void adminTest() {
+        
+    }
+
 }
