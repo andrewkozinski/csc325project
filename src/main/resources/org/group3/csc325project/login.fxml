@@ -6,18 +6,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.LoginController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.RegistrationApp">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-
-    <Label fx:id="welcomeText" />
-    <Button onAction="#onHelloButtonClick" text="Hello!" />
-   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-      <children>
-         <Button mnemonicParsing="false" onAction="#switchToStudent" text="Student" />
-         <Button mnemonicParsing="false" onAction="#switchToProfessor" text="Prof" />
-         <Button mnemonicParsing="false" onAction="#switchToAdmin" text="Admin" />
-      </children>
-   </HBox>
-</VBox>
+    <!--
+        <Label fx:id="welcomeText" />
+        <Button onAction="#onHelloButtonClick" text="Hello!" />
+       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+          <children>
+             <Button mnemonicParsing="false" onAction="#switchToStudent" text="Student" />
+             <Button mnemonicParsing="false" onAction="#switchToProfessor" text="Prof" />
+             <Button mnemonicParsing="false" onAction="#switchToAdmin" text="Admin" />
+          </children>
+       </HBox> -->
+    </VBox>

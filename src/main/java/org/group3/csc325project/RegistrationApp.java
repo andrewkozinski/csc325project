@@ -1,6 +1,7 @@
 package org.group3.csc325project;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -57,5 +58,7 @@ public class RegistrationApp extends Application {
     public static void returnToLogin() {
         setRoot("login");
     }
+
+
 
 }
