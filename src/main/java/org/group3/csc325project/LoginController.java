@@ -6,9 +6,9 @@ import javafx.scene.control.Label;
 /**
  * Controller for login.fxml
  * All methods related to the login should likely go here.
- * Note: May be a good idea to rename this file to something other than "HelloController.java", not the best description
+ * Note: May be a good idea to rename this file to something other than "LoginController.java", not the best description
  */
-public class HelloController {
+public class LoginController {
     @FXML
     private Label welcomeText;
 
