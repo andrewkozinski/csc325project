@@ -21,6 +21,10 @@ public class Course {
     private int credits;
     //Professor teaching a given course
     private Professor professor;
+    //The amount of students a given course can have
+    private int capacity;
+    //Amount of students currently enrolled for the course
+    private int currentEnrolledCount;
 
     /**
      * Default constructor, sets variables to default values
@@ -33,6 +37,8 @@ public class Course {
         courseLocation = "null";
         credits = 0;
         professor = new Professor();
+        capacity = 0;
+        currentEnrolledCount = 0;
     }
 
     /**
@@ -45,7 +51,7 @@ public class Course {
      * @param credits Number of credits a course is worth
      * @param professor Professor teaching a course
      */
-    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseLocation, int credits, Professor professor) {
+    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount) {
         this.courseCRN = classCRN;
         this.courseName = courseName;
         this.courseCode = courseCode;
@@ -53,6 +59,8 @@ public class Course {
         this.courseLocation = courseLocation;
         this.credits = credits;
         this.professor = professor;
+        this.capacity = capacity;
+        this.currentEnrolledCount = currentEnrolledCount;
     }
 
     /**
@@ -166,4 +174,25 @@ public class Course {
     public void setProfessor(Professor professor) {
         this.professor = professor;
     }
+
+    /**
+     *
+     * @return
+     */
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getCurrentEnrolledCount() {
+        return currentEnrolledCount;
+    }
+
+    public void setCurrentEnrolledCount(int currentEnrolledCount) {
+        this.currentEnrolledCount = currentEnrolledCount;
+    }
+
 }
