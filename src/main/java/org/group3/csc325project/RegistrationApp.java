@@ -31,7 +31,7 @@ public class RegistrationApp extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(RegistrationApp.class.getResource("login.fxml"));
         scene = new Scene(fxmlLoader.load(), 800, 450);
-        stage.setTitle("Hello!");
+        stage.setTitle("Atlantis University Registration System");
         stage.setScene(scene);
         //Cursor
         //----------------------------------
