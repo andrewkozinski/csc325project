@@ -176,23 +176,55 @@ public class Course {
     }
 
     /**
-     *
-     * @return
+     * Gets capacity of a course
+     * @return Course capacity
      */
     public int getCapacity() {
         return capacity;
     }
 
+    /**
+     * Sets capacity of a course
+     * @param capacity The capacity we're setting to
+     */
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * Get the number of students currently enrolled for the course
+     * @return Amount of students enrolled
+     */
     public int getCurrentEnrolledCount() {
         return currentEnrolledCount;
     }
 
+    /**
+     * Sets the amount of students currently enrolled for the course
+     * @param currentEnrolledCount Amount of students enrolled
+     */
     public void setCurrentEnrolledCount(int currentEnrolledCount) {
         this.currentEnrolledCount = currentEnrolledCount;
+    }
+
+    /**
+     * Increases amount of students enrolled by 1
+     */
+    public void incrementEnrolledCount() {
+        //If the number of students enrolled is not at capacity we can add a student
+        if(currentEnrolledCount != capacity) {
+            currentEnrolledCount++;
+        }
+    }
+
+    /**
+     * Decreases amount of students enrolled by 1
+     */
+    public void decrementEnrolledCount() {
+        //If the number of students currently enrolled is not 0, we can go ahead and decrement
+        if(currentEnrolledCount != 0) {
+            currentEnrolledCount--;
+        }
     }
 
 }
