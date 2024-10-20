@@ -83,6 +83,6 @@ public class Student extends User {
      */
     @Override
     public String userInfo() {
-        return String.format("Username: %s UserID: %s Major: %s Classification: %s", username, userId, classification);
+        return String.format("Username: %s UserID: %s Major: %s Classification: %s", username, userId, major, classification);
     }
 }
