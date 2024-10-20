@@ -1,7 +1,6 @@
 package org.group3.csc325project;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
@@ -37,7 +36,7 @@ public class RegistrationApp extends Application {
         //Cursor
         //----------------------------------
         StackPane layout = new StackPane();
-        Image cursorImage = new Image(getClass().getResourceAsStream("/dolphin - Copy.png"));
+        Image cursorImage = new Image(getClass().getResourceAsStream("/Images/dolphin - Copy.png"));
         double hotspotX = cursorImage.getWidth() / 2;
         double hotspotY = cursorImage.getHeight() / 2;
         ImageCursor customCursor = new ImageCursor(cursorImage,hotspotX, hotspotY);
@@ -49,13 +48,13 @@ public class RegistrationApp extends Application {
     public void initialize() {
         // Load the background image
         //----------------------------------
-        Image image_login_background_image_view = new Image(getClass().getResourceAsStream("/Atlantis_Background.png"));
+        Image image_login_background_image_view = new Image(getClass().getResourceAsStream("/Images/Atlantis_Background.png"));
         login_background_image_view.setImage(image_login_background_image_view);
 
-        Image image_login_title_background = new Image(getClass().getResourceAsStream("/registrationSystem_header_no_user.png"));
+        Image image_login_title_background = new Image(getClass().getResourceAsStream("/Images/registrationSystem_header_no_user.png"));
         login_title_background.setImage(image_login_title_background);
 
-        Image image_login_input_background = new Image(getClass().getResourceAsStream("/general_menu_background.png"));
+        Image image_login_input_background = new Image(getClass().getResourceAsStream("/Images/general_menu_background.png"));
         login_input_background.setImage(image_login_input_background);
         //----------------------------------
 
