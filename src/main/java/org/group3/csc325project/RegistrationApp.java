@@ -2,26 +2,64 @@ package org.group3.csc325project;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
+
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.image.*;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
 public class RegistrationApp extends Application {
-
+    @FXML
+    private ImageView login_background_image_view;
+    @FXML
+    private ImageView login_title_background;
+    @FXML
+    private ImageView login_input_background;
+    @FXML
+    private TextField login_userID_title;
+    @FXML
+    private TextField login_password_title;
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(RegistrationApp.class.getResource("login.fxml"));
-        scene = new Scene(fxmlLoader.load(), 320, 240);
+        scene = new Scene(fxmlLoader.load(), 800, 450);
         stage.setTitle("Hello!");
         stage.setScene(scene);
+        //Cursor
+        //----------------------------------
+        StackPane layout = new StackPane();
+        Image cursorImage = new Image(getClass().getResourceAsStream("/dolphin - Copy.png"));
+        double hotspotX = cursorImage.getWidth() / 2;
+        double hotspotY = cursorImage.getHeight() / 2;
+        ImageCursor customCursor = new ImageCursor(cursorImage,hotspotX, hotspotY);
+        scene.setCursor(customCursor);
+        //----------------------------------
         stage.show();
     }
+    @FXML
+    public void initialize() {
+        // Load the background image
+        //----------------------------------
+        Image image_login_background_image_view = new Image(getClass().getResourceAsStream("/Atlantis_Background.png"));
+        login_background_image_view.setImage(image_login_background_image_view);
 
+        Image image_login_title_background = new Image(getClass().getResourceAsStream("/registrationSystem_header_no_user.png"));
+        login_title_background.setImage(image_login_title_background);
+
+        Image image_login_input_background = new Image(getClass().getResourceAsStream("/general_menu_background.png"));
+        login_input_background.setImage(image_login_input_background);
+        //----------------------------------
+
+    }
     public static void main(String[] args) {
         launch();
     }
@@ -58,7 +96,4 @@ public class RegistrationApp extends Application {
     public static void returnToLogin() {
         setRoot("login");
     }
-
-
-
-}
+    }
