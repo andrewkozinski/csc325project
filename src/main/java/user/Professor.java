@@ -57,6 +57,6 @@ public class Professor extends User{
      */
     @Override
     public String userInfo() {
-        return "";
+        return String.format("Username: %s UserID: %s Department: %s", username, userId, department);
     }
 }
