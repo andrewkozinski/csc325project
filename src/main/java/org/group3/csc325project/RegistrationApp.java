@@ -1,34 +1,31 @@
 package org.group3.csc325project;
 
+import com.google.auth.Credentials;
+import com.google.cloud.Service;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Firestore;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
 
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.scene.image.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 public class RegistrationApp extends Application {
-    @FXML
-    private ImageView login_background_image_view;
-    @FXML
-    private ImageView login_title_background;
-    @FXML
-    private ImageView login_input_background;
-    @FXML
-    private TextField login_userID_title;
-    @FXML
-    private TextField login_password_title;
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
+        initializeFirebase();
         FXMLLoader fxmlLoader = new FXMLLoader(RegistrationApp.class.getResource("login.fxml"));
         scene = new Scene(fxmlLoader.load(), 800, 450);
         stage.setTitle("Atlantis University Registration System");
@@ -44,20 +41,21 @@ public class RegistrationApp extends Application {
         //----------------------------------
         stage.show();
     }
-    @FXML
-    public void initialize() {
-        // Load the background image
-        //----------------------------------
-        Image image_login_background_image_view = new Image(getClass().getResourceAsStream("/Images/Atlantis_Background.png"));
-        login_background_image_view.setImage(image_login_background_image_view);
+    public static Firestore initializeFirebase() {
+        try {
 
-        Image image_login_title_background = new Image(getClass().getResourceAsStream("/Images/registrationSystem_header_no_user.png"));
-        login_title_background.setImage(image_login_title_background);
+            FileInputStream serviceAccount = new FileInputStream("src/main/resources/firebaseAPI.json");
 
-        Image image_login_input_background = new Image(getClass().getResourceAsStream("/Images/general_menu_background.png"));
-        login_input_background.setImage(image_login_input_background);
-        //----------------------------------
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build();
+            FirebaseApp.initializeApp(options);
 
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        return FirestoreClient.getFirestore();
     }
     public static void main(String[] args) {
         launch();
