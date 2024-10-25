@@ -35,7 +35,7 @@ public class LoginController {
     @FXML
     public void initialize() {
         // Load the background images
-        login_background_image_view.setImage(new Image(getClass().getResourceAsStream("/Images/Atlantis_Background.png")));
+        //login_background_image_view.setImage(new Image(getClass().getResourceAsStream("/Images/Atlantis_Background.png")));
         login_title_background.setImage(new Image(getClass().getResourceAsStream("/Images/registrationSystem_header_no_user.png")));
         login_input_background.setImage(new Image(getClass().getResourceAsStream("/Images/general_menu_background.png")));
         login_login_button.setOnAction(event -> handleLoginButtonClick());
