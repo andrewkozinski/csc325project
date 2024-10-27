@@ -66,6 +66,10 @@ public abstract class User {
         this.username = userName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     /**
      * Gets user id of a user
      * @return userId

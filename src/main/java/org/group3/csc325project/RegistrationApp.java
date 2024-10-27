@@ -93,4 +93,7 @@ public class RegistrationApp extends Application {
     public static void returnToLogin() {
         setRoot("login");
     }
+    public static void returnToCreateUser() {
+        setRoot("createuser");
+    }
     }
