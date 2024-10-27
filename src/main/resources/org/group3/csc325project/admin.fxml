@@ -2,11 +2,68 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AdminController">
+<VBox prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AdminController">
    <children>
-      <Label layoutX="33.0" layoutY="22.0" text="Admin Scene" />
-      <Button layoutX="20.0" layoutY="46.0" mnemonicParsing="false" onAction="#returnToLogin" text="Return to login" />
+      <StackPane prefHeight="450.0" prefWidth="800.0">
+         <children>
+            <ImageView fx:id="admin_background_image_view" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/Atlantis_Background.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="admin_title_background" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/registrationSystem_header_no_user.png" />
+               </image>
+            </ImageView>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0">
+               <children>
+                  <ImageView fx:id="admin_adminbackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/general_menu_background.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="admin_sidebar_background" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/general_button_background.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="277.0" layoutY="191.0" text="Admin Scene" />
+                  <Button layoutX="271.0" layoutY="208.0" mnemonicParsing="false" onAction="#returnToLogin" text="Return to login" />
+                  <ImageView fx:id="admin_Courses_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/admin_Courses_button.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="admin_Assign_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/admin_Assign_button.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="admin_New_Acc_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/admin_New_Acc_button.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="admin_Alt_Cou_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/admin_Alt_Cou_button.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="admin_Alt_User_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Images/admin_Alt_User_button.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
    </children>
-</AnchorPane>
+</VBox>
