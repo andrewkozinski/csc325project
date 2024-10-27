@@ -11,5 +11,7 @@ public class AdminController {
     public void returnToLogin() {
         RegistrationApp.returnToLogin();
     }
-
+    public void returnToCreateUser() {
+        RegistrationApp.returnToCreateUser();
+    }
 }

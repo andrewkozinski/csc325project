@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AdminController">
+<VBox prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AdminController">
    <children>
       <StackPane prefHeight="450.0" prefWidth="800.0">
          <children>
@@ -36,6 +36,7 @@
                   </ImageView>
                   <Label layoutX="277.0" layoutY="191.0" text="Admin Scene" />
                   <Button layoutX="271.0" layoutY="208.0" mnemonicParsing="false" onAction="#returnToLogin" text="Return to login" />
+                  <Button layoutX="454.0" layoutY="221.0" mnemonicParsing="false" onAction="#returnToCreateUser" text="create user" />
                   <ImageView fx:id="admin_Courses_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../Images/admin_Courses_button.png" />
