@@ -8,9 +8,17 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 public class LoginController {
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @FXML
     private ImageView login_background_image_view;
     @FXML
@@ -47,36 +55,18 @@ public class LoginController {
         String password = login_password_input.getText().trim();
 
         try {
-            if (checkUserCredentials("Admin", username, password)) {
-                System.out.println("Admin login successful!");
-                RegistrationApp.setRoot("admin");
-                return;
-            }
-            if (checkUserCredentials("Student", username, password)) {
-                System.out.println("Student login successful!");
-                RegistrationApp.setRoot("student");
-                return;
-            }
-            if (checkUserCredentials("Professor", username, password)) {
-                System.out.println("Professor login successful!");
-                RegistrationApp.setRoot("professor");
-                return;
-            }
+            if (authenticateUser("Admin", username, password)) return;
+            if (authenticateUser("Student", username, password)) return;
+            if (authenticateUser("Professor", username, password)) return;
+
             displayError("Invalid username or password! Please try again.");
 
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.error("Error: ", e);
             displayError("An error has occurred while logging in! Please try again later.");
         }
     }
-    private void displayError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Login Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-    private boolean checkUserCredentials(String collectionName, String username, String password) throws InterruptedException, ExecutionException {
+    private boolean authenticateUser(String collectionName, String username, String password) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference collection = db.collection(collectionName);
 
@@ -87,24 +77,58 @@ public class LoginController {
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
 
                 String storedPasswordHash = document.getString("Password");
-                String dbUsername = document.getString("Username");
                 Boolean twoFAEnabled = document.getBoolean("2faEnabled");
 
-                if (storedPasswordHash != null && BCrypt.checkpw(password, storedPasswordHash)) {
-                    System.out.println("Password matches!");
+                if (storedPasswordHash != null && BCrypt.checkpw(password, storedPasswordHash)) { // ADD BETTER ERROR HANDLING OMG..
+                    System.out.println("Password matches! =D");
+
+                    SessionManager.setLoggedInUsername(username);
+                    SessionManager.setLoggedInUserRole(collectionName);
+                    SessionManager.setTwoFAEnabled(Boolean.TRUE.equals(twoFAEnabled));
+
                     if (Boolean.TRUE.equals(twoFAEnabled)) {
                         System.out.println("2FA is enabled for this user. Redirecting to 2FA screen...");
                         RegistrationApp.setRoot("twofa");
-                        return true;
+                    } else {
+                        System.out.println("2FA is not enabled. Redirecting to user home screen.");
+                        redirectToUserHomeScreen(collectionName);
                     }
-                    System.out.println("2FA is not enabled, skipping!");
                     return true;
                 } else {
-                    System.out.println("Password did not match. Please re-try.");
+                    System.out.println("Password did not match. Please try again.");
                 }
             }
         }
-        return false;  // User not found or incorrect password
+        return false;
+    }
+    private static final Map<String, Consumer<Void>> roleRedirect = new HashMap<>();
+    static {
+        roleRedirect.put("Admin", v -> redirectToScreen("admin"));
+        roleRedirect.put("Student", v -> redirectToScreen("student"));
+        roleRedirect.put("Professor", v -> redirectToScreen("professor"));
+    }
+    private void redirectToUserHomeScreen(String role) {
+        try {
+            Consumer<Void> action = roleRedirect.get(role);
+            if (action != null) {
+                action.accept(null);
+            } else {
+                displayError("Invalid user role detected.");
+            }
+        } catch (Exception e) {
+            logger.error("Error: ", e);
+            displayError("An error occurred while redirecting. Please try again later.");
+        }
+    }
+    private static void redirectToScreen(String fxmlFileName) {
+        RegistrationApp.setRoot(fxmlFileName);
+    }
+    private void displayError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Login Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     @FXML
     private void handleForgotPasswordButtonClick() {
