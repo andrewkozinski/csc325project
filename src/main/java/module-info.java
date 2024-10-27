@@ -9,6 +9,11 @@ module org.group3.csc325project {
     requires jbcrypt;
     requires com.google.auth;
     requires google.cloud.core;
+    requires javafx.swing;
+    requires java.desktop;
+    requires totp;
+    requires com.google.zxing;
+    requires org.slf4j;
 
 
     opens org.group3.csc325project to javafx.fxml;
