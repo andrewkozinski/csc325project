@@ -79,69 +79,87 @@ public class CreateUserController {
             return;
         }
 
-        String userId = generateUserId(firstName, lastName, accountType);
-        String username = generateUsername(firstName, lastName, accountType);
+        String userId = generateUserId(firstName, lastName);
+        String username = generateUsername(firstName, lastName);
 
-        if (ifUserIdExists(userId, accountType)) {
+        if (ifUserIdExists(userId)) {
             showAlert("This user ID already exists. Please try another.");
             return;
         }
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
         UserParams params = new UserParams(username, hashedPassword, firstName, lastName, userId, classification, major, department);
         User user = userFactory.getOrDefault(accountType, p -> new Admin(p.username, p.hashedPassword, p.firstName, p.lastName, p.userId)).apply(params);
+
+        if (user == null) {
+            showAlert("Failed to create user. Please try again.");
+            return;
+        }
 
         saveUserToDatabase(user, age, email, accountType);
     }
 
-    private String generateUserId(String firstName, String lastName, String accountType) {
+    private String generateUserId(String firstName, String lastName) {
         Firestore db = FirestoreClient.getFirestore();
-        CollectionReference collection = db.collection(accountType);
         String baseUserId = (lastName.length() >= 4 ? lastName.substring(0, 4) : lastName) + firstName.charAt(0);
         int suffix = 1;
         String userId;
         do {
             userId = baseUserId.toLowerCase() + String.format("%02d", suffix);
             suffix++;
-        } while (ifUserIdExists(userId, accountType));
+        } while (ifUserIdExists(userId));
         return userId;
     }
 
-    private String generateUsername(String firstName, String lastName, String accountType) {
+    private String generateUsername(String firstName, String lastName) {
         Firestore db = FirestoreClient.getFirestore();
-        CollectionReference collection = db.collection(accountType);
         String baseUsername = (lastName.length() >= 4 ? lastName.substring(0, 4) : lastName) + firstName.charAt(0);
         int suffix = 1;
         String username;
         do {
             username = baseUsername.toLowerCase() + String.format("%02d", suffix);
             suffix++;
-        } while (isUsernameExists(username, accountType));
+        } while (isUsernameExists(username));
         return username;
     }
 
-    private boolean ifUserIdExists(String userId, String accountType) {
+    private boolean ifUserIdExists(String userId) {
         Firestore db = FirestoreClient.getFirestore();
-        CollectionReference collection = db.collection(accountType);
-        ApiFuture<com.google.cloud.firestore.QuerySnapshot> future = collection.whereEqualTo("userID", userId).get();
-        try {
-            return !future.get().isEmpty();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return true;
+        String[] accountTypes = {"Admin", "Student", "Professor"};
+
+        for (String accountType : accountTypes) {
+            CollectionReference collection = db.collection(accountType);
+            ApiFuture<com.google.cloud.firestore.QuerySnapshot> future = collection.whereEqualTo("UserId", userId).get();
+            try {
+                if (!future.get().isEmpty()) {
+                    return true;
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                return true;
+            }
         }
+        return false;
     }
 
-    private boolean isUsernameExists(String username, String accountType) {
+    private boolean isUsernameExists(String username) {
         Firestore db = FirestoreClient.getFirestore();
-        CollectionReference collection = db.collection(accountType);
-        ApiFuture<com.google.cloud.firestore.QuerySnapshot> future = collection.whereEqualTo("Username", username).get();
-        try {
-            return !future.get().isEmpty();
-        } catch (InterruptedException | ExecutionException e) {
-            logger.error("Error: ", e);
-            return true;
+        String[] accountTypes = {"Admin", "Student", "Professor"};
+
+        for (String accountType : accountTypes) {
+            CollectionReference collection = db.collection(accountType);
+            ApiFuture<com.google.cloud.firestore.QuerySnapshot> future = collection.whereEqualTo("Username", username).get();
+            try {
+                if (!future.get().isEmpty()) {
+                    return true;
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                logger.error("Error: ", e);
+                return true;
+            }
         }
+        return false;
     }
 
     private void saveUserToDatabase(User user, String age, String email, String accountType) {
