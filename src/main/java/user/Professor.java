@@ -31,7 +31,7 @@ public class Professor extends User{
      * @param department Passed in department
      */
     public Professor(String username, String password, String firstName, String lastName, String userId, String department) {
-        super();
+        super(username, password, firstName, lastName, userId);
         this.department = department;
     }
 
