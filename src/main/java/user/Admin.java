@@ -35,7 +35,7 @@ public class Admin extends User{
      */
     @Override
     public String userInfo() {
-        return "";
+        return userId;
     }
 
 }
