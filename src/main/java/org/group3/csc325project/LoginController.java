@@ -4,9 +4,13 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+
+
 
 public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -39,14 +45,46 @@ public class LoginController {
     private Button login_login_button;
     @FXML
     private Button login_forgot_password_button;
-
     @FXML
+    private VBox login_screen;
+    @FXML
+    private AnchorPane login_screen_anchor;
+
     public void initialize() {
         // Load the background images
         login_background_image_view.setImage(new Image(getClass().getResourceAsStream("/Images/Atlantis_Background.png")));
         login_title_background.setImage(new Image(getClass().getResourceAsStream("/Images/registrationSystem_header_no_user.png")));
         login_input_background.setImage(new Image(getClass().getResourceAsStream("/Images/general_menu_background.png")));
-        login_login_button.setOnAction(event -> handleLoginButtonClick());
+        //login_login_button.setOnAction(event -> handleLoginButtonClick());
+        // Scaling ImagePanes
+        login_background_image_view.fitWidthProperty().bind(login_screen.widthProperty());
+        login_background_image_view.fitHeightProperty().bind(login_screen.heightProperty());
+
+        login_title_background.fitWidthProperty().bind(login_screen.widthProperty());
+        login_title_background.fitHeightProperty().bind(login_screen.heightProperty());
+
+        login_screen_anchor.prefWidthProperty().bind(login_screen.widthProperty()); // Use a smaller multiplier
+        login_screen_anchor.prefHeightProperty().bind(login_screen.heightProperty());
+
+
+
+        login_input_background.fitWidthProperty().bind(login_screen_anchor.widthProperty());
+        login_input_background.fitHeightProperty().bind(login_screen_anchor.heightProperty());
+        // Scaling other elements
+
+
+        login_userID_title.minWidthProperty().bind(login_screen_anchor.widthProperty().multiply(0.3));
+        login_password_title.minWidthProperty().bind(login_screen_anchor.widthProperty().multiply(0.3));
+        login_userID_input_textField.prefWidthProperty().bind(login_screen_anchor.widthProperty().multiply(0.5));
+        login_password_input.prefWidthProperty().bind(login_screen_anchor.widthProperty().multiply(0.5));
+        login_login_button.prefWidthProperty().bind(login_screen_anchor.widthProperty().multiply(0.20));
+        login_forgot_password_button.prefWidthProperty().bind(login_screen_anchor.widthProperty().multiply(0.50));
+
+        VBox.setMargin(login_forgot_password_button, new Insets(0, 0, 0, 10));
+        login_screen.setFillWidth(true);
+        login_background_image_view.setPreserveRatio(true);
+        login_title_background.setPreserveRatio(true);
+        login_input_background.setPreserveRatio(true);
     }
 
     @FXML
