@@ -8,6 +8,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 
 
@@ -16,18 +17,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 public class RegistrationApp extends Application {
     private static Scene scene;
-
+    private int heightScene = 450;
+    private int widthScene = 800;
     @Override
     public void start(Stage stage) throws IOException {
         initializeFirebase();
         FXMLLoader fxmlLoader = new FXMLLoader(RegistrationApp.class.getResource("login.fxml"));
-        scene = new Scene(fxmlLoader.load(), 800, 450);
+        scene = new Scene(fxmlLoader.load(), widthScene, heightScene);
+        stage.setMinHeight(heightScene);
+        stage.setMinWidth(widthScene);
         stage.setTitle("Atlantis University Registration System");
         stage.setScene(scene);
         //Cursor
@@ -39,6 +44,7 @@ public class RegistrationApp extends Application {
         ImageCursor customCursor = new ImageCursor(cursorImage,hotspotX, hotspotY);
         scene.setCursor(customCursor);
         //----------------------------------
+
         stage.show();
     }
     public static Firestore initializeFirebase() {
