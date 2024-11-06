@@ -128,4 +128,10 @@ public abstract class User {
      */
     public abstract String userInfo();
 
+    /**
+     * Returns a given users department. For a student, this would return their major, for a professor what department they are under, and for admin it would return as ADMIN.
+     * @return User department (either major, dept, or admin depending on usertype)
+     */
+    public abstract String userDept();
+
 }
