@@ -85,4 +85,14 @@ public class Student extends User {
     public String userInfo() {
         return String.format("Username: %s UserID: %s Major: %s Classification: %s", username, userId, major, classification);
     }
+
+    /**
+     * Returns a given users department. For a student, this would return their major.
+     * @return A student's major
+     */
+    @Override
+    public String userDept() {
+        return major;
+    }
+
 }
