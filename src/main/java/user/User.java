@@ -17,6 +17,7 @@ public abstract class User {
     protected String firstName;
     protected String lastName;
     protected String userId;
+    protected String email;
 
     //Default constructor
     /**
@@ -28,6 +29,7 @@ public abstract class User {
         firstName = "Null";
         lastName = "Null";
         userId = "Null";
+        email = "Null";
     }
     //Parameterized Constructor
 
@@ -108,6 +110,22 @@ public abstract class User {
      */
     public String getLastName() {
         return lastName;
+    }
+
+    /**
+     * Sets the email of a user
+     * @param email Email of a given user
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Returns the email of a user
+     * @return Email of a given user
+     */
+    public String getEmail() {
+        return email;
     }
 
     /**
