@@ -1,7 +1,5 @@
 package user;
 
-import java.util.Date;
-
 /**
  * An abstract class representing a user in the registration system
  * Users can include but are not limited to: Student, Professor and Admin
@@ -56,7 +54,7 @@ public abstract class User {
      * Returns username upon call
      * @return username
      */
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
@@ -150,6 +148,6 @@ public abstract class User {
      * Returns a given users department. For a student, this would return their major, for a professor what department they are under, and for admin it would return as ADMIN.
      * @return User department (either major, dept, or admin depending on usertype)
      */
-    public abstract String userDept();
+    public abstract String getUserDept();
 
 }

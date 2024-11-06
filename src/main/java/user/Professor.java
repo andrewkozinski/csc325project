@@ -65,7 +65,7 @@ public class Professor extends User{
      * @return The department a professor works under
      */
     @Override
-    public String userDept() {
+    public String getUserDept() {
         return department;
     }
 }

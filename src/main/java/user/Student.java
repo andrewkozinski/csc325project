@@ -91,7 +91,7 @@ public class Student extends User {
      * @return A student's major
      */
     @Override
-    public String userDept() {
+    public String getUserDept() {
         return major;
     }
 

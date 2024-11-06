@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import user.Student;
 import user.User;
 
 /**
@@ -14,6 +15,10 @@ public class AccountsController {
     //TableView where accounts stored in Firebase are displayed
     @FXML
     private TableView<User> accountsTable;
+
+    //Column where a users id is displayed
+    @FXML
+    private TableColumn<User, String> columnId;
 
     //Column where a users first name is displayed
     @FXML
@@ -40,11 +45,18 @@ public class AccountsController {
      */
     public void initialize() {
         //Setting the column values
+        columnId.setCellValueFactory(new PropertyValueFactory<User, String>("userId"));
         columnFirstName.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
         columnLastName.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
         columnUsername.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
         columnEmail.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
         columnDept.setCellValueFactory(new PropertyValueFactory<User, String>("userDept"));
+
+
+        User student = new Student("kozia", "stuartdent", "andrew", "kozinski", "99", "senior", "computer science");
+        student.setEmail("test@farmingdale.edu");
+        accountsTable.getItems().add(student);
+
     }
 
 }

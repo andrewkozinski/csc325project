@@ -44,7 +44,7 @@ public class Admin extends User{
      * @return Admin "department"
      */
     @Override
-    public String userDept() {
+    public String getUserDept() {
         return "ADMIN";
     }
 
