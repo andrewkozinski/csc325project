@@ -167,7 +167,7 @@ public class CreateUserController {
         CollectionReference collection = db.collection(accountType);
 
         Map<String, Object> userData = new HashMap<>();
-        userData.put("Username", user.getUserName());
+        userData.put("Username", user.getUsername());
         userData.put("Password", user.getPassword());
         userData.put("FirstName", user.getFirstName());
         userData.put("LastName", user.getLastName());
@@ -186,7 +186,7 @@ public class CreateUserController {
         ApiFuture<DocumentReference> future = collection.add(userData);
         try {
             DocumentReference documentReference = future.get();
-            showAlert("User created successfully with Username: " + user.getUserName());
+            showAlert("User created successfully with Username: " + user.getUsername());
         } catch (InterruptedException | ExecutionException e) {
             showAlert("An error occurred while creating the user. Please try again.");
             logger.error("Error: ", e);

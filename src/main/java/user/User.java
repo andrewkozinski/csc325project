@@ -1,7 +1,5 @@
 package user;
 
-import java.util.Date;
-
 /**
  * An abstract class representing a user in the registration system
  * Users can include but are not limited to: Student, Professor and Admin
@@ -17,6 +15,7 @@ public abstract class User {
     protected String firstName;
     protected String lastName;
     protected String userId;
+    protected String email;
 
     //Default constructor
     /**
@@ -28,6 +27,7 @@ public abstract class User {
         firstName = "Null";
         lastName = "Null";
         userId = "Null";
+        email = "Null";
     }
     //Parameterized Constructor
 
@@ -54,7 +54,7 @@ public abstract class User {
      * Returns username upon call
      * @return username
      */
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
@@ -111,6 +111,22 @@ public abstract class User {
     }
 
     /**
+     * Sets the email of a user
+     * @param email Email of a given user
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Returns the email of a user
+     * @return Email of a given user
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
      * Sets the last name of a user
      * @param lastName last name to be set
      */
@@ -127,5 +143,12 @@ public abstract class User {
      * @return User information
      */
     public abstract String userInfo();
+
+    /**
+     * Returns a given users department. For a student, this would return their major, for a professor what department they are under, and for admin it would return as ADMIN.
+     * Used for the TableView to be able to populate the Department/Major column.
+     * @return User department (either major, dept, or admin depending on usertype)
+     */
+    public abstract String getUserDept();
 
 }

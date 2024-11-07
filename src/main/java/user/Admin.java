@@ -38,4 +38,14 @@ public class Admin extends User{
         return userId;
     }
 
+    /**
+     * Returns the department of the user.
+     * In this case, would simply be admin in all cases.
+     * @return Admin "department"
+     */
+    @Override
+    public String getUserDept() {
+        return "ADMIN";
+    }
+
 }

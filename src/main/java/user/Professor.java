@@ -59,4 +59,13 @@ public class Professor extends User{
     public String userInfo() {
         return String.format("Username: %s UserID: %s Department: %s", username, userId, department);
     }
+
+    /**
+     * Returns a given users department. For a professor this returns what department they are classified under.
+     * @return The department a professor works under
+     */
+    @Override
+    public String getUserDept() {
+        return department;
+    }
 }
