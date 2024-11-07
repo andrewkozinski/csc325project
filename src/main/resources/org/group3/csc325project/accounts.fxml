@@ -4,17 +4,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="754.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AccountsController">
+<AnchorPane prefHeight="400.0" prefWidth="754.0" stylesheets="@../../../CSS/accounts.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AccountsController">
    <children>
-      <TableView fx:id="accountsTable" layoutX="12.0" layoutY="46.0" prefHeight="200.0" prefWidth="730.0">
+      <TableView fx:id="accountsTable" layoutX="13.0" layoutY="60.0" prefHeight="200.0" prefWidth="734.0">
         <columns>
             <TableColumn fx:id="columnUserType" prefWidth="75.0" text="User Type" />
-          <TableColumn fx:id="columnId" prefWidth="75.0" text="ID" />
-          <TableColumn fx:id="columnFirstName" prefWidth="75.0" text="First Name" />
-            <TableColumn fx:id="columnLastName" prefWidth="75.0" text="Last Name" />
-            <TableColumn fx:id="columnUsername" prefWidth="75.0" text="Username" />
-            <TableColumn fx:id="columnEmail" prefWidth="112.0" text="Email Address" />
-            <TableColumn fx:id="columnDept" minWidth="1.5999755859375" prefWidth="133.60003662109375" text="Department/Major" />
+          <TableColumn fx:id="columnId" prefWidth="64.800048828125" text="ID" />
+          <TableColumn fx:id="columnFirstName" prefWidth="95.199951171875" text="First Name" />
+            <TableColumn fx:id="columnLastName" prefWidth="87.19999694824219" text="Last Name" />
+            <TableColumn fx:id="columnUsername" prefWidth="89.60003662109375" text="Username" />
+            <TableColumn fx:id="columnEmail" prefWidth="183.199951171875" text="Email Address" />
+            <TableColumn fx:id="columnDept" minWidth="1.5999755859375" prefWidth="143.199951171875" text="Department/Major" />
         </columns>
       </TableView>
    </children>

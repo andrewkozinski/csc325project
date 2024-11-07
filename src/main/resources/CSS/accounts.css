@@ -1,0 +1,30 @@
+/* TableView CSS */
+.table-view {
+    -fx-background-color: rgba(173, 216, 230, 0.5); /* Light blue with 50% transparency */
+}
+
+/* Table Columns */
+.table-column {
+    -fx-background-color: rgba(173, 216, 230, 0.3); /* Light blue for each column */
+    -fx-border-color: white;
+    -fx-border-width: 0 1px 0 0; /* Right border for separation */
+}
+
+/* TableView Columns */
+.table-view .column-header-background {
+    -fx-background-color: rgba(173, 216, 230, 0.5); /* Light blue with 50% transparency */
+    -fx-border-color: white;
+    -fx-border-width: 0 0 1px 1px; /* Only add borders to the bottom and left sides */
+}
+
+/* TableView Cells */
+.table-view .cell {
+    -fx-background-color: rgba(173, 216, 230, 0.3); /* Light blue with 30% transparency */
+    -fx-border-color: white;
+    -fx-border-width: 0 0 1px 1px; /* Bottom and left borders in white */
+}
+
+/* Selected Row */
+.table-view .cell:selected {
+    -fx-background-color: rgba(0, 120, 215, 0.4); /* Slightly darker blue for selected row with 40% transparency */
+}
