@@ -101,7 +101,6 @@ public class AccountsController {
 
         //Call to helper method where DB is actually read
         handleReadFirebase();
-
     }
 
     /**
@@ -109,9 +108,19 @@ public class AccountsController {
      */
     private void handleReadFirebase() {
         Firestore db = FirestoreClient.getFirestore();
+        //Get student documents and read into TableView
+        readAndAddStudents(db);
+        //Now get professor documents and read into TableView
+        readAndAddProfessors(db);
+        //Now get admin documents and read into TableView
+        readAndAddAdmins(db);
+    }
 
-        //Get Students
-
+    /**
+     * When called, reads the student table in firebase and adds the information into the TableView
+     * @param db Firestore db passed in
+     */
+    private void readAndAddStudents(Firestore db) {
         ApiFuture<QuerySnapshot> studentsFuture = db.collection("Student").get();
         List<QueryDocumentSnapshot> studentDocs;
         //Add students to tableview upon getting the documents
@@ -137,9 +146,13 @@ public class AccountsController {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
 
-        //Now get professor documents and read into TableView
-
+    /**
+     * When called, reads the professor table in firebase and adds the information into the TableView
+     * @param db Firestore db passed in
+     */
+    private void readAndAddProfessors(Firestore db) {
         ApiFuture<QuerySnapshot> professorFuture = db.collection("Professor").get();
         List<QueryDocumentSnapshot> professorDocs;
         //Add professors to tableview upon getting the documents
@@ -165,8 +178,13 @@ public class AccountsController {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
 
-        //Now get admin documents and read into TableView
+    /**
+     * When called, reads the admin table in firebase and adds the information into the TableView
+     * @param db Firestore db passed in
+     */
+    private void readAndAddAdmins(Firestore db) {
         ApiFuture<QuerySnapshot> adminFuture = db.collection("Admin").get();
         List<QueryDocumentSnapshot> adminDocs;
         //Add admins to tableview upon getting the documents
@@ -191,7 +209,6 @@ public class AccountsController {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }
