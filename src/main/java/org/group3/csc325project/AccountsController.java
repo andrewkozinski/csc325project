@@ -72,33 +72,7 @@ public class AccountsController {
         columnEmail.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
         columnDept.setCellValueFactory(new PropertyValueFactory<User, String>("userDept"));
 
-        //Now add accounts from firebase to the TableView
-
-        /* test code, will be removed later, keeping for now
-
-        Student student = new Student("kozia", "stuartdent", "andrew", "kozinski", "99", "senior", "computer science");
-        student.setEmail("student@farmingdale.edu");
-        student.setMajor("Computer Science");
-        accountsTable.getItems().add(student);
-
-        Admin admin = new Admin();
-        admin.setFirstName("adminfirst");
-        admin.setLastName("adminlast");
-        admin.setUserName("gerstl");
-        admin.setUserId("999");
-        admin.setEmail("thisisanemail@test.edu");
-        accountsTable.getItems().add(admin);
-
-        Professor professor = new Professor();
-        professor.setFirstName("proffirst");
-        professor.setLastName("proflast");
-        professor.setUserName("Hacksky");
-        professor.setUserId("891");
-        professor.setEmail("thisisacreativeemailname@test.edu");
-        professor.setDepartment("Computer Systems");
-        accountsTable.getItems().add(professor);
-        */
-
+        //Now add accounts from Firebase to the TableView
         //Call to helper method where DB is actually read
         handleReadFirebase();
     }
