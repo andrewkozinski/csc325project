@@ -146,6 +146,7 @@ public abstract class User {
 
     /**
      * Returns a given users department. For a student, this would return their major, for a professor what department they are under, and for admin it would return as ADMIN.
+     * Used for the TableView to be able to populate the Department/Major column.
      * @return User department (either major, dept, or admin depending on usertype)
      */
     public abstract String getUserDept();
