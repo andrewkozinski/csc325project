@@ -37,7 +37,7 @@
                   <Label layoutX="277.0" layoutY="191.0" text="Admin Scene" />
                   <Button layoutX="271.0" layoutY="208.0" mnemonicParsing="false" onAction="#returnToLogin" text="Return to login" />
                   <Button layoutX="454.0" layoutY="221.0" mnemonicParsing="false" onAction="#returnToCreateUser" text="create user" />
-                  <ImageView fx:id="admin_Courses_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="admin_Courses_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" onMouseClicked="#goToCoursesView" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../Images/admin_Courses_button.png" />
                      </image>
