@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
+<AnchorPane prefHeight="400.0" prefWidth="730.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
    <children>
       <TableView layoutX="17.0" layoutY="75.0" prefHeight="250.0" prefWidth="695.0">
         <columns>
@@ -14,8 +14,8 @@
             <TableColumn prefWidth="69.5999755859375" text="Instructor" />
             <TableColumn prefWidth="61.60003662109375" text="Credits" />
             <TableColumn prefWidth="101.5999755859375" text="Course Schedule" />
-            <TableColumn prefWidth="73.60003662109375" text="Course Days" />
-            <TableColumn prefWidth="106.4000244140625" text="Course Location" />
+            <TableColumn prefWidth="90.4000244140625" text="Course Days" />
+            <TableColumn prefWidth="102.40008544921875" text="Course Location" />
         </columns>
       </TableView>
    </children>
