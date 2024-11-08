@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
+<AnchorPane prefHeight="400.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
    <children>
-      <Label layoutX="239.0" layoutY="148.0" text="courses page" />
+      <TableView layoutX="17.0" layoutY="75.0" prefHeight="250.0" prefWidth="695.0">
+        <columns>
+          <TableColumn prefWidth="59.20001220703125" text="CRN" />
+          <TableColumn prefWidth="87.20001220703125" text="Course Code" />
+            <TableColumn prefWidth="99.20001220703125" text="Course Name" />
+            <TableColumn prefWidth="69.5999755859375" text="Instructor" />
+            <TableColumn prefWidth="61.60003662109375" text="Credits" />
+            <TableColumn prefWidth="101.5999755859375" text="Course Schedule" />
+            <TableColumn prefWidth="73.60003662109375" text="Course Days" />
+            <TableColumn prefWidth="106.4000244140625" text="Course Location" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
