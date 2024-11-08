@@ -20,5 +20,10 @@ public class AdminController {
     /**
      * Goes to accounts.fxml file where a mock tableview has been set up.
      */
-    public void goToTableView() { setRoot("accounts"); }
+    public void goToAccountsView() { setRoot("accounts"); }
+
+    /**
+     * Goes to courses.fxml file where a tableview displaying courses will be displayed
+     */
+    public void goToCoursesView() { setRoot("courses"); }
 }

@@ -62,7 +62,8 @@
                         <Image url="@../../../Images/admin_Alt_User_button.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="286.0" layoutY="318.0" mnemonicParsing="false" onAction="#goToTableView" text="Go to accounts tableview" />
+                  <Button layoutX="286.0" layoutY="318.0" mnemonicParsing="false" onAction="#goToAccountsView" text="Go to accounts tableview" />
+                  <Button layoutX="335.0" layoutY="268.0" mnemonicParsing="false" onAction="#goToCoursesView" text="Go to courses tableview" />
                </children>
             </AnchorPane>
          </children>
