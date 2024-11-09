@@ -1,5 +1,8 @@
 package org.group3.csc325project;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -7,6 +10,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import user.Professor;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Controller for the courses.fxml file
@@ -77,18 +83,64 @@ public class CoursesController {
             return new SimpleStringProperty(returnString);
         });
 
-        Course example = new Course();
-        example.setCapacity(25);
-        example.setCurrentEnrolledCount(5);
-        example.setProfessor(new Professor());
-        example.setCourseCRN("9999");
-        example.setCourseCode("CSC999");
-        example.setCourseName("Pearl Programming");
-        example.setCourseTime("12:05-1:30pm");
-        example.setCourseDays("Mon/Wed");
-        example.setCourseLocation("WHIT 300");
-        example.setCredits(9);
-        coursesTable.getItems().add(example);
+        //Reads Course collection in the Firestore database and adds those courses to the TableView
+        handleReadFirebase();
+    }
+
+    /**
+     * Helper method which reads firestore course collection and adds courses to the tableview
+     */
+    private void handleReadFirebase() {
+        Firestore db = FirestoreClient.getFirestore();
+
+        //Get the course docs
+        ApiFuture<QuerySnapshot> coursesFuture = db.collection("Course").get();
+        List<QueryDocumentSnapshot> courseDocs;
+
+        try {
+            courseDocs = coursesFuture.get().getDocuments();
+
+            //Loop through the list of course documents and add to courses tableview
+            for(QueryDocumentSnapshot doc : courseDocs) {
+                Course course = new Course();
+                //Set course information
+                course.setCourseCRN(doc.getString("courseCRN"));
+                course.setCourseCode(doc.getString("courseCode"));
+                course.setCourseName(doc.getString("courseName"));
+                course.setCourseTime(doc.getString("courseTime"));
+                course.setCourseDays(doc.getString("courseDays"));
+                course.setCourseLocation(doc.getString("courseLocation"));
+                course.setCredits(doc.get("credits", Integer.class));
+                course.setCapacity(doc.get("capacity", Integer.class));
+                course.setCurrentEnrolledCount(doc.get("currentEnrolledCount", Integer.class));
+
+                //Now we need to get the professor reference and get the information about the professor
+                Professor prof;
+                DocumentReference professorRef = doc.get("Professor", DocumentReference.class);
+                if(professorRef != null) {
+                    prof = new Professor();
+
+                    ApiFuture<DocumentSnapshot> professorFuture = professorRef.get();
+                    DocumentSnapshot professor = professorFuture.get();
+                    prof.setFirstName(professor.getString("FirstName"));
+                    prof.setLastName(professor.getString("LastName"));
+                    prof.setDepartment(professor.getString("Department"));
+                    prof.setEmail(professor.getString("Email"));
+                    prof.setUserName(professor.getString("UserName"));
+
+                } // end if
+                else {
+                    prof = new Professor();
+                } // end else
+                course.setProfessor(prof);
+
+                coursesTable.getItems().add(course);
+
+            } // end for
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
