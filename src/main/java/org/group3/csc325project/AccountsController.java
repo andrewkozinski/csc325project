@@ -120,6 +120,7 @@ public class AccountsController {
                 student.setEmail(doc.getString("Email"));
                 student.setUserId(doc.getString("UserId"));
                 student.setMajor(doc.getString("Major"));
+                student.setClassification(doc.getString("Classification"));
                 accountsTable.getItems().add(student);
             }
             System.out.println("Successfully added students to tableview");
