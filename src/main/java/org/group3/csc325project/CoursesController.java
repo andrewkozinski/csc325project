@@ -14,6 +14,8 @@ import user.Professor;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.setRoot;
+
 /**
  * Controller for the courses.fxml file
  */
@@ -144,6 +146,38 @@ public class CoursesController {
             throw new RuntimeException(e);
         }
 
+    }
+
+    /**
+     * Method that's called upon the add course button being pressed
+     * Currently, doesn't do anything aside from printing out a message
+     */
+    public void handleAddCourseButton() {
+        System.out.println("add course button pressed");
+    }
+
+    /**
+     * Method that's called upon the edit course button being pressed
+     * Currently, doesn't do anything aside from printing out a message
+     */
+    public void handleEditCourseButton() {
+        System.out.println("edit course button pressed");
+    }
+
+    /**
+     * Method that's called upon the assign course button being pressed
+     * Currently, doesn't do anything aside from printing out a message
+     */
+    public void assignCourseButton() {
+        System.out.println("assign course button pressed");
+    }
+
+    /**
+     * Simply sets the root back to the base admin area
+     * This button is temporary
+     */
+    public void backButton() {
+        setRoot("admin");
     }
 
 }

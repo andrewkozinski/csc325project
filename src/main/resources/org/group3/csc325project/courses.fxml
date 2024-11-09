@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="447.0" prefWidth="910.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
+<AnchorPane prefHeight="484.0" prefWidth="910.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
    <children>
-      <TableView fx:id="coursesTable" layoutX="7.0" layoutY="75.0" prefHeight="250.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <TableView fx:id="coursesTable" layoutX="7.0" layoutY="75.0" prefHeight="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
         <columns>
           <TableColumn fx:id="columnCrn" prefWidth="57.60000228881836" text="CRN" />
           <TableColumn fx:id="columnCourseCode" prefWidth="76.00003051757812" text="Course Code" />
@@ -21,5 +23,13 @@
         </columns>
       </TableView>
       <VBox layoutX="157.0" layoutY="-44.0" prefHeight="200.0" prefWidth="100.0" />
+      <HBox alignment="CENTER" layoutX="302.0" layoutY="426.0" prefHeight="44.0" prefWidth="306.0" spacing="5.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleAddCourseButton" text="Add Course" />
+            <Button mnemonicParsing="false" onAction="#handleEditCourseButton" text="Edit Course" />
+            <Button mnemonicParsing="false" onAction="#assignCourseButton" text="Assign Course" />
+            <Button mnemonicParsing="false" onAction="#backButton" text="Back (temp button)" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
