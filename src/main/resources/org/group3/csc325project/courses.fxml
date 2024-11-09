@@ -4,18 +4,19 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="730.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
+<AnchorPane prefHeight="400.0" prefWidth="764.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
    <children>
-      <TableView layoutX="28.0" layoutY="75.0" prefHeight="250.0">
+      <TableView fx:id="coursesTable" layoutX="7.0" layoutY="75.0" prefHeight="250.0">
         <columns>
-          <TableColumn prefWidth="59.20001220703125" text="CRN" />
-          <TableColumn prefWidth="87.20001220703125" text="Course Code" />
-            <TableColumn prefWidth="99.20001220703125" text="Course Name" />
-            <TableColumn prefWidth="69.5999755859375" text="Instructor" />
-            <TableColumn prefWidth="61.60003662109375" text="Credits" />
-            <TableColumn prefWidth="101.5999755859375" text="Course Schedule" />
-            <TableColumn prefWidth="90.4000244140625" text="Course Days" />
-            <TableColumn prefWidth="102.40008544921875" text="Course Location" />
+          <TableColumn fx:id="columnCrn" prefWidth="59.20001220703125" text="CRN" />
+          <TableColumn fx:id="columnCourseCode" prefWidth="87.20001220703125" text="Course Code" />
+            <TableColumn fx:id="columnCourseName" prefWidth="99.20001220703125" text="Course Name" />
+            <TableColumn fx:id="columnInstructor" prefWidth="69.5999755859375" text="Instructor" />
+            <TableColumn fx:id="columnCredits" prefWidth="61.60003662109375" text="Credits" />
+            <TableColumn fx:id="columnCourseSchedule" prefWidth="101.5999755859375" text="Course Schedule" />
+            <TableColumn fx:id="columnCourseDays" prefWidth="90.4000244140625" text="Course Days" />
+            <TableColumn fx:id="columnCourseLocation" prefWidth="102.40008544921875" text="Course Location" />
+            <TableColumn fx:id="columnCourseCapacity" prefWidth="75.0" text="Capacity" />
         </columns>
       </TableView>
    </children>
