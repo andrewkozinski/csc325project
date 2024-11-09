@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="484.0" prefWidth="910.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
    <children>
-      <TableView fx:id="coursesTable" layoutX="7.0" layoutY="75.0" prefHeight="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <TableView fx:id="coursesTable" layoutX="7.0" layoutY="75.0" onMouseClicked="#handleCoursesTableViewMouseClick" prefHeight="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
         <columns>
           <TableColumn fx:id="columnCrn" prefWidth="57.60000228881836" text="CRN" />
           <TableColumn fx:id="columnCourseCode" prefWidth="76.00003051757812" text="Course Code" />

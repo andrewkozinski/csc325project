@@ -5,10 +5,12 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import user.Professor;
 
 import java.util.List;
@@ -61,6 +63,10 @@ public class CoursesController {
     //Column where the course capacity is displayed
     @FXML
     private TableColumn<Course,String> columnCourseCapacity;
+
+    //selectedCourse is the currently selected item from the TableView
+    //Updated when user selects an item in the table view
+    private Course selectedCourse;
 
 
     /**
@@ -147,6 +153,22 @@ public class CoursesController {
         }
 
     }
+
+    /**
+     * Handles the user selecting an item in the TableView
+     * Updates the selectedItem variable
+     * @param event mouse click event
+     */
+    public void handleCoursesTableViewMouseClick(MouseEvent event) {
+        ObservableList<Course> courses = coursesTable.getItems();
+        int selectedIndex = coursesTable.getSelectionModel().getSelectedIndex();
+        if(selectedIndex >= 0 && selectedIndex < courses.size()) {
+            //Sets selected course to what was clicked
+            selectedCourse = courses.get(selectedIndex);
+            System.out.println(selectedCourse.getCourseName() + " - " + selectedCourse.getProfessor());
+        }
+    }
+
 
     /**
      * Method that's called upon the add course button being pressed
