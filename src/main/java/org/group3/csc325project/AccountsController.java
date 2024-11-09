@@ -18,6 +18,8 @@ import user.User;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.setRoot;
+
 /**
  * Controller for the Accounts.fxml file.
  */
@@ -183,6 +185,28 @@ public class AccountsController {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * When called goes to create user page
+     */
+    public void handleCreateUser() {
+        RegistrationApp.returnToCreateUser();
+    }
+
+    /**
+     * When called deletes a user
+     */
+    public void handleDeleteUser() {
+        System.out.println("Delete user called (currently not implemented)");
+    }
+
+    /**
+     * Simply sets the root back to the base admin area
+     * This button is temporary
+     */
+    public void backButton() {
+        setRoot("admin");
     }
 
 }

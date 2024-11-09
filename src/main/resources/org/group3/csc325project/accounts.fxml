@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
 <AnchorPane prefHeight="400.0" prefWidth="754.0" stylesheets="@../../../CSS/accounts.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AccountsController">
    <children>
-      <TableView fx:id="accountsTable" layoutX="13.0" layoutY="60.0" prefHeight="234.0" prefWidth="734.0">
+      <TableView fx:id="accountsTable" layoutX="13.0" layoutY="60.0" prefHeight="234.0" prefWidth="734.0" AnchorPane.bottomAnchor="105.6" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="59.99999999999997">
         <columns>
             <TableColumn fx:id="columnUserType" prefWidth="75.0" text="User Type" />
           <TableColumn fx:id="columnId" prefWidth="64.800048828125" text="ID" />
@@ -17,5 +19,12 @@
             <TableColumn fx:id="columnDept" minWidth="1.5999755859375" prefWidth="143.199951171875" text="Department/Major" />
         </columns>
       </TableView>
+      <HBox alignment="CENTER" layoutX="277.0" layoutY="312.0" prefHeight="64.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleCreateUser" text="New Account" />
+            <Button mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete Account" />
+            <Button mnemonicParsing="false" onAction="#backButton" text="Back (temporary)" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
