@@ -131,6 +131,8 @@ public class CoursesController {
                 } // end if
                 else {
                     prof = new Professor();
+                    prof.setFirstName(doc.getString("TBA"));
+                    prof.setLastName(doc.getString(""));
                 } // end else
                 course.setProfessor(prof);
 
