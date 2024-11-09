@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="754.0" stylesheets="@../../../CSS/accounts.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AccountsController">
    <children>
-      <TableView fx:id="accountsTable" layoutX="13.0" layoutY="60.0" prefHeight="234.0" prefWidth="734.0" AnchorPane.bottomAnchor="105.6" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="59.99999999999997">
+      <TableView fx:id="accountsTable" layoutX="13.0" layoutY="60.0" onMouseClicked="#handleAccountsTableViewMouseClick" prefHeight="234.0" prefWidth="734.0" AnchorPane.bottomAnchor="105.6" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="59.99999999999997">
         <columns>
             <TableColumn fx:id="columnUserType" prefWidth="75.0" text="User Type" />
           <TableColumn fx:id="columnId" prefWidth="64.800048828125" text="ID" />
