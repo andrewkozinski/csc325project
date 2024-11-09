@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import user.Professor;
 
 /**
  * Controller for the courses.fxml file
@@ -76,7 +77,18 @@ public class CoursesController {
             return new SimpleStringProperty(returnString);
         });
 
-        coursesTable.getItems().add(new Course());
+        Course example = new Course();
+        example.setCapacity(25);
+        example.setCurrentEnrolledCount(5);
+        example.setProfessor(new Professor());
+        example.setCourseCRN("9999");
+        example.setCourseCode("CSC999");
+        example.setCourseName("Pearl Programming");
+        example.setCourseTime("12:05-1:30pm");
+        example.setCourseDays("Mon/Wed");
+        example.setCourseLocation("WHIT 300");
+        example.setCredits(9);
+        coursesTable.getItems().add(example);
 
     }
 
