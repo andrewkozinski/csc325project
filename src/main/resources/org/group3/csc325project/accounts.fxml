@@ -22,6 +22,7 @@
       <HBox alignment="CENTER" layoutX="277.0" layoutY="312.0" prefHeight="64.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Button mnemonicParsing="false" onAction="#handleCreateUser" text="New Account" />
+            <Button mnemonicParsing="false" onAction="#handleEditUser" text="Edit Account" />
             <Button mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete Account" />
             <Button mnemonicParsing="false" onAction="#backButton" text="Back (temporary)" />
          </children>

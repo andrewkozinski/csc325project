@@ -218,6 +218,14 @@ public class AccountsController {
     }
 
     /**
+     * When called, allows a selected user to be edited
+     */
+    public void handleEditUser() {
+        System.out.println("Edit user called (currently not implemented)");
+    }
+
+
+    /**
      * When called deletes a user
      */
     public void handleDeleteUser() {
