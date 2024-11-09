@@ -18,6 +18,9 @@ module org.group3.csc325project {
     opens user to javafx.base;
     exports user;
 
+    opens course to javafx.base;
+    exports course;
+
     opens org.group3.csc325project to javafx.fxml;
     exports org.group3.csc325project;
 }

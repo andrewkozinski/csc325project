@@ -5,11 +5,14 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
+import course.Course;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import user.Admin;
 import user.Professor;
 import user.Student;
@@ -17,6 +20,8 @@ import user.User;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static org.group3.csc325project.RegistrationApp.setRoot;
 
 /**
  * Controller for the Accounts.fxml file.
@@ -54,6 +59,10 @@ public class AccountsController {
     //Column where a users department or major is displayed
     @FXML
     private TableColumn<User, String> columnDept;
+
+    //selectedUser is the currently selected item from the TableView
+    //Updated when user selects an item in the table view
+    private User selectedUser;
 
     /**
      * Runs when page is loaded. Each column in the TableView is associated with a variable in the User class
@@ -111,6 +120,7 @@ public class AccountsController {
                 student.setEmail(doc.getString("Email"));
                 student.setUserId(doc.getString("UserId"));
                 student.setMajor(doc.getString("Major"));
+                student.setClassification(doc.getString("Classification"));
                 accountsTable.getItems().add(student);
             }
             System.out.println("Successfully added students to tableview");
@@ -183,6 +193,51 @@ public class AccountsController {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Handles the user selecting an item in the TableView
+     * Updates the selectedItem variable
+     * @param event mouse click event
+     */
+    public void handleAccountsTableViewMouseClick(MouseEvent event) {
+        ObservableList<User> courses = accountsTable.getItems();
+        int selectedIndex = accountsTable.getSelectionModel().getSelectedIndex();
+        if(selectedIndex >= 0 && selectedIndex < courses.size()) {
+            //Sets selectedUser to what was clicked
+            selectedUser = courses.get(selectedIndex);
+            System.out.println(selectedUser.userInfo());
+        }
+    }
+
+    /**
+     * When called goes to create user page
+     */
+    public void handleCreateUser() {
+        RegistrationApp.returnToCreateUser();
+    }
+
+    /**
+     * When called, allows a selected user to be edited
+     */
+    public void handleEditUser() {
+        System.out.println("Edit user called (currently not implemented)");
+    }
+
+
+    /**
+     * When called deletes a user
+     */
+    public void handleDeleteUser() {
+        System.out.println("Delete user called (currently not implemented)");
+    }
+
+    /**
+     * Simply sets the root back to the base admin area
+     * This button is temporary
+     */
+    public void backButton() {
+        setRoot("admin");
     }
 
 }

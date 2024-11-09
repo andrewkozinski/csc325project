@@ -15,6 +15,8 @@ public class Course {
     private String courseCode;
     //Days a course meets
     private String courseDays;
+    //Time a course meets
+    private String courseTime;
     //Room the course meets in
     private String courseLocation;
     //num of credits a course is worth
@@ -34,6 +36,7 @@ public class Course {
         courseName = "null";
         courseCode = "null";
         courseDays = "null";
+        courseTime = "null";
         courseLocation = "null";
         credits = 0;
         professor = new Professor();
@@ -47,15 +50,17 @@ public class Course {
      * @param courseName Course name
      * @param courseCode Course code
      * @param courseDays Days a course meets (ex: Monday/Wednesday)
+     * @param courseTime Times a course meets (ex: 12:05-1:30pm)
      * @param courseLocation Room a course meets
      * @param credits Number of credits a course is worth
      * @param professor Professor teaching a course
      */
-    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount) {
+    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseTime, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount) {
         this.courseCRN = classCRN;
         this.courseName = courseName;
         this.courseCode = courseCode;
         this.courseDays = courseDays;
+        this.courseTime = courseTime;
         this.courseLocation = courseLocation;
         this.credits = credits;
         this.professor = professor;
@@ -117,6 +122,22 @@ public class Course {
      */
     public String getCourseDays() {
         return courseDays;
+    }
+
+    /**
+     * Gets the time a course meets
+     * @return Time a course meets
+     */
+    public String getCourseTime() {
+        return courseTime;
+    }
+
+    /**
+     * Sets the time a course meets
+     * @param courseTime Time a course meets
+     */
+    public void setCourseTime(String courseTime) {
+        this.courseTime = courseTime;
     }
 
     /**

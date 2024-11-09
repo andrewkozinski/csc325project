@@ -68,4 +68,14 @@ public class Professor extends User{
     public String getUserDept() {
         return department;
     }
+
+    /**
+     * toString override of Professor. Simply returns first and last name.
+     * Mainly used for the Courses TableView in courses.fxml.
+     * @return String containing first and last name of a professor.
+     */
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
