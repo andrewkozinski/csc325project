@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
+import static org.group3.csc325project.RegistrationApp.setRoot;
+
 public class CreateUserController {
     private static final Logger logger = LoggerFactory.getLogger(CreateUserController.class);
 
@@ -47,9 +49,9 @@ public class CreateUserController {
     private static final Map<String, Function<UserParams, User>> userFactory = new HashMap<>();
 
     static {
-        userFactory.put("Student", params -> new Student(params.username, params.hashedPassword, params.firstName, params.lastName, params.userId, params.classification, params.major));
-        userFactory.put("Professor", params -> new Professor(params.username, params.hashedPassword, params.firstName, params.lastName, params.userId, params.department));
-        userFactory.put("Admin", params -> new Admin(params.username, params.hashedPassword, params.firstName, params.lastName, params.userId));
+        userFactory.put("Student", params -> new Student(params.username, params.hashedPassword, params.firstName, params.lastName, params.userId, params.age, params.classification, params.major));
+        userFactory.put("Professor", params -> new Professor(params.username, params.hashedPassword, params.firstName, params.lastName, params.userId, params.age, params.department));
+        userFactory.put("Admin", params -> new Admin(params.username, params.hashedPassword, params.firstName, params.lastName, params.userId, params.age));
     }
 
     @FXML
@@ -89,8 +91,8 @@ public class CreateUserController {
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        UserParams params = new UserParams(username, hashedPassword, firstName, lastName, userId, classification, major, department);
-        User user = userFactory.getOrDefault(accountType, p -> new Admin(p.username, p.hashedPassword, p.firstName, p.lastName, p.userId)).apply(params);
+        UserParams params = new UserParams(username, hashedPassword, firstName, lastName, userId, age, classification, major, department);
+        User user = userFactory.getOrDefault(accountType, p -> new Admin(p.username, p.hashedPassword, p.firstName, p.lastName, p.userId, p.age)).apply(params);
 
         if (user == null) {
             showAlert("Failed to create user. Please try again.");
@@ -210,8 +212,9 @@ public class CreateUserController {
         String classification;
         String major;
         String department;
+        String age;
 
-        UserParams(String username, String hashedPassword, String firstName, String lastName, String userId, String classification, String major, String department) {
+        UserParams(String username, String hashedPassword, String firstName, String lastName, String userId, String classification, String major, String department, String age) {
             this.username = username;
             this.hashedPassword = hashedPassword;
             this.firstName = firstName;
@@ -220,6 +223,14 @@ public class CreateUserController {
             this.classification = classification;
             this.major = major;
             this.department = department;
+            this.age = age;
         }
+    }
+    /**
+     * Simply sets the root back to the base admin area
+     * This button is temporary
+     */
+    public void backButton() {
+        setRoot("admin");
     }
 }

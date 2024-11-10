@@ -30,8 +30,8 @@ public class Professor extends User{
      * @param userId Passed in user id
      * @param department Passed in department
      */
-    public Professor(String username, String password, String firstName, String lastName, String userId, String department) {
-        super(username, password, firstName, lastName, userId);
+    public Professor(String username, String password, String firstName, String lastName, String userId,String age, String department) {
+        super(username, password, firstName, lastName, userId, age);
         this.department = department;
     }
 

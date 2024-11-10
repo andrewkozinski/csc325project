@@ -16,6 +16,7 @@ public abstract class User {
     protected String lastName;
     protected String userId;
     protected String email;
+    protected String age;
 
     //Default constructor
     /**
@@ -28,6 +29,7 @@ public abstract class User {
         lastName = "Null";
         userId = "Null";
         email = "Null";
+        age = "Null";
     }
     //Parameterized Constructor
 
@@ -39,12 +41,13 @@ public abstract class User {
      * @param lastName Passed in lastname
      * @param userId Passed in userId
      */
-    public User(String username, String password, String firstName, String lastName, String userId) {
+    public User(String username, String password, String firstName, String lastName, String userId, String age) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userId = userId;
+        this.age = age;
     }
 
 
@@ -125,7 +128,12 @@ public abstract class User {
     public String getEmail() {
         return email;
     }
-
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
+    }
     /**
      * Sets the last name of a user
      * @param lastName last name to be set
