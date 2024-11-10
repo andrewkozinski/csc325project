@@ -51,11 +51,12 @@ public class LoginController {
     private AnchorPane login_screen_anchor;
 
     public void initialize() {
+
+
         // Load the background images
         login_background_image_view.setImage(new Image(getClass().getResourceAsStream("/Images/Atlantis_Background.png")));
         login_title_background.setImage(new Image(getClass().getResourceAsStream("/Images/registrationSystem_header_no_user.png")));
         login_input_background.setImage(new Image(getClass().getResourceAsStream("/Images/general_menu_background.png")));
-        //login_login_button.setOnAction(event -> handleLoginButtonClick());
         // Scaling ImagePanes
         login_background_image_view.fitWidthProperty().bind(login_screen.widthProperty());
         login_background_image_view.fitHeightProperty().bind(login_screen.heightProperty());
@@ -63,10 +64,8 @@ public class LoginController {
         login_title_background.fitWidthProperty().bind(login_screen.widthProperty());
         login_title_background.fitHeightProperty().bind(login_screen.heightProperty());
 
-        login_screen_anchor.prefWidthProperty().bind(login_screen.widthProperty()); // Use a smaller multiplier
+        login_screen_anchor.prefWidthProperty().bind(login_screen.widthProperty());
         login_screen_anchor.prefHeightProperty().bind(login_screen.heightProperty());
-
-
 
         login_input_background.fitWidthProperty().bind(login_screen_anchor.widthProperty());
         login_input_background.fitHeightProperty().bind(login_screen_anchor.heightProperty());
@@ -85,6 +84,9 @@ public class LoginController {
         login_background_image_view.setPreserveRatio(true);
         login_title_background.setPreserveRatio(true);
         login_input_background.setPreserveRatio(true);
+
+
+
     }
 
     @FXML
