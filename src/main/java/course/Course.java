@@ -27,6 +27,8 @@ public class Course {
     private int capacity;
     //Amount of students currently enrolled for the course
     private int currentEnrolledCount;
+    //A courses description
+    private String courseDescription;
 
     /**
      * Default constructor, sets variables to default values
@@ -226,6 +228,22 @@ public class Course {
      */
     public void setCurrentEnrolledCount(int currentEnrolledCount) {
         this.currentEnrolledCount = currentEnrolledCount;
+    }
+
+    /**
+     * Sets a given course's description
+     * @param description Course description to be set
+     */
+    public void setCourseDescription(String description) {
+        this.courseDescription = description;
+    }
+
+    /**
+     * Returns a course's description
+     * @return Course description
+     */
+    public String getCourseDescription() {
+        return courseDescription;
     }
 
     /**
