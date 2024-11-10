@@ -31,7 +31,7 @@
                 </ImageView>
                 <AnchorPane fx:id="login_screen_anchor" prefHeight="450.0" prefWidth="800.0" StackPane.alignment="CENTER">
                     <children>
-                        <ImageView fx:id="login_input_background" fitHeight="450.0" fitWidth="800.0" layoutX="-42.0" layoutY="55.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="login_input_background" fitHeight="450.0" fitWidth="800.0" layoutX="-55.0" layoutY="55.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../../../../../../Documents/Atlantis/general_menu_background.png" />
                             </image>

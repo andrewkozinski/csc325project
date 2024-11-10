@@ -27,6 +27,10 @@ public class Course {
     private int capacity;
     //Amount of students currently enrolled for the course
     private int currentEnrolledCount;
+    //A courses description
+    private String courseDescription;
+    //The textbook required by a given course, if a course does not have a textbook can be set to null or none or something along those lines
+    private String courseTextbook;
 
     /**
      * Default constructor, sets variables to default values
@@ -42,6 +46,8 @@ public class Course {
         professor = new Professor();
         capacity = 0;
         currentEnrolledCount = 0;
+        courseDescription = "null";
+        courseTextbook = "null";
     }
 
     /**
@@ -55,7 +61,7 @@ public class Course {
      * @param credits Number of credits a course is worth
      * @param professor Professor teaching a course
      */
-    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseTime, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount) {
+    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseTime, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount, String courseDescription, String courseTextbook) {
         this.courseCRN = classCRN;
         this.courseName = courseName;
         this.courseCode = courseCode;
@@ -66,6 +72,8 @@ public class Course {
         this.professor = professor;
         this.capacity = capacity;
         this.currentEnrolledCount = currentEnrolledCount;
+        this.courseDescription = courseDescription;
+        this.courseTextbook = courseTextbook;
     }
 
     /**
@@ -226,6 +234,38 @@ public class Course {
      */
     public void setCurrentEnrolledCount(int currentEnrolledCount) {
         this.currentEnrolledCount = currentEnrolledCount;
+    }
+
+    /**
+     * Sets a given course's description
+     * @param description Course description to be set
+     */
+    public void setCourseDescription(String description) {
+        this.courseDescription = description;
+    }
+
+    /**
+     * Returns a course's description
+     * @return Course description
+     */
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    /**
+     * Sets a course's required textbook
+     * @param textbook Required textbook of a course
+     */
+    public void setCourseTextbook(String textbook) {
+        this.courseTextbook = textbook;
+    }
+
+    /**
+     * Returns the textbook a course requires
+     * @return Textbook a course requires
+     */
+    public String getCourseTextbook() {
+        return courseTextbook;
     }
 
     /**
