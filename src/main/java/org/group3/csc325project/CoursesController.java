@@ -121,6 +121,8 @@ public class CoursesController {
                 course.setCredits(doc.get("credits", Integer.class));
                 course.setCapacity(doc.get("capacity", Integer.class));
                 course.setCurrentEnrolledCount(doc.get("currentEnrolledCount", Integer.class));
+                course.setCourseDescription(doc.getString("courseDescription"));
+                course.setCourseTextbook(doc.getString("requiredTextbook"));
 
                 //Now we need to get the professor reference and get the information about the professor
                 Professor prof;
