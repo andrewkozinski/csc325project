@@ -62,6 +62,10 @@ public class AccountsController {
     @FXML
     private TableColumn<User, String> columnDept;
 
+    //Column where a users age is displayed
+    @FXML
+    private TableColumn<User, String> columnAge;
+
     //selectedUser is the currently selected item from the TableView
     //Updated when user selects an item in the table view
     private User selectedUser;
@@ -88,6 +92,7 @@ public class AccountsController {
         columnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         columnUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
         columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        columnAge.setCellValueFactory(new PropertyValueFactory<>("age"));
         columnDept.setCellValueFactory(new PropertyValueFactory<>("userDept"));
 
         //Now add accounts from Firebase to the TableView
@@ -129,6 +134,7 @@ public class AccountsController {
                 student.setEmail(doc.getString("Email"));
                 student.setUserId(doc.getString("UserId"));
                 student.setMajor(doc.getString("Major"));
+                student.setAge(doc.getString("Age"));
                 student.setClassification(doc.getString("Classification"));
                 accountsTable.getItems().add(student);
             }
@@ -159,6 +165,7 @@ public class AccountsController {
                 professor.setUserName(doc.getString("Username"));
                 professor.setEmail(doc.getString("Email"));
                 professor.setUserId(doc.getString("UserId"));
+                professor.setAge(doc.getString("Age"));
                 professor.setDepartment(doc.getString("Department"));
                 accountsTable.getItems().add(professor);
             }
@@ -189,6 +196,7 @@ public class AccountsController {
                 admin.setUserName(doc.getString("Username"));
                 admin.setEmail(doc.getString("Email"));
                 admin.setUserId(doc.getString("UserId"));
+                admin.setAge(doc.getString("Age"));
                 accountsTable.getItems().add(admin);
             }
             System.out.println("Successfully added admins to tableview");
@@ -283,14 +291,15 @@ public class AccountsController {
         if (user instanceof Professor) {
             updatedData.put("Department", ((Professor) user).getDepartment());
         } else if (user instanceof Student) {
-            updatedData.put("Classification", ((Student) user).getClassification());
+            updatedData.put("Major", ((Student) user).getMajor());
+            updatedData.put("Classification", ((Student) user).getClassification());  // Make sure Classification is updated correctly
         }
 
         ApiFuture<QuerySnapshot> future = collection.whereEqualTo("UserId", user.getUserId()).get();
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             if (!documents.isEmpty()) {
-                DocumentReference docRef = documents.getFirst().getReference();
+                DocumentReference docRef = documents.get(0).getReference();
                 docRef.update(updatedData);
                 showAlert("Edit User", "User updated successfully.");
             }

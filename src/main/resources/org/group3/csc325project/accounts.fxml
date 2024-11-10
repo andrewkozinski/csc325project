@@ -12,6 +12,7 @@
                 <TableColumn fx:id="columnFirstName" prefWidth="95.0" text="First Name" />
                 <TableColumn fx:id="columnLastName" prefWidth="87.0" text="Last Name" />
                 <TableColumn fx:id="columnUsername" prefWidth="90.0" text="Username" />
+                <TableColumn fx:id="columnAge" prefWidth="90.0" text="Age" />
                 <TableColumn fx:id="columnEmail" prefWidth="180.0" text="Email Address" />
                 <TableColumn fx:id="columnDept" prefWidth="143.0" text="Department/Major" />
             </columns>
