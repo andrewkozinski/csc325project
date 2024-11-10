@@ -10,10 +10,14 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import de.taimos.totp.TOTP;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import org.apache.commons.codec.binary.Base32;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +33,45 @@ public class TwoFactorAuthController {
     private ImageView qrcodeImage;
     @FXML
     private TextField totpCodeField;
+    @FXML
+    private ImageView twoFactor_background_image_view;
+    @FXML
+    private ImageView twoFactor_title_background;
+
+    @FXML
+    private VBox twoFactor_screen;
+    @FXML
+    private AnchorPane twoFactor_screen_anchor;
+    @FXML
+    private Button verifyCode;
 
     private String secretToken;
 
     @FXML
     public void initialize() {
+        //-------------------------------------------------------
+        // Load the background images
+        twoFactor_background_image_view.setImage(new Image(getClass().getResourceAsStream("/Images/Atlantis_Background.png")));
+        twoFactor_title_background.setImage(new Image(getClass().getResourceAsStream("/Images/two_fact_header.png")));
+
+        // Scaling ImagePanes
+        twoFactor_background_image_view.fitWidthProperty().bind(twoFactor_screen.widthProperty());
+        twoFactor_background_image_view.fitHeightProperty().bind(twoFactor_screen.heightProperty());
+
+        twoFactor_title_background.fitWidthProperty().bind(twoFactor_screen.widthProperty());
+        twoFactor_title_background.fitHeightProperty().bind(twoFactor_screen.heightProperty());
+
+        twoFactor_screen_anchor.prefWidthProperty().bind(twoFactor_screen.widthProperty());
+        twoFactor_screen_anchor.prefHeightProperty().bind(twoFactor_screen.heightProperty());
+
+        // Scaling other elements
+
+        twoFactor_screen.setFillWidth(true);
+        qrcodeImage.setPreserveRatio(true);
+        twoFactor_background_image_view.setPreserveRatio(true);
+        twoFactor_title_background.setPreserveRatio(true);
+
+        //-------------------------------------------------------
         String username = SessionManager.getLoggedInUsername();
         if (username == null) {
             RegistrationApp.setRoot("login");
