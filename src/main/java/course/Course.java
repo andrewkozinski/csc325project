@@ -253,6 +253,22 @@ public class Course {
     }
 
     /**
+     * Sets a course's required textbook
+     * @param textbook Required textbook of a course
+     */
+    public void setCourseTextbook(String textbook) {
+        this.courseTextbook = textbook;
+    }
+
+    /**
+     * Returns the textbook a course requires
+     * @return Textbook a course requires
+     */
+    public String getCourseTextbook() {
+        return courseTextbook;
+    }
+
+    /**
      * Increases amount of students enrolled by 1
      */
     public void incrementEnrolledCount() {
