@@ -37,8 +37,8 @@ public class Student extends User {
      * @param classification Passed in student classification
      * @param major Passed in major
      */
-    public Student(String username, String password, String firstName, String lastName, String userId, String classification, String major) {
-        super(username, password, firstName, lastName, userId);
+    public Student(String username, String password, String firstName, String lastName, String userId, String age, String classification, String major) {
+        super(username, password, firstName, lastName, userId, age);
         this.classification = classification;
         this.major = major;
     }
