@@ -91,6 +91,9 @@ public class CreateUserController {
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
+        // Log the age value to verify it's correctly captured
+        logger.info("Creating user with age: " + age);
+
         UserParams params = new UserParams(username, hashedPassword, firstName, lastName, userId, age, classification, major, department);
         User user = userFactory.getOrDefault(accountType, p -> new Admin(p.username, p.hashedPassword, p.firstName, p.lastName, p.userId, p.age)).apply(params);
 
@@ -214,16 +217,17 @@ public class CreateUserController {
         String department;
         String age;
 
-        UserParams(String username, String hashedPassword, String firstName, String lastName, String userId, String classification, String major, String department, String age) {
+        UserParams(String username, String hashedPassword, String firstName, String lastName, String userId, String age, String classification, String major, String department) {
             this.username = username;
             this.hashedPassword = hashedPassword;
             this.firstName = firstName;
             this.lastName = lastName;
             this.userId = userId;
+            this.age = age;
             this.classification = classification;
             this.major = major;
             this.department = department;
-            this.age = age;
+            logger.info("UserParams created with age: " + age); // Log age value
         }
     }
     /**

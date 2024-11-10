@@ -1,5 +1,8 @@
 package user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * An abstract class representing a user in the registration system
  * Users can include but are not limited to: Student, Professor and Admin
@@ -8,6 +11,7 @@ package user;
  * @author Andrew Kozinski
  */
 public abstract class User {
+    private static final Logger logger = LoggerFactory.getLogger(User.class);
 
     //User variables
     protected String username;
@@ -23,13 +27,13 @@ public abstract class User {
      * Default constructor, just sets variable values to default (null)
      */
     public User() {
-        username = "Null";
-        password = "Null";
-        firstName = "Null";
-        lastName = "Null";
-        userId = "Null";
-        email = "Null";
-        age = "Null";
+        username = null;
+        password = null;
+        firstName = null;
+        lastName = null;
+        userId = null;
+        email = null;
+        age = null;
     }
     //Parameterized Constructor
 
@@ -48,6 +52,8 @@ public abstract class User {
         this.lastName = lastName;
         this.userId = userId;
         this.age = age;
+        logger.info("User created with age: {}", age);
+
     }
 
 
