@@ -8,11 +8,13 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import user.Professor;
 
 import java.util.ArrayList;
@@ -195,6 +197,21 @@ public class ProfessorCoursesController {
 
         //Now finally, return course instance (null if not found in DB)
         return returnCourse;
+    }
+
+    /**
+     * Handles the user selecting an item in the TableView
+     * Updates the selectedItem variable
+     * @param event mouse click event
+     */
+    public void handleAssignedCoursesTableViewMouseClick(MouseEvent event) {
+        ObservableList<Course> courses = assignedCoursesTable.getItems();
+        int selectedIndex = assignedCoursesTable.getSelectionModel().getSelectedIndex();
+        if(selectedIndex >= 0 && selectedIndex < courses.size()) {
+            //Sets selected course to what was clicked
+            selectedCourse = courses.get(selectedIndex);
+            System.out.println(selectedCourse.getCourseName() + " - CRN:" + selectedCourse.getCourseCRN());
+        }
     }
 
     /**
