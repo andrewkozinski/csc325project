@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.setRoot;
 import static org.group3.csc325project.SessionManager.getLoggedInUsername;
 
 /**
@@ -225,6 +226,14 @@ public class ProfessorCoursesController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Simply sets the root back to the base professor area
+     * This button is temporary
+     */
+    public void backButton() {
+        setRoot("professor");
     }
 
 
