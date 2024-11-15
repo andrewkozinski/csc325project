@@ -7,7 +7,12 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import user.Professor;
 
 import java.util.ArrayList;
@@ -21,15 +26,80 @@ import static org.group3.csc325project.SessionManager.getLoggedInUsername;
  */
 public class ProfessorCoursesController {
 
+    //TableView where Courses stored in Firebase are displayed
+    @FXML
+    private TableView<Course> assignedCoursesTable;
+
+    //Column where the course CRN is displayed
+    @FXML
+    private TableColumn<Course,String> columnCrn;
+
+    //Column where the course code is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseCode;
+
+    //Column where the course name is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseName;
+
+    //Column where the course description is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseDescription;
+
+    //Column where the number of credits a course is worth is displayed
+    @FXML
+    private TableColumn<Course,String> columnCredits;
+
+    //Column where the course meeting time is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseSchedule;
+
+    //Column where the days a course meets is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseDays;
+
+    //Column where the room a course takes place is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseLocation;
+
+    //Column where the course capacity is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseCapacity;
+
+    //selectedCourse is the currently selected item from the TableView
+    //Updated when user selects an item in the table view
+    private Course selectedCourse;
+
     /**
      * Runs when page is loaded. Gets courses a Professor is assigned to in the DB and adds them to a TableView on screen.
      */
     public void initialize() {
 
+        //Following code involving the columns is largely the same to CoursesController with some minor differences
+        columnCrn.setCellValueFactory(new PropertyValueFactory<Course,String>("courseCRN"));
+        columnCourseCode.setCellValueFactory(new PropertyValueFactory<Course,String>("courseCode"));
+        columnCourseName.setCellValueFactory(new PropertyValueFactory<Course,String>("courseName"));
+        columnCourseDescription.setCellValueFactory(new PropertyValueFactory<Course,String>("courseDescription"));
+        columnCredits.setCellValueFactory(cellData -> {
+            String returnString = String.format("%d", cellData.getValue().getCredits());
+            return new SimpleStringProperty(returnString);
+        });
+        columnCourseSchedule.setCellValueFactory(new PropertyValueFactory<Course,String>("courseTime"));
+        columnCourseDays.setCellValueFactory(new PropertyValueFactory<Course,String>("courseDays"));
+        columnCourseLocation.setCellValueFactory(new PropertyValueFactory<Course,String>("courseLocation"));
+        columnCourseCapacity.setCellValueFactory(cellData -> {
+            int capacity = cellData.getValue().getCapacity();
+            int enrolled = cellData.getValue().getCurrentEnrolledCount();
+            String returnString = String.format("%d/%d", enrolled, capacity);
+            return new SimpleStringProperty(returnString);
+        });
+
+        //This method call will get all the courses the logged in professor is assigned to in Firebase and retrieve them
         List<Course> courses = getAssignedCourses();
 
+        //Add each course to the tableview
         for(Course course : courses) {
-            System.out.println(course);
+            assignedCoursesTable.getItems().add(course);
         }
 
     }
