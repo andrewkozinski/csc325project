@@ -37,8 +37,8 @@ public class Student extends User {
      * @param classification Passed in student classification
      * @param major Passed in major
      */
-    public Student(String username, String password, String firstName, String lastName, String userId, String classification, String major) {
-        super(username, password, firstName, lastName, userId);
+    public Student(String username, String password, String firstName, String lastName, String userId, String age, String classification, String major) {
+        super(username, password, firstName, lastName, userId, age);
         this.classification = classification;
         this.major = major;
     }
@@ -83,6 +83,16 @@ public class Student extends User {
      */
     @Override
     public String userInfo() {
-        return String.format("Username: %s UserID: %s Major: %s Classification: %s", username, userId, classification);
+        return String.format("Username: %s UserID: %s Major: %s Classification: %s", username, userId, major, classification);
     }
+
+    /**
+     * Returns a given users department. For a student, this would return their major.
+     * @return A student's major
+     */
+    @Override
+    public String getUserDept() {
+        return major;
+    }
+
 }

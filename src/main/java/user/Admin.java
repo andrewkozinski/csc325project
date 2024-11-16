@@ -25,8 +25,8 @@ public class Admin extends User{
      * @param lastName Passed in last name
      * @param userId Passed in user id
      */
-    public Admin(String username, String password, String firstName, String lastName, String userId) {
-        super(username, password, firstName, lastName, userId);
+    public Admin(String username, String password, String firstName, String lastName, String userId, String age) {
+        super(username, password, firstName, lastName, userId, age);
     }
 
     /**
@@ -35,7 +35,17 @@ public class Admin extends User{
      */
     @Override
     public String userInfo() {
-        return "";
+        return userId;
+    }
+
+    /**
+     * Returns the department of the user.
+     * In this case, would simply be admin in all cases.
+     * @return Admin "department"
+     */
+    @Override
+    public String getUserDept() {
+        return "ADMIN";
     }
 
 }

@@ -15,6 +15,8 @@ public class Course {
     private String courseCode;
     //Days a course meets
     private String courseDays;
+    //Time a course meets
+    private String courseTime;
     //Room the course meets in
     private String courseLocation;
     //num of credits a course is worth
@@ -25,6 +27,10 @@ public class Course {
     private int capacity;
     //Amount of students currently enrolled for the course
     private int currentEnrolledCount;
+    //A courses description
+    private String courseDescription;
+    //The textbook required by a given course, if a course does not have a textbook can be set to null or none or something along those lines
+    private String courseTextbook;
 
     /**
      * Default constructor, sets variables to default values
@@ -34,11 +40,14 @@ public class Course {
         courseName = "null";
         courseCode = "null";
         courseDays = "null";
+        courseTime = "null";
         courseLocation = "null";
         credits = 0;
         professor = new Professor();
         capacity = 0;
         currentEnrolledCount = 0;
+        courseDescription = "null";
+        courseTextbook = "null";
     }
 
     /**
@@ -47,20 +56,24 @@ public class Course {
      * @param courseName Course name
      * @param courseCode Course code
      * @param courseDays Days a course meets (ex: Monday/Wednesday)
+     * @param courseTime Times a course meets (ex: 12:05-1:30pm)
      * @param courseLocation Room a course meets
      * @param credits Number of credits a course is worth
      * @param professor Professor teaching a course
      */
-    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount) {
+    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseTime, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount, String courseDescription, String courseTextbook) {
         this.courseCRN = classCRN;
         this.courseName = courseName;
         this.courseCode = courseCode;
         this.courseDays = courseDays;
+        this.courseTime = courseTime;
         this.courseLocation = courseLocation;
         this.credits = credits;
         this.professor = professor;
         this.capacity = capacity;
         this.currentEnrolledCount = currentEnrolledCount;
+        this.courseDescription = courseDescription;
+        this.courseTextbook = courseTextbook;
     }
 
     /**
@@ -117,6 +130,22 @@ public class Course {
      */
     public String getCourseDays() {
         return courseDays;
+    }
+
+    /**
+     * Gets the time a course meets
+     * @return Time a course meets
+     */
+    public String getCourseTime() {
+        return courseTime;
+    }
+
+    /**
+     * Sets the time a course meets
+     * @param courseTime Time a course meets
+     */
+    public void setCourseTime(String courseTime) {
+        this.courseTime = courseTime;
     }
 
     /**
@@ -205,6 +234,38 @@ public class Course {
      */
     public void setCurrentEnrolledCount(int currentEnrolledCount) {
         this.currentEnrolledCount = currentEnrolledCount;
+    }
+
+    /**
+     * Sets a given course's description
+     * @param description Course description to be set
+     */
+    public void setCourseDescription(String description) {
+        this.courseDescription = description;
+    }
+
+    /**
+     * Returns a course's description
+     * @return Course description
+     */
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    /**
+     * Sets a course's required textbook
+     * @param textbook Required textbook of a course
+     */
+    public void setCourseTextbook(String textbook) {
+        this.courseTextbook = textbook;
+    }
+
+    /**
+     * Returns the textbook a course requires
+     * @return Textbook a course requires
+     */
+    public String getCourseTextbook() {
+        return courseTextbook;
     }
 
     /**

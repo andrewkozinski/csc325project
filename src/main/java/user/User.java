@@ -1,6 +1,7 @@
 package user;
 
-import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An abstract class representing a user in the registration system
@@ -10,6 +11,7 @@ import java.util.Date;
  * @author Andrew Kozinski
  */
 public abstract class User {
+    private static final Logger logger = LoggerFactory.getLogger(User.class);
 
     //User variables
     protected String username;
@@ -17,17 +19,21 @@ public abstract class User {
     protected String firstName;
     protected String lastName;
     protected String userId;
+    protected String email;
+    protected String age;
 
     //Default constructor
     /**
      * Default constructor, just sets variable values to default (null)
      */
     public User() {
-        username = "Null";
-        password = "Null";
-        firstName = "Null";
-        lastName = "Null";
-        userId = "Null";
+        username = null;
+        password = null;
+        firstName = null;
+        lastName = null;
+        userId = null;
+        email = null;
+        age = null;
     }
     //Parameterized Constructor
 
@@ -39,12 +45,15 @@ public abstract class User {
      * @param lastName Passed in lastname
      * @param userId Passed in userId
      */
-    public User(String username, String password, String firstName, String lastName, String userId) {
+    public User(String username, String password, String firstName, String lastName, String userId, String age) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userId = userId;
+        this.age = age;
+        logger.info("User created with age: {}", age);
+
     }
 
 
@@ -54,7 +63,7 @@ public abstract class User {
      * Returns username upon call
      * @return username
      */
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
@@ -64,6 +73,10 @@ public abstract class User {
      */
     public void setUserName(String userName) {
         this.username = userName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     /**
@@ -107,6 +120,27 @@ public abstract class User {
     }
 
     /**
+     * Sets the email of a user
+     * @param email Email of a given user
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Returns the email of a user
+     * @return Email of a given user
+     */
+    public String getEmail() {
+        return email;
+    }
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
+    }
+    /**
      * Sets the last name of a user
      * @param lastName last name to be set
      */
@@ -123,5 +157,12 @@ public abstract class User {
      * @return User information
      */
     public abstract String userInfo();
+
+    /**
+     * Returns a given users department. For a student, this would return their major, for a professor what department they are under, and for admin it would return as ADMIN.
+     * Used for the TableView to be able to populate the Department/Major column.
+     * @return User department (either major, dept, or admin depending on usertype)
+     */
+    public abstract String getUserDept();
 
 }
