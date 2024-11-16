@@ -1,8 +1,12 @@
 package user;
 
+import course.Course;
 import org.group3.csc325project.AccountsController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class which stores data of a user of the professor type
@@ -16,6 +20,9 @@ public class Professor extends User{
     //Department a Professor is apart of
     private String department;
 
+    //Courses a given Professor instance is assigned to
+    private List<Course> assignedCourses;
+
     //Default constructor
     /**
      * Default constructor, just sets variable values to default (null)
@@ -23,6 +30,7 @@ public class Professor extends User{
     public Professor() {
         super();
         department = null;
+        assignedCourses = new ArrayList<Course>();
     }
 
     /**
@@ -38,6 +46,7 @@ public class Professor extends User{
     public Professor(String username, String password, String firstName, String lastName, String userId, String age, String department) {
         super(username, password, firstName, lastName, userId, age); // Set age in the User class
         this.department = department;
+        assignedCourses = new ArrayList<Course>();
         logger.info("Creating Professor with age: {}", age);
     }
 
@@ -57,6 +66,25 @@ public class Professor extends User{
     public void setDepartment(String department) {
         this.department = department;
     }
+
+    /**
+     * Adds a course to the AssignedCourses list
+     * @param course Course to be added
+     */
+    public void addCourse(Course course) {
+        assignedCourses.add(course);
+    }
+
+    /**
+     * When called returns a copy of the list of courses
+     * @return Copy of the list of courses a professor is assigned to
+     */
+    public List<Course> getAssignedCourses() {
+        //Returns a copy of the assignedCourses list
+        return new ArrayList<>(assignedCourses);
+    }
+
+    //Overrides
 
     /**
      * Returns a string containing information about the user
