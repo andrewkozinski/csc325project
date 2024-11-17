@@ -12,4 +12,11 @@ public class ProfessorController {
         RegistrationApp.returnToLogin();
     }
 
+    /**
+     * Upon call, switches scene to view courses a Professor is assigned to
+     */
+    public void goToCoursesView() {
+        RegistrationApp.setRoot("professorcourses");
+    }
+
 }
