@@ -6,6 +6,8 @@ module org.group3.csc325project {
     requires org.apache.commons.codec;
     requires com.google.api.apicommon;
     requires google.cloud.firestore;
+    opens user to google.cloud.firestore;
+    opens course to google.cloud.firestore;
     requires jbcrypt;
     requires com.google.auth;
     requires google.cloud.core;
@@ -15,10 +17,8 @@ module org.group3.csc325project {
     requires com.google.zxing;
     requires org.slf4j;
 
-    opens user to javafx.base;
     exports user;
 
-    opens course to javafx.base;
     exports course;
 
     opens org.group3.csc325project to javafx.fxml;

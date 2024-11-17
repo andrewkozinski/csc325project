@@ -1,12 +1,22 @@
 package course;
 
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.FieldValue;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import user.Professor;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class which stores data of a given course
  * @author Andrew Kozinski
  */
 public class Course {
+    // Mappings due to variable case sensitivity
     //CRN number
     private String courseCRN;
     //Courses name, example: Software Engineering
@@ -31,6 +41,12 @@ public class Course {
     private String courseDescription;
     //The textbook required by a given course, if a course does not have a textbook can be set to null or none or something along those lines
     private String courseTextbook;
+    private DocumentReference professorReference;
+    private int waitlistCap = 10;
+    private int currentWaitlistCount;
+    private List<String> enrolledStudents;
+    private List<Map<String, Object>> waitlistedStudents;
+    private StringProperty professorName;
 
     /**
      * Default constructor, sets variables to default values
@@ -48,6 +64,10 @@ public class Course {
         currentEnrolledCount = 0;
         courseDescription = "null";
         courseTextbook = "null";
+        currentWaitlistCount = 0;
+        enrolledStudents = new ArrayList<>();
+        waitlistedStudents = new ArrayList<>();
+        this.professorName = new SimpleStringProperty();
     }
 
     /**
@@ -61,7 +81,7 @@ public class Course {
      * @param credits Number of credits a course is worth
      * @param professor Professor teaching a course
      */
-    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseTime, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount, String courseDescription, String courseTextbook) {
+    public Course(String classCRN, String courseName, String courseCode, String courseDays, String courseTime, String courseLocation, int credits, Professor professor, int capacity, int currentEnrolledCount, String courseDescription, String courseTextbook, int waitlist, int currentWaitlistCount, List<Map<String, Object>> waitlistedStudents) {
         this.courseCRN = classCRN;
         this.courseName = courseName;
         this.courseCode = courseCode;
@@ -74,6 +94,23 @@ public class Course {
         this.currentEnrolledCount = currentEnrolledCount;
         this.courseDescription = courseDescription;
         this.courseTextbook = courseTextbook;
+        this.currentWaitlistCount = currentWaitlistCount;
+        this.enrolledStudents = (enrolledStudents != null) ? enrolledStudents : new ArrayList<>();
+        this.waitlistedStudents = (waitlistedStudents != null) ? waitlistedStudents : new ArrayList<>();
+        this.professorName = new SimpleStringProperty(); // Initialize the professorName property
+
+        // Set the professor name if the professor is not null
+        if (professor != null) {
+            this.professorName.set(professor.getFirstName() + " " + professor.getLastName());
+        }
+    }
+
+
+    public int getCurrentWaitlistCount() {
+        return currentWaitlistCount;
+    }
+    public void setCurrentWaitlistCount(int currentWaitlistCount) {
+        this.currentWaitlistCount = currentWaitlistCount;
     }
 
     /**
@@ -268,13 +305,50 @@ public class Course {
         return courseTextbook;
     }
 
+    public List<String> getEnrolledStudents() {
+        if (enrolledStudents == null) {
+            enrolledStudents = new ArrayList<>();
+        }
+        return enrolledStudents;
+    }
+
+    public void setEnrolledStudents(List<String> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
+    }
+
+    public List<Map<String, Object>> getWaitlistedStudents() {
+        if (waitlistedStudents == null) {
+            waitlistedStudents = new ArrayList<>();
+        }
+        return waitlistedStudents;
+    }
+
+    public void setWaitlistedStudents(List<Map<String, Object>> waitlistedStudents) {
+        if (waitlistedStudents != null) {
+            for (Map<String, Object> entry : waitlistedStudents) {
+                if (!entry.containsKey("details")) {
+                    entry.put("details", new HashMap<String, Object>());
+                }
+            }
+        }
+        this.waitlistedStudents = waitlistedStudents;
+    }
+    public void addStudentToWaitlist(String studentId) {
+        Map<String, Object> waitlistEntry = new HashMap<>();
+        waitlistEntry.put("studentUserId", studentId); // Changed to match Firestore field name
+        waitlistEntry.put("DateAdded", FieldValue.serverTimestamp());
+        getWaitlistedStudents().add(waitlistEntry);
+    }
+
     /**
      * Increases amount of students enrolled by 1
      */
     public void incrementEnrolledCount() {
         //If the number of students enrolled is not at capacity we can add a student
-        if(currentEnrolledCount != capacity) {
+        if(currentEnrolledCount < capacity) {
             currentEnrolledCount++;
+        } else if (currentWaitlistCount < waitlistCap) {
+            incrementWaitlistCount();
         }
     }
 
@@ -283,9 +357,44 @@ public class Course {
      */
     public void decrementEnrolledCount() {
         //If the number of students currently enrolled is not 0, we can go ahead and decrement
-        if(currentEnrolledCount != 0) {
+        if(currentEnrolledCount > 0) {
             currentEnrolledCount--;
         }
     }
 
+    public DocumentReference getProfessorReference() {
+        return professorReference;
+    }
+    public void setProfessorReference(DocumentReference professorReference) {
+        this.professorReference = professorReference;
+    }
+
+    /**
+     * Increments the current waitlist count if capacity is reached
+     */
+    public void incrementWaitlistCount() {
+        if (currentWaitlistCount < waitlistCap) {
+            currentWaitlistCount++;
+        }
+    }
+
+    /**
+     * Decreases the current waitlist count if possible
+     */
+    public void decrementWaitlistCount() {
+        if (currentWaitlistCount > 0) {
+            currentWaitlistCount--;
+        }
+    }
+    public String getProfessorName() {
+        return professorName.get();
+    }
+
+    public void setProfessorName(String professorName) {
+        this.professorName.set(professorName);
+    }
+
+    public StringProperty professorNameProperty() {
+        return professorName;
+    }
 }
