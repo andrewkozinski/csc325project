@@ -21,6 +21,7 @@ public abstract class User {
     protected String userId;
     protected String email;
     protected String age;
+    protected Long dateWaitlisted;
 
     //Default constructor
     /**
@@ -34,6 +35,7 @@ public abstract class User {
         userId = null;
         email = null;
         age = null;
+        dateWaitlisted = null;
     }
     //Parameterized Constructor
 
@@ -52,6 +54,7 @@ public abstract class User {
         this.lastName = lastName;
         this.userId = userId;
         this.age = age;
+        this.dateWaitlisted = null;
         logger.info("User created with age: {}", age);
 
     }
@@ -69,10 +72,10 @@ public abstract class User {
 
     /**
      * Sets username upon call
-     * @param userName username we wish to set
+     * @param username username we wish to set
      */
-    public void setUserName(String userName) {
-        this.username = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -146,6 +149,13 @@ public abstract class User {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    public Long getDateWaitlisted() {
+        return dateWaitlisted;
+    }
+
+    public void setDateWaitlisted(Long dateWaitlisted) {
+        this.dateWaitlisted = dateWaitlisted;
     }
 
     //Abstract methods below

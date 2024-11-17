@@ -15,6 +15,7 @@ public class Student extends User {
     //Classification refers to what year a student is
     //Example: Senior
     private String classification;
+    private String dateWaitlistedString;
 
     //Default constructor
     /**
@@ -75,6 +76,13 @@ public class Student extends User {
      */
     public void setClassification(String classification) {
         this.classification = classification;
+    }
+    public String getDateWaitlistedString() {
+        return dateWaitlistedString;
+    }
+
+    public void setDateWaitlistedString(String dateWaitlistedString) {
+        this.dateWaitlistedString = dateWaitlistedString;
     }
 
     /**

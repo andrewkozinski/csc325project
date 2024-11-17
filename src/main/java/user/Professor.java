@@ -32,6 +32,15 @@ public class Professor extends User{
         department = null;
         assignedCourses = new ArrayList<Course>();
     }
+    public Professor(String userId) {
+        super();
+        this.userId = userId;
+    }
+    public Professor(String userId, String firstName, String lastName) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     /**
      * Parameterized constructor, takes in variables and sets them to the corresponding user variables

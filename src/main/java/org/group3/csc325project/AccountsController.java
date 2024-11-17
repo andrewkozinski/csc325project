@@ -130,7 +130,7 @@ public class AccountsController {
                 Student student = new Student();
                 student.setFirstName(doc.getString("FirstName"));
                 student.setLastName(doc.getString("LastName"));
-                student.setUserName(doc.getString("Username"));
+                student.setUsername(doc.getString("Username"));
                 student.setEmail(doc.getString("Email"));
                 student.setUserId(doc.getString("UserId"));
                 student.setMajor(doc.getString("Major"));
@@ -162,7 +162,7 @@ public class AccountsController {
                 Professor professor = new Professor();
                 professor.setFirstName(doc.getString("FirstName"));
                 professor.setLastName(doc.getString("LastName"));
-                professor.setUserName(doc.getString("Username"));
+                professor.setUsername(doc.getString("Username"));
                 professor.setEmail(doc.getString("Email"));
                 professor.setUserId(doc.getString("UserId"));
                 professor.setAge(doc.getString("Age"));
@@ -193,7 +193,7 @@ public class AccountsController {
                 Admin admin = new Admin();
                 admin.setFirstName(doc.getString("FirstName"));
                 admin.setLastName(doc.getString("LastName"));
-                admin.setUserName(doc.getString("Username"));
+                admin.setUsername(doc.getString("Username"));
                 admin.setEmail(doc.getString("Email"));
                 admin.setUserId(doc.getString("UserId"));
                 admin.setAge(doc.getString("Age"));
