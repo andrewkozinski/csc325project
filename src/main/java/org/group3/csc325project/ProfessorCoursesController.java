@@ -122,25 +122,28 @@ public class ProfessorCoursesController {
 
         try {
             QuerySnapshot professorSnapshot = professorQuery.get();
+
             if(!professorSnapshot.isEmpty()) {
                 //snapshot is not empty, so we found the professor we're looking for
                 //The list should only have one item (since every username should be unique), so just get the professor at first index
                 DocumentSnapshot professor = professorSnapshot.getDocuments().get(0);
-                List<String> courseCrns = (List<String>) professor.get("AssignedCourses");
-                if (courseCrns != null) {
-                    //For each course name, we're going to get the course from the DB, stick its information in
-                    //a course object, then add it to the list
-                    for (String courseName : courseCrns) {
-                        //Call helper method to get a course from the DB
-                        Course course = getCourseByCrn(courseName);
-                        if(course != null) {
-                            courses.add(course);
-                        }
-                    }//end for
-                }//end if
-                else {
-                    raiseAlert("Courses field not found", "Courses field returned null on the currently signed in Professor account.");
-                }//end else
+
+                //Note to self: Rewrite the code to get courses assigned to the currently logged in professor here
+                //Get the professor document id
+                String profDocId = professor.getId();
+
+                // Query the Course collection to find courses assigned to the logged in professor
+                ApiFuture<QuerySnapshot> courseQuery = db.collection("Course")
+                        .whereEqualTo("Professor", db.collection("Professor").document(profDocId))
+                        .get();
+
+                QuerySnapshot courseSnapshot = courseQuery.get();
+
+                //Add each course a professor is assigned to the DB
+                for(QueryDocumentSnapshot courseDoc : courseQuery.get().getDocuments()) {
+                    //Add the course to the courses list
+                    courses.add(docToCourseInstance(courseDoc));
+                }//end for
 
             }//end if
             else {
@@ -157,44 +160,26 @@ public class ProfessorCoursesController {
     }
 
     /**
-     * Helper method which searches the DB for a course with a given CRN, gets that course and creates a new Course object with the given course information inside.
-     * @param crn The given CRN
+     * Helper method which takes in a QueryDocumentSnapshot, takes its fields and puts it in a new Course object instance
+     * @param course The inputted course doc
      * @return A Course instance
      */
-    private Course getCourseByCrn(String crn) {
+    private Course docToCourseInstance(QueryDocumentSnapshot course) {
         //Course to be returned
-        Course returnCourse = null;
-        Firestore db = FirestoreClient.getFirestore();
+        Course returnCourse = new Course();
 
-        //Find a course with the given CRN in the DB
-        ApiFuture<QuerySnapshot> courseQuery = db.collection("Course").whereEqualTo("courseCRN", crn).get();
-
-        try {
-            QuerySnapshot courseSnapshot = courseQuery.get();
-            if(!courseSnapshot.isEmpty()) {
-                DocumentSnapshot course = courseSnapshot.getDocuments().get(0);
-
-                //Now, put all the information into a new Course object
-                returnCourse = new Course();
-                returnCourse.setCourseCRN(crn);
-                returnCourse.setCourseName(course.getString("courseName"));
-                returnCourse.setCourseDescription(course.getString("courseDescription"));
-                returnCourse.setCourseDays(course.getString("courseDays"));
-                returnCourse.setCourseTime(course.getString("courseTime"));
-                returnCourse.setCourseCode(course.getString("courseCode"));
-                returnCourse.setCourseLocation(course.getString("courseLocation"));
-                returnCourse.setCredits(course.get("credits", Integer.class));
-                returnCourse.setCapacity(course.get("capacity", Integer.class));
-                returnCourse.setCurrentEnrolledCount(course.get("currentEnrolledCount", Integer.class));
-                returnCourse.setCourseTextbook(course.getString("requiredTextbook"));
-            }//end if
-            else {
-                //No courses found with the given crn
-                raiseAlert("Course not found", String.format("Course with given CRN '%s' was not found in the database.", crn));
-            }//end else
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        //Now, put all the information into a new Course object
+        returnCourse.setCourseCRN(course.getString("courseCRN"));
+        returnCourse.setCourseName(course.getString("courseName"));
+        returnCourse.setCourseDescription(course.getString("courseDescription"));
+        returnCourse.setCourseDays(course.getString("courseDays"));
+        returnCourse.setCourseTime(course.getString("courseTime"));
+        returnCourse.setCourseCode(course.getString("courseCode"));
+        returnCourse.setCourseLocation(course.getString("courseLocation"));
+        returnCourse.setCredits(course.get("credits", Integer.class));
+        returnCourse.setCapacity(course.get("capacity", Integer.class));
+        returnCourse.setCurrentEnrolledCount(course.get("currentEnrolledCount", Integer.class));
+        returnCourse.setCourseTextbook(course.getString("requiredTextbook"));
 
         //Now finally, return course instance (null if not found in DB)
         return returnCourse;
