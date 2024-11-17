@@ -166,10 +166,9 @@ public class ProfessorCoursesController {
      */
     private Course docToCourseInstance(QueryDocumentSnapshot course) {
         //Course to be returned
-        Course returnCourse = null;
+        Course returnCourse = new Course();
 
         //Now, put all the information into a new Course object
-        returnCourse = new Course();
         returnCourse.setCourseCRN(course.getString("courseCRN"));
         returnCourse.setCourseName(course.getString("courseName"));
         returnCourse.setCourseDescription(course.getString("courseDescription"));
