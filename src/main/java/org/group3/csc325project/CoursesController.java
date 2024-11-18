@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
@@ -81,11 +82,12 @@ public class CoursesController {
     private Student selectedStudent;
     @FXML
     private HBox topHBox;
+    @FXML
+    private AnchorPane coursesAnchorPane;
     /**
      * Runs when the page is loaded. Each column in the TableView is associated with a variable in the Course class
      */
     public void initialize() {
-        topHBox.setPadding(new Insets(10, 10, 10, 10));
         // Existing initialization code for courses...
         columnCrn.setCellValueFactory(new PropertyValueFactory<>("courseCRN"));
         columnCourseCode.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
@@ -125,8 +127,12 @@ public class CoursesController {
         columnWaitlistDate.setPrefWidth(200);
         columnWaitlistStudentName.setPrefWidth(150);
         columnStudentName.setPrefWidth(150);
+        // UI scalable
+
+
         // Reads Course collection in the Firestore database and adds those courses to the TableView
         handleReadFirebase();
+
     }
     /**
      * Helper method which reads firestore course collection and adds courses to the tableview
