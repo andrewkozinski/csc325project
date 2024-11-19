@@ -23,8 +23,10 @@ class StudentTest {
     @Test
     void getAndSetDateWaitlistedString() {
         Student student = new Student();
-        student.setDateWaitlisted(Long.valueOf("43954982"));
-        assertEquals("43954982", student.getDateWaitlisted());
+        Long dateWaitlisted = Long.valueOf("1732040571548");
+        //String formattedDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(dateWaitlisted));
+        student.setDateWaitlisted(dateWaitlisted);
+        assertEquals(dateWaitlisted, student.getDateWaitlisted());
     } //Figure this out later
 
 
