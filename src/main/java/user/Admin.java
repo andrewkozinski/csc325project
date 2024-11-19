@@ -35,7 +35,7 @@ public class Admin extends User{
      */
     @Override
     public String userInfo() {
-        return userId;
+        return String.format("Username: %s UserID: %s FirstName: %s LastName: %s", username, userId, firstName, lastName);
     }
 
     /**
