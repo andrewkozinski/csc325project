@@ -145,7 +145,7 @@
         -fx-background-color: #808080;
         -fx-border-color: black;
         -fx-border-width: 1px;
-        -fx-background-radius: 0; /
+        -fx-background-radius: 0;
     }
 
     .table-view .scroll-bar:horizontal .thumb,
