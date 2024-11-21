@@ -41,6 +41,20 @@ public class Grade {
     }
 
     /**
+     * Parameterized constructor that automatically sets the letterGrade based on the passed in numeric grade
+     * @param course The course instance passed in
+     * @param student The Student instance passed in
+     * @param grade The numeric grade passed in
+     */
+    public Grade(Course course, Student student, double grade) {
+        this.course = course;
+        this.student = student;
+        this.grade = grade;
+        //Convert to letter grade using helper method
+        this.letterGrade = convertToLetterGrade(grade);
+    }
+
+    /**
      * Get the course a grade is associated with
      * @return A course instance
      */
