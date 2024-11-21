@@ -71,7 +71,7 @@ public class ProfessorCoursesController {
 
     //selectedCourse is the currently selected item from the TableView
     //Updated when user selects an item in the table view
-    private Course selectedCourse;
+    public static Course selectedCourse;
 
     /**
      * Runs when page is loaded. Gets courses a Professor is assigned to in the DB and adds them to a TableView on screen.
