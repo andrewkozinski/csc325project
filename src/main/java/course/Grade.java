@@ -27,6 +27,20 @@ public class Grade {
     }
 
     /**
+     * Parameterized constructor, takes in values and sets them
+     * @param course The Course instance passed in
+     * @param student The Student instance
+     * @param grade The grade passed in
+     * @param letterGrade The letter grade passed in
+     */
+    public Grade(Course course, Student student, double grade, String letterGrade) {
+        this.course = course;
+        this.student = student;
+        this.grade = grade;
+        this.letterGrade = letterGrade;
+    }
+
+    /**
      * Get the course a grade is associated with
      * @return A course instance
      */
@@ -73,8 +87,9 @@ public class Grade {
     public void setGrade(double grade) {
         this.grade = grade;
 
-        //Calculating letter grade logic may be put here in the future,
-        //Haven't done so yet as I didn't feel like doing it yet
+        //Just automatically set the letter grade
+        //Uses helper method written below
+        this.letterGrade = convertToLetterGrade(grade);
     }
 
     /**
@@ -91,5 +106,32 @@ public class Grade {
      */
     public void setLetterGrade(String letterGrade) {
         this.letterGrade = letterGrade;
+    }
+
+    /**
+     * Helper method to convert a given double into a letter grade
+     * Made public in case this method was to be used anywhere else
+     * If needed to be used for whatever reason outside a Grade instance, feel free to make static -Andrew
+     * @param grade Grade passed in
+     * @return String of the grade
+     */
+    public String convertToLetterGrade(double grade) {
+        //Just handled this logic as a simple if else block
+        //Feel free to adjust this in case we wanted to add grades like B-, B+, etc.
+        if(grade >= 90) {
+            return "A";
+        }
+        else if(grade >= 80) {
+            return "B";
+        }
+        else if(grade >= 70) {
+            return "C";
+        }
+        else if(grade >= 60) {
+            return "D";
+        }
+        else {
+            return "F";
+        }
     }
 }
