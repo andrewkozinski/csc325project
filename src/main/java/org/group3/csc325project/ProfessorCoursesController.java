@@ -71,7 +71,7 @@ public class ProfessorCoursesController {
 
     //selectedCourse is the currently selected item from the TableView
     //Updated when user selects an item in the table view
-    public static Course selectedCourse;
+    private static Course selectedCourse;
 
     /**
      * Runs when page is loaded. Gets courses a Professor is assigned to in the DB and adds them to a TableView on screen.
@@ -219,6 +219,27 @@ public class ProfessorCoursesController {
      */
     public void backButton() {
         setRoot("professor");
+    }
+
+    /**
+     * Gets the currently selectedCourse
+     * Used in ProfessorCourseGrades to display grades from a specific course
+     * @return The selected course
+     */
+    public static Course getSelectedCourse() {
+        return selectedCourse;
+    }
+
+    /**
+     * Method to handle clicking the view grades button
+     * Will redirect the user to a page where all student grades from the selected course are displayed.
+     */
+    public void handleViewGradesButton() {
+        if(selectedCourse == null) {
+            raiseAlert("Course not selected", "Please select a course before trying to view grades");
+            return;
+        }
+        RegistrationApp.setRoot("professorgrades");
     }
 
 

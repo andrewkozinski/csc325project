@@ -15,6 +15,6 @@
             <TableColumn fx:id="studentGradeColumn" prefWidth="75.0" text="Grade" />
         </columns>
       </TableView>
-      <Label fx:id="gradesLabel" layoutX="45.0" layoutY="54.0" text="Course Grades for: " />
+      <Label fx:id="courseLabel" layoutX="45.0" layoutY="54.0" text="Course Grades for: " />
    </children>
 </AnchorPane>
