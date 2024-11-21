@@ -97,7 +97,7 @@
 /* Tab Content Area */
 .tab-pane .tab-content-area {
     -fx-background-color: #e0e0e0;
-    -fx-border-color: black; /
+    -fx-border-color: black;
     -fx-border-width: 1px;
 }
 .tab-pane .tab-header-area .tab:selected {
