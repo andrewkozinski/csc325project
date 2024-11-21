@@ -48,7 +48,7 @@ public class Student extends User {
 
     /**
      * Gets a students major
-     * @return
+     * @return A students major
      */
     public String getMajor() {
         return major;
@@ -56,7 +56,7 @@ public class Student extends User {
 
     /**
      * Sets a students major
-     * @param major
+     * @param major Student major passed in
      */
     public void setMajor(String major) {
         this.major = major;
@@ -77,6 +77,7 @@ public class Student extends User {
     public void setClassification(String classification) {
         this.classification = classification;
     }
+
     public String getDateWaitlistedString() {
         return dateWaitlistedString;
     }

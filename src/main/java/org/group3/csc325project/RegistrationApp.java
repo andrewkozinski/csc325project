@@ -41,7 +41,7 @@ public class RegistrationApp extends Application {
         Image cursorImage = new Image(getClass().getResourceAsStream("/Images/dolphin - Copy.png"));
         double hotspotX = cursorImage.getWidth() / 2;
         double hotspotY = cursorImage.getHeight() / 2;
-        ImageCursor customCursor = new ImageCursor(cursorImage,hotspotX, hotspotY);
+        ImageCursor customCursor = new ImageCursor(cursorImage, hotspotX, hotspotY);
         scene.setCursor(customCursor);
         //----------------------------------
 

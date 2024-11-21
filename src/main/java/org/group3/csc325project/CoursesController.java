@@ -10,13 +10,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Professor;
 import user.Student;
-import javafx.geometry.Insets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,12 +79,11 @@ public class CoursesController {
     private Course selectedCourse;
     private Student selectedStudent;
     @FXML
-    private HBox topHBox;
+    private AnchorPane coursesAnchorPane;
     /**
      * Runs when the page is loaded. Each column in the TableView is associated with a variable in the Course class
      */
     public void initialize() {
-        topHBox.setPadding(new Insets(10, 10, 10, 10));
         // Existing initialization code for courses...
         columnCrn.setCellValueFactory(new PropertyValueFactory<>("courseCRN"));
         columnCourseCode.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
@@ -125,8 +123,12 @@ public class CoursesController {
         columnWaitlistDate.setPrefWidth(200);
         columnWaitlistStudentName.setPrefWidth(150);
         columnStudentName.setPrefWidth(150);
+        // UI scalable
+
+
         // Reads Course collection in the Firestore database and adds those courses to the TableView
         handleReadFirebase();
+
     }
     /**
      * Helper method which reads firestore course collection and adds courses to the tableview
@@ -177,7 +179,7 @@ public class CoursesController {
             // Set items to the courses table
             coursesTable.getItems().setAll(courses);
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.error("Error reading Firebase" + e);
         }
     }
     /**
@@ -274,7 +276,6 @@ public class CoursesController {
                 }
             } catch (InterruptedException | ExecutionException e) {
                 logger.error("Error loading waitlisted students for course {}: ", selectedCourse.getCourseCRN(), e);
-                e.printStackTrace();
             }
         }
     }
@@ -309,7 +310,7 @@ public class CoursesController {
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.error("Error in handleAddCourseButton method " + e);
         }
         // Set up the grid pane for input fields
         GridPane grid = new GridPane();
@@ -513,7 +514,7 @@ public class CoursesController {
                     }
                     // Debug print statements
                     logger.debug("Updated professor reference for course: " + selectedCourse.getProfessorReference());
-                    logger.debug("Updated professor name for course: " + selectedCourse.getProfessorName());
+                    logger.debug("Updated professor name for course: {}", selectedCourse.getProfessorName());
                     // Update Firestore with all edited fields
                     updateCourseInFirebase(selectedCourse);
                     // Refresh the data in the TableView
@@ -532,7 +533,7 @@ public class CoursesController {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             if (!documents.isEmpty()) {
                 // Assuming courseCRN is unique and there is only one matching document
-                DocumentReference courseRef = documents.get(0).getReference();
+                DocumentReference courseRef = documents.getFirst().getReference();
                 // Prepare the fields to be updated
                 Map<String, Object> updates = new HashMap<>();
                 updates.put("courseCode", course.getCourseCode());
@@ -636,7 +637,6 @@ public class CoursesController {
             }
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error assigning student {} to course {}: ", studentUserId, course.getCourseCRN(), e);
-            e.printStackTrace();
         }
     }
     public void handleStudentsTableViewMouseClick(MouseEvent event) {
@@ -729,7 +729,6 @@ public class CoursesController {
             waitlistTable.refresh();
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error removing student {} from course {}: ", student.getUserId(), course.getCourseCRN(), e);
-            e.printStackTrace();
         }
     }
     private void removeStudentFromWaitlist(Course course, Student student) {
@@ -800,63 +799,98 @@ public class CoursesController {
             ApiFuture<QuerySnapshot> courseFuture = coursesCollection.whereEqualTo("courseCRN", course.getCourseCRN()).get();
             List<QueryDocumentSnapshot> courseDocuments = courseFuture.get().getDocuments();
             if (courseDocuments.isEmpty()) {
+                Platform.runLater(() -> showAlert("No course found with CRN: " + course.getCourseCRN()));
                 logger.error("No course found with CRN: {}", course.getCourseCRN());
                 return;
             }
             DocumentReference courseRef = courseDocuments.getFirst().getReference();
+
             ApiFuture<QuerySnapshot> studentFuture = studentsCollection.whereEqualTo("UserId", studentUserId).get();
             List<QueryDocumentSnapshot> studentDocuments = studentFuture.get().getDocuments();
             if (studentDocuments.isEmpty()) {
+                Platform.runLater(() -> showAlert("No student found with UserId: " + studentUserId));
                 logger.error("No student found with UserId: {}", studentUserId);
                 return;
             }
             DocumentReference studentRef = studentDocuments.getFirst().getReference();
-            db.runTransaction(transaction -> {
-                //Read both documents first
+
+            //redid logic, check if user is in a waitlist instead of simply reading both documents
+            boolean alreadyWaitlisted = db.runTransaction(transaction -> {
                 DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
-                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
-                List<Map<String, Object>> waitlistedStudents = (List<Map<String, Object>>) courseSnapshot.get("waitlistedStudents");
-                if (waitlistedStudents == null) {
+                Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
+                List<Map<String, Object>> waitlistedStudents;
+                if (waitlistedStudentsObj instanceof List) {
+                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
+                } else {
                     waitlistedStudents = new ArrayList<>();
                 }
+
+                //Check if the user is already on the waitlist
+                return waitlistedStudents.stream()
+                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
+            }).get();
+
+            if (alreadyWaitlisted) {
+                Platform.runLater(() -> showAlert("Student " + studentUserId + " is already waitlisted for course " + course.getCourseName() + " (CRN: " + course.getCourseCRN() + ")"));
+                logger.warn("Student {} is already waitlisted for course {}", studentUserId, course.getCourseCRN());
+                return; // Exit the method to prevent dual notification output
+            }
+
+            //Add the student to the waitlist if not already waitlisted
+            db.runTransaction(transaction -> {
+                DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
+                Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
+                List<Map<String, Object>> waitlistedStudents;
+                if (waitlistedStudentsObj instanceof List) {
+                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
+                } else {
+                    waitlistedStudents = new ArrayList<>();
+                }
+
                 //Create a new waitlisted student entry
                 Map<String, Object> waitlistDetails = new HashMap<>();
                 waitlistDetails.put("DateWaitlisted", System.currentTimeMillis());
                 waitlistDetails.put("Status", "WAITLIST");
+
                 Map<String, Object> waitlistedStudentMap = new HashMap<>();
                 waitlistedStudentMap.put("studentUserId", studentUserId);
                 waitlistedStudentMap.put("details", waitlistDetails);
+
                 waitlistedStudents.add(waitlistedStudentMap);
                 transaction.update(courseRef, "waitlistedStudents", waitlistedStudents);
-                //Increment waitlist count using Firestore's increment function
                 transaction.update(courseRef, "currentWaitlistCount", FieldValue.increment(1));
-                //Update Student Document
-                List<Map<String, Object>> enrolledCourses = (List<Map<String, Object>>) studentSnapshot.get("EnrolledCourses");
-                if (enrolledCourses == null) {
+
+                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                List<Map<String, Object>> enrolledCourses;
+                if (enrolledCoursesObj instanceof List) {
+                    enrolledCourses = (List<Map<String, Object>>) enrolledCoursesObj;
+                } else {
                     enrolledCourses = new ArrayList<>();
                 }
+
                 Map<String, Object> enrolledCourseDetails = new HashMap<>();
                 enrolledCourseDetails.put("courseCRN", course.getCourseCRN());
                 enrolledCourseDetails.put("status", "WAITLIST");
                 enrolledCourseDetails.put("DateWaitlisted", System.currentTimeMillis());
+
                 enrolledCourses.add(enrolledCourseDetails);
                 transaction.update(studentRef, "EnrolledCourses", enrolledCourses);
+
                 return null;
-            }).get();  //This will block until the transaction completes and will throw an exception if it fails
+            }).get();
+
             course.incrementWaitlistCount();
-            Map<String, Object> newWaitlistedStudent = new HashMap<>();
-            newWaitlistedStudent.put("studentUserId", studentUserId);
-            newWaitlistedStudent.put("details", Map.of("DateWaitlisted", System.currentTimeMillis(), "Status", "WAITLIST"));
-            course.getWaitlistedStudents().add(newWaitlistedStudent); //Add the new student to the waitlist.
             Platform.runLater(() -> {
                 coursesTable.refresh();
                 loadWaitlistedStudentsForSelectedCourse();
                 waitlistTable.refresh();
+                showAlert("Student " + studentUserId + " was successfully added to waitlist for course " + course.getCourseName() + " (CRN: " + course.getCourseCRN() + ")");
             });
             logger.info("Student {} successfully added to waitlist for course {}", studentUserId, course.getCourseCRN());
-            showAlert("Student " + studentUserId + " was successfully added to waitlist for course " + course.getCourseName() + " (CRN:" + " " + course.getCourseCRN() + ")");
         } catch (Exception e) {
-            logger.error("Failed to add student {} to waitlist for course {}: {}", studentUserId, course.getCourseCRN(), e.getMessage());
+            Platform.runLater(() -> showAlert("Failed to add student " + studentUserId + " to waitlist: " + e.getMessage()));
+            logger.error("Failed to add student {} to waitlist for course {}: {}", studentUserId, course.getCourseCRN(), e.getMessage() + e);
         }
     }
     private void showAlert(String message) {
