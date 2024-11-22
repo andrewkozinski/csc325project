@@ -181,6 +181,12 @@ public class ProfessorCoursesController {
         returnCourse.setCurrentEnrolledCount(course.get("currentEnrolledCount", Integer.class));
         returnCourse.setCourseTextbook(course.getString("requiredTextbook"));
 
+        //Get the list of enrolled and waitlisted students
+        List<String> enrolled = (List<String>) course.get("enrolledStudents");
+        returnCourse.setEnrolledStudents(enrolled);
+        List<String> waitlisted = (List<String>) course.get("waitlistedStudents");
+        returnCourse.setEnrolledStudents(waitlisted);
+
         //Now finally, return course instance (null if not found in DB)
         return returnCourse;
     }
