@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static org.group3.csc325project.RegistrationApp.raiseAlert;
+import static org.group3.csc325project.RegistrationApp.setRoot;
 
 public class ProfessorCourseGrades {
 
@@ -138,7 +139,7 @@ public class ProfessorCourseGrades {
             //Should text input dialog
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Modify Grade");
-            dialog.setHeaderText(String.format("Modifying %s's grade", selectedGrade.getStudent().getFirstName()));
+            dialog.setHeaderText(String.format("Modifying %s %s's grade", selectedGrade.getStudent().getFirstName(), selectedGrade.getStudent().getLastName()));
             dialog.setContentText("Enter grade to modify");
             String inputGrade = dialog.showAndWait().orElse(null);
             if(inputGrade != null && !inputGrade.trim().isEmpty()) {
@@ -196,6 +197,13 @@ public class ProfessorCourseGrades {
             selectedGrade = gradeItems.get(selectedIndex);
             System.out.printf("Selected grade: %s for Student: %s %s\n", selectedGrade.getGrade(), selectedGrade.getStudent().getFirstName(), selectedGrade.getStudent().getLastName());
         }
+    }
+
+    /**
+     * When called switches scene back to professor courses page
+     */
+    public void handleGoBackToCourses() {
+        setRoot("professorcourses");
     }
 
 }
