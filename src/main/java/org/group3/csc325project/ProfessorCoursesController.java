@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.raiseAlert;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 import static org.group3.csc325project.SessionManager.getLoggedInUsername;
 
@@ -207,18 +208,6 @@ public class ProfessorCoursesController {
         }
     }
 
-    /**
-     * Method that when called, displays an alert to the user
-     * @param title Title to be displayed in the alert
-     * @param message Messaged to be displayed in the alert
-     */
-    private void raiseAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
     /**
      * Simply sets the root back to the base professor area
