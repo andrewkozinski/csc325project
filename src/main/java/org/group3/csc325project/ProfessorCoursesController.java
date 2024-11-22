@@ -19,6 +19,7 @@ import user.Professor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static org.group3.csc325project.RegistrationApp.setRoot;
@@ -184,8 +185,8 @@ public class ProfessorCoursesController {
         //Get the list of enrolled and waitlisted students
         List<String> enrolled = (List<String>) course.get("enrolledStudents");
         returnCourse.setEnrolledStudents(enrolled);
-        List<String> waitlisted = (List<String>) course.get("waitlistedStudents");
-        returnCourse.setEnrolledStudents(waitlisted);
+        List<Map<String, Object>> waitlisted = (List<Map<String, Object>>) course.get("waitlistedStudents");
+        returnCourse.setWaitlistedStudents(waitlisted);
 
         //Now finally, return course instance (null if not found in DB)
         return returnCourse;
