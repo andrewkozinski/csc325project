@@ -129,7 +129,8 @@ public class ProfessorCourseGrades {
      */
     public void handleModifyGradeButton() {
         if(selectedGrade != null) {
-            System.out.printf("Modifying student '%s's grade", selectedGrade.getStudent().getFirstName());
+            System.out.printf("Modifying student %s's grade\n", selectedGrade.getStudent().getUserId());
+            //Rest of code to be added here
         }
         else {
             //selectedGrade is null so raise alert
