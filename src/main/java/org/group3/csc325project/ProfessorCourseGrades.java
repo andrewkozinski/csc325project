@@ -6,11 +6,13 @@ import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import course.Grade;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import user.Student;
 
 import java.util.List;
@@ -48,7 +50,7 @@ public class ProfessorCourseGrades {
         currentCourse = ProfessorCoursesController.getSelectedCourse();
 
         //This label can be removed later, made it for testing purposes
-        courseLabel.setText(String.format("Course grades for: %s (%s)", currentCourse.getCourseName(), currentCourse.getCourseCode()));
+        courseLabel.setText(String.format("Student grades for: %s (%s)", currentCourse.getCourseName(), currentCourse.getCourseCode()));
 
         //Now associate each column with something in a Grade obj
         studentFirstNameColumn.setCellValueFactory(cellData -> {
@@ -61,16 +63,7 @@ public class ProfessorCourseGrades {
         });
         studentGradeColumn.setCellValueFactory(new PropertyValueFactory<>("grade"));
 
-        //Test case, remove later
-        Student stuartDent = new Student();
-        stuartDent.setFirstName("Stuart");
-        stuartDent.setLastName("Dent");
-        Grade test = new Grade();
-        test.setStudent(stuartDent);
-        test.setCourse(currentCourse);
-        test.setGrade(95.45);
-        gradesTable.getItems().add(test);
-
+        //Now read firebase for grades
         handleReadFirebase();
     }
 
@@ -129,6 +122,20 @@ public class ProfessorCourseGrades {
         }
 
 
+    }
+
+    /**
+     * Handles the user selecting an item in the grades TableView
+     * Updates the selectedItem variable
+     * @param event mouse click event
+     */
+    public void handleGradesTableMouseClick(MouseEvent event) {
+        ObservableList<Grade> gradeItems = gradesTable.getItems();
+        int selectedIndex = gradesTable.getSelectionModel().getSelectedIndex();
+        if(selectedIndex >= 0 && selectedIndex < gradeItems.size()) {
+            selectedGrade = gradeItems.get(selectedIndex);
+            System.out.printf("Selected grade: %s for Student: %s %s\n", selectedGrade.getGrade(), selectedGrade.getStudent().getFirstName(), selectedGrade.getStudent().getLastName());
+        }
     }
 
 }
