@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import user.Student;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -107,7 +108,10 @@ public class ProfessorCourseGrades {
                         studentGrade.setGrade(gradeVal);
                     }
                     else {
-                        studentGrade.setGrade(100);
+                        double defaultGrade = 100;
+                        studentGrade.setGrade(defaultGrade);
+                        //Make sure to modify DB to make sure that grades are consistent
+                        modifyFirebaseGrade(studentSnapshot.getString("UserId"), defaultGrade);
                     }
 
                     //Add remaining member values and add to table
@@ -131,11 +135,39 @@ public class ProfessorCourseGrades {
         if(selectedGrade != null) {
             System.out.printf("Modifying student %s's grade\n", selectedGrade.getStudent().getUserId());
             //Rest of code to be added here
+
         }
         else {
             //selectedGrade is null so raise alert
             raiseAlert("No Grade Selected", "Please select a grade to modify");
         }
+    }
+
+    /**
+     * Method that handles modifying the grade in Firebase
+     */
+    private void modifyFirebaseGrade(String userId, double newGrade) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference studentsCollection = db.collection("Student");
+
+        ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", userId).get();
+
+        try {
+            List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
+            if(!studentDocs.isEmpty()) {
+                DocumentSnapshot studentSnapshot = studentDocs.getFirst();
+
+                Map<String, Map<String, Object>> update = (Map<String, Map<String, Object>>) studentSnapshot.get("EnrolledCourses");
+                update.get(currentCourse.getCourseCRN()).put("Grade", newGrade);
+
+                DocumentReference studentRef = studentSnapshot.getReference();
+                studentRef.update("EnrolledCourses", update);
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 
