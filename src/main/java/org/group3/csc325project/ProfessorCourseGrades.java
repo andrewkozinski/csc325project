@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.raiseAlert;
+
 public class ProfessorCourseGrades {
 
     //Table to display student grades
@@ -94,6 +96,7 @@ public class ProfessorCourseGrades {
                     student.setLastName(studentSnapshot.getString("LastName"));
                     student.setUserId(studentSnapshot.getString("UserId"));
                     student.setMajor(studentSnapshot.getString("Major"));
+                    student.setUserId(studentSnapshot.getString("UserId"));
 
                     //Get and read the Enrolled courses map, we will need the grade from here
                     Map<String, Map<String, Object>> enrolled = (Map<String, Map<String, Object>>) studentSnapshot.get("EnrolledCourses");
@@ -117,12 +120,23 @@ public class ProfessorCourseGrades {
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
+        }//end for
 
+    } //end - readFirebase
 
+    /**
+     * Button to handle modifying a Grade
+     */
+    public void handleModifyGradeButton() {
+        if(selectedGrade != null) {
+            System.out.printf("Modifying student '%s's grade", selectedGrade.getStudent().getFirstName());
         }
-
-
+        else {
+            //selectedGrade is null so raise alert
+            raiseAlert("No Grade Selected", "Please select a grade to modify");
+        }
     }
+
 
     /**
      * Handles the user selecting an item in the grades TableView
