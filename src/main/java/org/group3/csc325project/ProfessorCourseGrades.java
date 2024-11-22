@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import user.Student;
@@ -134,8 +135,19 @@ public class ProfessorCourseGrades {
     public void handleModifyGradeButton() {
         if(selectedGrade != null) {
             System.out.printf("Modifying student %s's grade\n", selectedGrade.getStudent().getUserId());
-            //Rest of code to be added here
-
+            //Should text input dialog
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Modify Grade");
+            dialog.setHeaderText(String.format("Modifying %s's grade", selectedGrade.getStudent().getFirstName()));
+            dialog.setContentText("Enter grade to modify");
+            String inputGrade = dialog.showAndWait().orElse(null);
+            if(inputGrade != null && !inputGrade.trim().isEmpty()) {
+                double grade = Double.parseDouble(inputGrade);
+                //Update object grade
+                selectedGrade.setGrade(grade);
+                //Update grade in Firebase
+                modifyFirebaseGrade(selectedGrade.getStudent().getUserId(), grade);
+            }
         }
         else {
             //selectedGrade is null so raise alert
@@ -162,6 +174,7 @@ public class ProfessorCourseGrades {
 
                 DocumentReference studentRef = studentSnapshot.getReference();
                 studentRef.update("EnrolledCourses", update);
+                gradesTable.refresh();
             }
 
         } catch (InterruptedException | ExecutionException e) {
