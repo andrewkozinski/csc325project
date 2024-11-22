@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import user.Student;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class ProfessorCourseGrades {
@@ -78,11 +79,53 @@ public class ProfessorCourseGrades {
      */
     private void handleReadFirebase() {
 
-        //The Course collection in Firebase itself doesn't keep track of what Students are registered
-        //Instead we have to read through the Student collection and see which Students registered
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference studentsCollection = db.collection("Student");
 
-        for(String stuart: currentCourse.getEnrolledStudents()) {
-            System.out.println(stuart);
+        //For each student enrolled, read their grades
+        for(String studentId: currentCourse.getEnrolledStudents()) {
+
+            ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", studentId).get();
+            try {
+                List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
+
+                if (!studentDocs.isEmpty()) {
+                    DocumentSnapshot studentSnapshot = studentDocs.getFirst();
+
+                    //Grade object that we will put information inside of
+                    Grade studentGrade = new Grade();
+
+                    //New Student instance
+                    Student student = new Student();
+                    student.setFirstName(studentSnapshot.getString("FirstName"));
+                    student.setLastName(studentSnapshot.getString("LastName"));
+                    student.setUserId(studentSnapshot.getString("UserId"));
+                    student.setMajor(studentSnapshot.getString("Major"));
+
+                    //Get and read the Enrolled courses map, we will need the grade from here
+                    Map<String, Map<String, Object>> enrolled = (Map<String, Map<String, Object>>) studentSnapshot.get("EnrolledCourses");
+
+                    //Set the grade value in studentGrade
+                    Double gradeVal = (Double) enrolled.get(currentCourse.getCourseCRN()).get("Grade");
+                    if(gradeVal != null) {
+                        studentGrade.setGrade(gradeVal);
+                    }
+                    else {
+                        studentGrade.setGrade(100);
+                    }
+
+                    //Add remaining member values and add to table
+                    studentGrade.setStudent(student);
+                    studentGrade.setCourse(currentCourse);
+                    gradesTable.getItems().add(studentGrade);
+
+                }
+
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+
+
         }
 
 
