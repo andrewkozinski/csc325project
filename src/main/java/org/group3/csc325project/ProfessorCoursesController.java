@@ -19,8 +19,10 @@ import user.Professor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.raiseAlert;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 import static org.group3.csc325project.SessionManager.getLoggedInUsername;
 
@@ -71,7 +73,7 @@ public class ProfessorCoursesController {
 
     //selectedCourse is the currently selected item from the TableView
     //Updated when user selects an item in the table view
-    private Course selectedCourse;
+    private static Course selectedCourse;
 
     /**
      * Runs when page is loaded. Gets courses a Professor is assigned to in the DB and adds them to a TableView on screen.
@@ -181,6 +183,12 @@ public class ProfessorCoursesController {
         returnCourse.setCurrentEnrolledCount(course.get("currentEnrolledCount", Integer.class));
         returnCourse.setCourseTextbook(course.getString("requiredTextbook"));
 
+        //Get the list of enrolled and waitlisted students
+        List<String> enrolled = (List<String>) course.get("enrolledStudents");
+        returnCourse.setEnrolledStudents(enrolled);
+        List<Map<String, Object>> waitlisted = (List<Map<String, Object>>) course.get("waitlistedStudents");
+        returnCourse.setWaitlistedStudents(waitlisted);
+
         //Now finally, return course instance (null if not found in DB)
         return returnCourse;
     }
@@ -200,18 +208,6 @@ public class ProfessorCoursesController {
         }
     }
 
-    /**
-     * Method that when called, displays an alert to the user
-     * @param title Title to be displayed in the alert
-     * @param message Messaged to be displayed in the alert
-     */
-    private void raiseAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
     /**
      * Simply sets the root back to the base professor area
@@ -219,6 +215,27 @@ public class ProfessorCoursesController {
      */
     public void backButton() {
         setRoot("professor");
+    }
+
+    /**
+     * Gets the currently selectedCourse
+     * Used in ProfessorCourseGrades to display grades from a specific course
+     * @return The selected course
+     */
+    public static Course getSelectedCourse() {
+        return selectedCourse;
+    }
+
+    /**
+     * Method to handle clicking the view grades button
+     * Will redirect the user to a page where all student grades from the selected course are displayed.
+     */
+    public void handleViewGradesButton() {
+        if(selectedCourse == null) {
+            raiseAlert("Course not selected", "Please select a course before trying to view grades");
+            return;
+        }
+        RegistrationApp.setRoot("professorgrades");
     }
 
 
