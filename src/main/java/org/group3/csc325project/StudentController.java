@@ -27,4 +27,12 @@ public class StudentController {
     public void goToSchedulePage() {
         setRoot("studentschedule");
     }
+
+    /**
+     * Upon call, switches scene to studentrequiredtextbooks.fxml
+     */
+    public void goToRequiredTextbooksPage() {
+        setRoot("studentrequiredtextbooks");
+    }
+
 }
