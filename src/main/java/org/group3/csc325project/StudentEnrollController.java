@@ -7,6 +7,7 @@ import course.Course;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import user.Student;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static org.group3.csc325project.RegistrationApp.raiseAlert;
@@ -64,15 +67,6 @@ public class StudentEnrollController {
     private TableColumn<Course, String> columnCourseCapacity;
     @FXML
     private TableColumn<Course, String> columnCourseWaitlist;
-    //TableView where Students enrolled in the selected course are displayed
-    @FXML
-    private TableView<Student> studentsTable;
-    //Column where the student name is displayed
-    @FXML
-    private TableColumn<Student, String> columnStudentName;
-    //Column where the student ID is displayed
-    @FXML
-    private TableColumn<Student, String> columnStudentID;
     //Currently selected course from the TableView
     private Course selectedCourse;
 
@@ -190,6 +184,91 @@ public class StudentEnrollController {
             return;
         }
         System.out.printf("Register button pressed, course %s is selected\n", selectedCourse.getCourseName());
+
+        if (selectedCourse.getCurrentEnrolledCount() < selectedCourse.getCapacity()) {
+            //If there is space, enroll the student directly
+            assignStudentToCourse(selectedCourse, SessionManager.getLoggedInUsername());
+        } else {
+            //If the course is at capacity, assign to waitlist instead
+            //assignStudentToWaitlist(selectedCourse, studentUserId.trim());
+        }
+
+    }
+
+    /**
+     * Helper method that registers the logged-in user to a course
+     * Method largely borrowed from Admin with some edits
+     * @param course Course to be registered to
+     * @param studentUserId The logged in students user id
+     */
+    private void assignStudentToCourse(Course course, String studentUserId) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference studentsCollection = db.collection("Student");
+        CollectionReference coursesCollection = db.collection("Course");
+        logger.info("Assigning student {} to course {}. Current enrolled count: {}, Capacity: {}", studentUserId, course.getCourseCRN(), course.getCurrentEnrolledCount(), course.getCapacity());
+        // Query the students collection for a student with the matching UserId
+        ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", studentUserId).get();
+        try {
+            List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
+            if (!studentDocs.isEmpty()) {
+                DocumentSnapshot studentSnapshot = studentDocs.getFirst();
+                DocumentReference studentRef = studentSnapshot.getReference();
+                // Prepare the enrollment details map with timestamp and status
+                Map<String, Object> enrollmentDetails = new HashMap<>();
+                enrollmentDetails.put("DateEnrolled", System.currentTimeMillis());
+                enrollmentDetails.put("EnrollmentStatus", "Active");
+                // Add or update the enrolled courses map in the student document
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                Map<String, Object> enrolledCourses;
+                if (enrolledCoursesObj instanceof Map) {
+                    enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
+                } else {
+                    enrolledCourses = new HashMap<>();
+                }
+                // Update the enrolled courses map
+                enrolledCourses.put(course.getCourseCRN(), enrollmentDetails);
+                coursesTable.refresh();
+                // Update the student document with enrolled courses
+                studentRef.update("EnrolledCourses", enrolledCourses);
+                ApiFuture<QuerySnapshot> courseQuery = coursesCollection.whereEqualTo("courseCRN", course.getCourseCRN()).get();
+                List<QueryDocumentSnapshot> courseDocs = courseQuery.get().getDocuments();
+                if (!courseDocs.isEmpty()) {
+                    DocumentReference courseRef = courseDocs.getFirst().getReference();
+                    // Update course capacity and increment the enrolled count
+                    course.incrementEnrolledCount();
+                    courseRef.update("currentEnrolledCount", course.getCurrentEnrolledCount());
+                    // add student ID to enrolled students list by combining
+                    courseRef.update("enrolledStudents", FieldValue.arrayUnion(studentUserId));
+                    // Add student to course's enrolled list locally for UI purposes
+                    course.getEnrolledStudents().add(studentUserId);
+                    logger.info("Student {} has been assigned to course {} successfully.", studentUserId, course.getCourseCRN());
+                    showAlert("Student " + studentUserId + " has been assigned to course " + course.getCourseCRN() + ".");
+                    coursesTable.refresh();
+                } else {
+                    logger.error("No course found with CRN: {}", course.getCourseCRN());
+                    showAlert("No course found with CRN: " + course.getCourseCRN());
+                }
+            } else {
+                logger.warn("Student ID not found: " + studentUserId);
+                showAlert("Student ID not found: " + studentUserId);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Error assigning student {} to course {}: ", studentUserId, course.getCourseCRN(), e);
+        }
+    }
+
+    /**
+     * Shows an alert with the given message when called
+     * Taken from CoursesController
+     * @author Yash
+     * @param message Message to be displayed
+     */
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Modify Course System");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     /**
