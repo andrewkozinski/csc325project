@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.raiseAlert;
+import static org.group3.csc325project.RegistrationApp.setRoot;
+
 /**
  * Controller for studentenroll.fxml. Handles the logic behind allowing a student to view and enroll in courses.
  */
@@ -180,6 +183,25 @@ public class StudentEnrollController {
             selectedCourse = courses.get(selectedIndex);
             logger.info("Selected course: {} - {}", selectedCourse.getCourseName(), selectedCourse.getProfessor());
         }
+    }
+
+    /**
+     * When called registers the logged in student to the selected course
+     */
+    public void handleRegisterButton() {
+        //Check if a course was actually selected
+        if(selectedCourse == null) {
+            raiseAlert("Error: Course not selected","Please select a course before attempting to register");
+            return;
+        }
+        System.out.printf("Register button pressed, course %s is selected", selectedCourse.getCourseName());
+    }
+
+    /**
+     * Method that switches scene to student.fxml
+     */
+    public void handleGoBackButton() {
+        setRoot("student");
     }
 
 }
