@@ -103,11 +103,6 @@ public class StudentEnrollController {
             return new SimpleStringProperty(String.valueOf(currentWaitlistCount));
         });
 
-        //Test add
-        Course test = new Course();
-        test.setCourseName("8k Game Programming");
-        coursesTable.getItems().add(test);
-
         // Reads Course collection in the Firestore database and adds those courses to the TableView
         handleReadFirebase();
 
