@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="831.0" stylesheets="@../../../CSS/tableviewstylings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.StudentScheduleController">
+   <children>
+      <TableView fx:id="coursesTable" layoutX="22.0" layoutY="78.0" maxHeight="-Infinity" onMouseClicked="#handleCoursesTableViewMouseClick" prefHeight="188.0" prefWidth="782.0">
+         <columns>
+            <TableColumn fx:id="columnCrn" prefWidth="50.40002363920212" text="CRN" />
+            <TableColumn fx:id="columnCourseCode" prefWidth="81.0" text="Course Code" />
+            <TableColumn fx:id="columnCourseName" prefWidth="89.0" text="Course Name" />
+            <TableColumn fx:id="columnInstructor" prefWidth="85.60002136230469" text="Instructor" />
+            <TableColumn fx:id="columnCredits" prefWidth="57.59991455078125" text="Credits" />
+            <TableColumn fx:id="columnCourseSchedule" prefWidth="115.0" text="Course Schedule" />
+            <TableColumn fx:id="columnCourseDays" prefWidth="89.0" text="Course Days" />
+            <TableColumn fx:id="columnCourseLocation" prefWidth="100.0" text="Course Location" />
+            <TableColumn fx:id="columnCourseTextbook" prefWidth="75.0" text="Textbook" />
+         </columns>
+      </TableView>
+      <Button layoutX="407.0" layoutY="292.0" mnemonicParsing="false" onAction="#handleGoBackButton" text="Back (Temp)" />
+      <Button layoutX="256.0" layoutY="292.0" mnemonicParsing="false" onAction="#handleDropCourseButton" text="Drop Course" />
+   </children>
+</AnchorPane>
