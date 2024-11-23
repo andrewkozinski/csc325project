@@ -29,13 +29,6 @@ public class StudentController {
     }
 
     /**
-     * Upon call, switches scene to studentrequiredtextbooks.fxml
-     */
-    public void goToRequiredTextbooksPage() {
-        setRoot("studentrequiredtextbooks");
-    }
-
-    /**
      * Upon call, switches scene to studentgrades.fxml
      */
     public void goToGradesPage() {

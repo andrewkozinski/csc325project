@@ -9,8 +9,7 @@
       <Label layoutX="47.0" layoutY="30.0" text="Student Scene" />
       <Button layoutX="37.0" layoutY="55.0" mnemonicParsing="false" onAction="#returnToLogin" text="Return to login" />
       <Button layoutX="183.0" layoutY="55.0" mnemonicParsing="false" onAction="#goToEnrollPage" text="Enroll in Course Page" />
-      <Button layoutX="381.0" layoutY="55.0" mnemonicParsing="false" onAction="#goToSchedulePage" text="View Schedule" />
-      <Button layoutX="58.0" layoutY="133.0" mnemonicParsing="false" onAction="#goToRequiredTextbooksPage" text="View Required Textbooks" />
-      <Button layoutX="312.0" layoutY="133.0" mnemonicParsing="false" onAction="#goToGradesPage" text="View Grades" />
+      <Button layoutX="341.0" layoutY="55.0" mnemonicParsing="false" onAction="#goToSchedulePage" text="View Schedule" />
+      <Button layoutX="206.0" layoutY="124.0" mnemonicParsing="false" onAction="#goToGradesPage" text="View Grades" />
    </children>
 </AnchorPane>
