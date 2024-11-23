@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.raiseAlert;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 import static org.group3.csc325project.SessionManager.getLoggedInUsername;
 
@@ -197,7 +198,11 @@ public class StudentScheduleController {
      * Method that handles dropping a selected course
      */
     public void handleDropCourseButton() {
-        System.out.println("Drop course button pressed");
+        if(selectedCourse == null) {
+            raiseAlert("Error: No course selected","Please select a course to drop");
+            return;
+        }
+        System.out.printf("Drop course button pressed with course %s selected\n", selectedCourse.getCourseName());
     }
 
 
