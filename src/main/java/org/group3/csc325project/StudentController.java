@@ -35,4 +35,11 @@ public class StudentController {
         setRoot("studentrequiredtextbooks");
     }
 
+    /**
+     * Upon call, switches scene to studentgrades.fxml
+     */
+    public void goToGradesPage() {
+        setRoot("studentgrades");
+    }
+
 }
