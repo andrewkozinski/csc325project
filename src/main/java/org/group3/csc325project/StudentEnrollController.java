@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -190,7 +191,7 @@ public class StudentEnrollController {
             assignStudentToCourse(selectedCourse, SessionManager.getLoggedInUsername());
         } else {
             //If the course is at capacity, assign to waitlist instead
-            //assignStudentToWaitlist(selectedCourse, studentUserId.trim());
+            assignStudentToWaitlist(selectedCourse, SessionManager.getLoggedInUsername());
         }
 
     }
@@ -242,7 +243,8 @@ public class StudentEnrollController {
                     // Add student to course's enrolled list locally for UI purposes
                     course.getEnrolledStudents().add(studentUserId);
                     logger.info("Student {} has been assigned to course {} successfully.", studentUserId, course.getCourseCRN());
-                    showAlert("Student " + studentUserId + " has been assigned to course " + course.getCourseCRN() + ".");
+                    //showAlert("Student " + studentUserId + " has been assigned to course " + course.getCourseCRN() + ".");
+                    showAlert(String.format("Successfully registered to course %s successfully.", course.getCourseCRN()));
                     coursesTable.refresh();
                 } else {
                     logger.error("No course found with CRN: {}", course.getCourseCRN());
@@ -254,6 +256,114 @@ public class StudentEnrollController {
             }
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error assigning student {} to course {}: ", studentUserId, course.getCourseCRN(), e);
+        }
+    }
+
+    /**
+     * Helper method that assigns a student to the waitlist
+     * Taken from CoursesController with minimal changes.
+     * @param course Course to be waitlisted for
+     * @param studentUserId The logged in student's id
+     */
+    private void assignStudentToWaitlist(Course course, String studentUserId) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference coursesCollection = db.collection("Course");
+        CollectionReference studentsCollection = db.collection("Student");
+        try {
+            //Query Firestore to find the course document with the given CRN
+            ApiFuture<QuerySnapshot> courseFuture = coursesCollection.whereEqualTo("courseCRN", course.getCourseCRN()).get();
+            List<QueryDocumentSnapshot> courseDocuments = courseFuture.get().getDocuments();
+            if (courseDocuments.isEmpty()) {
+                Platform.runLater(() -> showAlert("No course found with CRN: " + course.getCourseCRN()));
+                logger.error("No course found with CRN: {}", course.getCourseCRN());
+                return;
+            }
+            DocumentReference courseRef = courseDocuments.getFirst().getReference();
+
+            ApiFuture<QuerySnapshot> studentFuture = studentsCollection.whereEqualTo("UserId", studentUserId).get();
+            List<QueryDocumentSnapshot> studentDocuments = studentFuture.get().getDocuments();
+            if (studentDocuments.isEmpty()) {
+                Platform.runLater(() -> showAlert("No student found with UserId: " + studentUserId));
+                logger.error("No student found with UserId: {}", studentUserId);
+                return;
+            }
+            DocumentReference studentRef = studentDocuments.getFirst().getReference();
+
+            //redid logic, check if user is in a waitlist instead of simply reading both documents
+            boolean alreadyWaitlisted = db.runTransaction(transaction -> {
+                DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
+                Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
+                List<Map<String, Object>> waitlistedStudents;
+                if (waitlistedStudentsObj instanceof List) {
+                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
+                } else {
+                    waitlistedStudents = new ArrayList<>();
+                }
+
+                //Check if the user is already on the waitlist
+                return waitlistedStudents.stream()
+                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
+            }).get();
+
+            if (alreadyWaitlisted) {
+                Platform.runLater(() -> showAlert("Student " + studentUserId + " is already waitlisted for course " + course.getCourseName() + " (CRN: " + course.getCourseCRN() + ")"));
+                logger.warn("Student {} is already waitlisted for course {}", studentUserId, course.getCourseCRN());
+                return; // Exit the method to prevent dual notification output
+            }
+
+            //Add the student to the waitlist if not already waitlisted
+            db.runTransaction(transaction -> {
+                DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
+                Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
+                List<Map<String, Object>> waitlistedStudents;
+                if (waitlistedStudentsObj instanceof List) {
+                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
+                } else {
+                    waitlistedStudents = new ArrayList<>();
+                }
+
+                //Create a new waitlisted student entry
+                Map<String, Object> waitlistDetails = new HashMap<>();
+                waitlistDetails.put("DateWaitlisted", System.currentTimeMillis());
+                waitlistDetails.put("Status", "WAITLIST");
+
+                Map<String, Object> waitlistedStudentMap = new HashMap<>();
+                waitlistedStudentMap.put("studentUserId", studentUserId);
+                waitlistedStudentMap.put("details", waitlistDetails);
+
+                waitlistedStudents.add(waitlistedStudentMap);
+                transaction.update(courseRef, "waitlistedStudents", waitlistedStudents);
+                transaction.update(courseRef, "currentWaitlistCount", FieldValue.increment(1));
+
+                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                List<Map<String, Object>> enrolledCourses;
+                if (enrolledCoursesObj instanceof List) {
+                    enrolledCourses = (List<Map<String, Object>>) enrolledCoursesObj;
+                } else {
+                    enrolledCourses = new ArrayList<>();
+                }
+
+                Map<String, Object> enrolledCourseDetails = new HashMap<>();
+                enrolledCourseDetails.put("courseCRN", course.getCourseCRN());
+                enrolledCourseDetails.put("status", "WAITLIST");
+                enrolledCourseDetails.put("DateWaitlisted", System.currentTimeMillis());
+
+                enrolledCourses.add(enrolledCourseDetails);
+                transaction.update(studentRef, "EnrolledCourses", enrolledCourses);
+
+                return null;
+            }).get();
+
+            course.incrementWaitlistCount();
+            Platform.runLater(() -> {
+                coursesTable.refresh();
+                showAlert("Student " + studentUserId + " was successfully added to waitlist for course " + course.getCourseName() + " (CRN: " + course.getCourseCRN() + ")");
+            });
+            logger.info("Student {} successfully added to waitlist for course {}", studentUserId, course.getCourseCRN());
+        } catch (Exception e) {
+            Platform.runLater(() -> showAlert("Failed to add student " + studentUserId + " to waitlist: " + e.getMessage()));
+            logger.error("Failed to add student {} to waitlist for course {}: {}", studentUserId, course.getCourseCRN(), e.getMessage() + e);
         }
     }
 
