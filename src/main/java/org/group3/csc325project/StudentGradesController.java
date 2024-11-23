@@ -22,7 +22,7 @@ import static org.group3.csc325project.RegistrationApp.raiseAlert;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 
 /**
- * Controller for studentgrades.fxml, gets the students grades
+ * Controller for studentgrades.fxml, gets the students grades and displays them in a TableView
  */
 public class StudentGradesController {
 
