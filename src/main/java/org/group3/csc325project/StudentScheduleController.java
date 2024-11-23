@@ -209,8 +209,6 @@ public class StudentScheduleController {
         student.setUserId(getLoggedInUsername());
         student.setUsername(getLoggedInUsername());
 
-        //WARNING: this currently does not work as intended, completely removes all courses a student is enrolled in
-        //Temporarily commented out to avoid issues
         removeStudentFromCourse(selectedCourse, student);
     }
 
