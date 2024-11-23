@@ -58,6 +58,8 @@ public class StudentScheduleController {
     //Column where the room a course takes place is displayed
     @FXML
     private TableColumn<Course, String> columnCourseLocation;
+    @FXML
+    private TableColumn<Course, String> columnCourseTextbook;
     //Currently selected course from the TableView
     private Course selectedCourse;
 
@@ -77,6 +79,7 @@ public class StudentScheduleController {
         columnCourseSchedule.setCellValueFactory(new PropertyValueFactory<>("courseTime"));
         columnCourseDays.setCellValueFactory(new PropertyValueFactory<>("courseDays"));
         columnCourseLocation.setCellValueFactory(new PropertyValueFactory<>("courseLocation"));
+        columnCourseTextbook.setCellValueFactory(new PropertyValueFactory<>("courseTextbook"));
 
         handleReadFirebase();
     }
@@ -154,6 +157,7 @@ public class StudentScheduleController {
             course.setCredits(document.getLong("credits").intValue());
             course.setCapacity(document.getLong("capacity").intValue());
             course.setCurrentEnrolledCount(document.getLong("currentEnrolledCount").intValue());
+            course.setCourseTextbook(document.getString("courseTextbook"));
             // Get the professor reference
             DocumentReference professorRef = document.get("Professor", DocumentReference.class);
             if (professorRef != null) {

@@ -18,6 +18,7 @@
             <TableColumn fx:id="columnCourseSchedule" prefWidth="115.0" text="Course Schedule" />
             <TableColumn fx:id="columnCourseDays" prefWidth="89.0" text="Course Days" />
             <TableColumn fx:id="columnCourseLocation" prefWidth="100.0" text="Course Location" />
+            <TableColumn fx:id="columnCourseTextbook" prefWidth="75.0" text="Textbook" />
          </columns>
       </TableView>
       <Button layoutX="407.0" layoutY="292.0" mnemonicParsing="false" onAction="#handleGoBackButton" text="Back (Temp)" />
