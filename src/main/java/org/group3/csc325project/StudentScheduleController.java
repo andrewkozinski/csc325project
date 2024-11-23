@@ -111,9 +111,6 @@ public class StudentScheduleController {
     private void handleReadFirebase() {
         Firestore db = FirestoreClient.getFirestore();
 
-        //ArrayList where we'll put all the course CRNs of what courses a student is registered to
-        ArrayList<String> crnList;
-
         //Get information about the currently logged in Student
         ApiFuture<QuerySnapshot> studentQuery = db.collection("Student").whereEqualTo("Username", getLoggedInUsername()).get();
 
