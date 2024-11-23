@@ -7,6 +7,7 @@ import course.Course;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Student;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static org.group3.csc325project.RegistrationApp.raiseAlert;
@@ -203,8 +201,84 @@ public class StudentScheduleController {
             return;
         }
         System.out.printf("Drop course button pressed with course %s selected\n", selectedCourse.getCourseName());
+
+        //Put user id into a student obj
+        Student student = new Student();
+        student.setUserId(getLoggedInUsername());
+        student.setUsername(getLoggedInUsername());
+
+        //WARNING: this currently does not work as intended, completely removes all courses a student is enrolled in
+        //Temporarily commented out to avoid issues
+        //removeStudentFromCourse(selectedCourse, student);
     }
 
+    /**
+     * Helper method that handles removing the logged in student from a course
+     * Taken from CoursesController with minimal changes
+     * @param course Course to be dropped
+     * @param student Student dropping the course
+     */
+    private void removeStudentFromCourse(Course course, Student student) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference studentsCollection = db.collection("Student");
+        try {
+            boolean wasEnrolled = course.getEnrolledStudents().remove(student.getUserId());
+            //Update counts based on whether the student was enrolled
+            if (wasEnrolled) {
+                course.decrementEnrolledCount();
+            } else {
+                //If the student was not found, display a message and return early
+                showAlert("Student not found in course enrollment!");
+                return;
+            }
+            CollectionReference coursesCollection = db.collection("Course");
+            ApiFuture<QuerySnapshot> courseQuery = coursesCollection.whereEqualTo("courseCRN", course.getCourseCRN()).get();
+            List<QueryDocumentSnapshot> courseDocs = courseQuery.get().getDocuments();
+            if (!courseDocs.isEmpty()) {
+                DocumentReference courseRef = courseDocs.getFirst().getReference();
+                //Update Firestore course document
+                Map<String, Object> updatedData = new HashMap<>();
+                updatedData.put("currentEnrolledCount", course.getCurrentEnrolledCount());
+                updatedData.put("enrolledStudents", course.getEnrolledStudents());
+                courseRef.update(updatedData);
+            }
+            //Update the student document to remove the course from enrolled courses
+            ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", student.getUserId()).get();
+            List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
+            if (!studentDocs.isEmpty()) {
+                DocumentReference studentRef = studentDocs.getFirst().getReference();
+                //Update Firestore student document
+                Object existingEnrolledCourses = studentDocs.getFirst().get("EnrolledCourses");
+                List<Map<String, Object>> enrolledCourses;
+                if (existingEnrolledCourses instanceof List) {
+                    enrolledCourses = (List<Map<String, Object>>) existingEnrolledCourses;
+                } else {
+                    enrolledCourses = new ArrayList<>();
+                }
+                //Remove the course from enrolled courses in the student's document
+                enrolledCourses.removeIf(courseEntry -> course.getCourseCRN().equals(courseEntry.get("courseCRN")));
+                studentRef.update("EnrolledCourses", enrolledCourses);
+            }
+            showAlert("Student " + student.getUserId() + " has been removed from course " + course.getCourseCRN() + ".");
+            coursesTable.refresh();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Error removing student {} from course {}: ", student.getUserId(), course.getCourseCRN(), e);
+        }
+    }
+
+    /**
+     * Shows an alert with the given message when called
+     * Taken from CoursesController
+     * @author Yash
+     * @param message Message to be displayed
+     */
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Modify Course System");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     /**
      * Method that switches scene to student.fxml
