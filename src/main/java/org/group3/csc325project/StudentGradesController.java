@@ -91,7 +91,7 @@ public class StudentGradesController {
 
                 //Now we need to get information about all the courses a student is enrolled in and put that information inside a grade object
                 //I just call a helper method to do this
-                List<Grade> enrolledCourseInformation = handleGetCourseInformation(student, enrolled);
+                List<Grade> enrolledCourseInformation = handleGetCourseInformation(student, enrolled, studentSnapshot);
                 //Now add the list of Grade objects to the table
                 gradesTable.getItems().addAll(enrolledCourseInformation);
             }
@@ -106,7 +106,7 @@ public class StudentGradesController {
      * Helper method that will read the CRNs in a Student documents EnrolledCourses field and get information about the courses from Firestore and then store that information in a Course object
      * @return List of Grade objects
      */
-    private List<Grade> handleGetCourseInformation(Student student, Map<String, Map<String, Object>> enrolled) {
+    private List<Grade> handleGetCourseInformation(Student student, Map<String, Map<String, Object>> enrolled, DocumentSnapshot studentSnapshot) {
         //Initialize the ArrayList that we will use
         List<Grade> enrolledCourseInformation = new ArrayList<>();
 
@@ -118,10 +118,6 @@ public class StudentGradesController {
             //Set the current student
             grade.setStudent(student);
 
-            //Set the grade value in studentGrade
-            Double gradeVal = (Double) enrolled.get(courseCrn).get("Grade");
-            //Set that grade value in the grade object
-            grade.setGrade(gradeVal);
 
             //Now we will need to get course information from Firebase
             Course course = getCourseFromFirebase(courseCrn);
@@ -132,6 +128,20 @@ public class StudentGradesController {
                 course = new Course();
                 course.setCourseCRN(courseCrn);
                 course.setCourseName("ERROR");
+            }
+
+            //Set the grade value in studentGrade
+            Double gradeVal = (Double) enrolled.get(courseCrn).get("Grade");
+
+            //Set that grade value in the grade object
+            if(gradeVal != null) {
+                grade.setGrade(gradeVal);
+            }
+            else {
+                double defaultGrade = 100;
+                grade.setGrade(defaultGrade);
+                //Make sure to modify DB to make sure that grades are consistent
+                modifyFirebaseGrade(studentSnapshot.getString("UserId"), defaultGrade, course);
             }
 
             //Now set the course
@@ -175,6 +185,35 @@ public class StudentGradesController {
         }
 
         return course;
+    }
+
+    /**
+     * Method that handles modifying the grade in Firebase
+     * Used for if a student does not have a course grade set yet, just sets grade to default (100)
+     */
+    private void modifyFirebaseGrade(String userId, double newGrade, Course currentCourse) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference studentsCollection = db.collection("Student");
+
+        ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", userId).get();
+
+        try {
+            List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
+            if(!studentDocs.isEmpty()) {
+                DocumentSnapshot studentSnapshot = studentDocs.getFirst();
+
+                Map<String, Map<String, Object>> update = (Map<String, Map<String, Object>>) studentSnapshot.get("EnrolledCourses");
+                update.get(currentCourse.getCourseCRN()).put("Grade", newGrade);
+
+                DocumentReference studentRef = studentSnapshot.getReference();
+                studentRef.update("EnrolledCourses", update);
+                gradesTable.refresh();
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
