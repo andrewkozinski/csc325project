@@ -189,7 +189,7 @@ public class StudentEnrollController {
             raiseAlert("Error: Course not selected","Please select a course before attempting to register");
             return;
         }
-        System.out.printf("Register button pressed, course %s is selected", selectedCourse.getCourseName());
+        System.out.printf("Register button pressed, course %s is selected\n", selectedCourse.getCourseName());
     }
 
     /**
