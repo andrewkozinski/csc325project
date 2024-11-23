@@ -1,5 +1,8 @@
 package org.group3.csc325project;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
@@ -12,7 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Student;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
 import static org.group3.csc325project.RegistrationApp.setRoot;
+import static org.group3.csc325project.SessionManager.getLoggedInUsername;
 
 /**
  * Controller studentschedule.fxml. Handles the logic behind allowing a student to view what courses they're registered for
@@ -99,8 +109,112 @@ public class StudentScheduleController {
      * Helper method that reads Firebase for any courses a student is enrolled in
      */
     private void handleReadFirebase() {
+        Firestore db = FirestoreClient.getFirestore();
+
+        //ArrayList where we'll put all the course CRNs of what courses a student is registered to
+        ArrayList<String> crnList;
+
+        //Get information about the currently logged in Student
+        ApiFuture<QuerySnapshot> studentQuery = db.collection("Student").whereEqualTo("Username", getLoggedInUsername()).get();
+
+        try {
+            QuerySnapshot studentSnapshot = studentQuery.get();
+
+            if(!studentSnapshot.isEmpty()) {
+                DocumentSnapshot studentDoc = studentSnapshot.getDocuments().get(0);
+
+                Map<String, Map<String, Object>> enrolledCourses = (Map<String, Map<String, Object>>) studentDoc.get("EnrolledCourses");
+
+                //Now get each course and stick it in the TableView
+                handleGetCourses(enrolledCourses.keySet());
+
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    } // end - handleReadFirebase
+
+    /**
+     * Helper method which will get all the courses a student is registered for from Firebase and add them to the TableView
+     * @param crnSet set containing the CRNs passed in
+     */
+    private void handleGetCourses(Set<String> crnSet) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference coursesCollection = db.collection("Course");
+
+        //Put the set in an ArrayList
+        List<String> crnList = new ArrayList<>(crnSet);
+
+        //Get any courses that have a matching CRN
+        ApiFuture<QuerySnapshot> future = coursesCollection.whereIn("courseCRN", crnList).get();
+
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            //Now read through the documents and put the information in a course document
+            //Just calls a helper method to do this
+            for (QueryDocumentSnapshot document : documents) {
+                documentToCourseInstance(document);
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
 
     }
+
+    /**
+     * Helper method that converts a course document to a course object instance and adds it to the TableView
+     */
+    private void documentToCourseInstance(QueryDocumentSnapshot document) {
+        try {
+            Course course = document.toObject(Course.class);
+            course.setCourseCRN(document.getString("courseCRN"));
+            course.setCourseCode(document.getString("courseCode"));
+            course.setCourseName(document.getString("courseName"));
+            course.setCourseDays(document.getString("courseDays"));
+            course.setCourseTime(document.getString("courseTime"));
+            course.setCourseLocation(document.getString("courseLocation"));
+            course.setCredits(document.getLong("credits").intValue());
+            course.setCapacity(document.getLong("capacity").intValue());
+            course.setCurrentEnrolledCount(document.getLong("currentEnrolledCount").intValue());
+            // Get the professor reference
+            DocumentReference professorRef = document.get("Professor", DocumentReference.class);
+            if (professorRef != null) {
+                // Resolve professor reference to get the professor name
+                ApiFuture<DocumentSnapshot> professorFuture = professorRef.get();
+                DocumentSnapshot professorDocument = professorFuture.get();
+                if (professorDocument.exists()) {
+                    String firstName = professorDocument.getString("FirstName");
+                    String lastName = professorDocument.getString("LastName");
+                    if (firstName != null && lastName != null) {
+                        course.getProfessor().setFirstName(firstName);
+                        course.getProfessor().setLastName(lastName);
+                        String fullName = firstName + " " + lastName;
+                        course.setProfessorName(fullName); // Set the full professor name
+                    } else {
+                        System.err.println("Warning: Missing first name or last name for professor with ID: " + professorRef.getId());
+                    }
+                } else {
+                    System.err.println("Warning: No professor found with ID: " + professorRef.getId());
+                }
+                // Set the professor reference in the course
+                course.setProfessorReference(professorRef);
+            } else {
+                System.err.println("Warning: No professor reference found for course: " + course.getCourseCRN());
+            }
+
+            //Now add the course to the TableView
+            coursesTable.getItems().add(course);
+
+        } catch(InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+    } // end - documentToCourseInstance
 
     /**
      * Method that handles dropping a selected course
