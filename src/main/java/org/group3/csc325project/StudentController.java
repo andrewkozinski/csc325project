@@ -1,5 +1,7 @@
 package org.group3.csc325project;
 
+import static org.group3.csc325project.RegistrationApp.setRoot;
+
 /**
  * Controller for student.fxml, handles user interactions and updating the UI based on student actions.
  */
@@ -10,5 +12,12 @@ public class StudentController {
      */
     public void returnToLogin() {
         RegistrationApp.returnToLogin();
+    }
+
+    /**
+     * Upon call, switches scene to studentenroll.fxml
+     */
+    public void goToEnrollPage() {
+        setRoot("studentenroll");
     }
 }
