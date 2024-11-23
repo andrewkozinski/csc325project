@@ -100,8 +100,10 @@ public class StudentScheduleController {
 
                 Map<String, Map<String, Object>> enrolledCourses = (Map<String, Map<String, Object>>) studentDoc.get("EnrolledCourses");
 
-                //Now get each course and stick it in the TableView
-                handleGetCourses(enrolledCourses.keySet());
+                if(enrolledCourses != null && enrolledCourses.size() > 0) {
+                    //Now get each course and stick it in the TableView
+                    handleGetCourses(enrolledCourses.keySet());
+                }
 
             }
 
@@ -209,7 +211,7 @@ public class StudentScheduleController {
 
         //WARNING: this currently does not work as intended, completely removes all courses a student is enrolled in
         //Temporarily commented out to avoid issues
-        //removeStudentFromCourse(selectedCourse, student);
+        removeStudentFromCourse(selectedCourse, student);
     }
 
     /**
@@ -249,14 +251,12 @@ public class StudentScheduleController {
                 DocumentReference studentRef = studentDocs.getFirst().getReference();
                 //Update Firestore student document
                 Object existingEnrolledCourses = studentDocs.getFirst().get("EnrolledCourses");
-                List<Map<String, Object>> enrolledCourses;
-                if (existingEnrolledCourses instanceof List) {
-                    enrolledCourses = (List<Map<String, Object>>) existingEnrolledCourses;
-                } else {
-                    enrolledCourses = new ArrayList<>();
-                }
+                //This needs to be a Map and not a list
+                //List<Map<String, Object>> enrolledCourses;
+                Map<String, Map<String, Object>> enrolledCourses = (Map<String, Map<String, Object>>) existingEnrolledCourses;
                 //Remove the course from enrolled courses in the student's document
-                enrolledCourses.removeIf(courseEntry -> course.getCourseCRN().equals(courseEntry.get("courseCRN")));
+                //enrolledCourses.removeIf(courseEntry -> course.getCourseCRN().equals(courseEntry.get("courseCRN")));
+                enrolledCourses.remove(course.getCourseCRN());
                 studentRef.update("EnrolledCourses", enrolledCourses);
             }
             showAlert("Student " + student.getUserId() + " has been removed from course " + course.getCourseCRN() + ".");
