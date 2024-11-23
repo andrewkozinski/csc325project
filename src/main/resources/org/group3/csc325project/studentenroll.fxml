@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.group3.csc325project.StudentEnrollController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="400.0" prefWidth="773.0" stylesheets="@../../../CSS/tableviewstylings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.StudentEnrollController">
+   <children>
+      <TableView fx:id="coursesTable" layoutX="48.0" layoutY="57.0" maxHeight="-Infinity" onMouseClicked="#handleCoursesTableViewMouseClick" prefHeight="188.0" prefWidth="676.0">
+         <columns>
+            <TableColumn fx:id="columnCrn" prefWidth="50.40002363920212" text="CRN" />
+            <TableColumn fx:id="columnCourseCode" prefWidth="81.0" text="Course Code" />
+            <TableColumn fx:id="columnCourseName" prefWidth="89.0" text="Course Name" />
+            <TableColumn fx:id="columnInstructor" prefWidth="85.60002136230469" text="Instructor" />
+            <TableColumn fx:id="columnCredits" prefWidth="57.59991455078125" text="Credits" />
+            <TableColumn fx:id="columnCourseSchedule" prefWidth="115.0" text="Course Schedule" />
+            <TableColumn fx:id="columnCourseDays" prefWidth="89.0" text="Course Days" />
+            <TableColumn fx:id="columnCourseLocation" prefWidth="100.0" text="Course Location" />
+            <TableColumn fx:id="columnCourseWaitlist" prefWidth="100.0" text="Course Waitlist" />
+            <TableColumn fx:id="columnCourseCapacity" prefWidth="83.0" text="Capacity" />
+         </columns>
+      </TableView>
+   </children>
 </AnchorPane>
