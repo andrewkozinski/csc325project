@@ -289,30 +289,8 @@ public class StudentEnrollController {
             }
             DocumentReference studentRef = studentDocuments.getFirst().getReference();
 
-            //redid logic, check if user is in a waitlist instead of simply reading both documents
-            boolean alreadyWaitlisted = db.runTransaction(transaction -> {
-                DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
-                Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
-                List<Map<String, Object>> waitlistedStudents;
-                if (waitlistedStudentsObj instanceof List) {
-                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
-                } else {
-                    waitlistedStudents = new ArrayList<>();
-                }
-
-                //Check if the user is already on the waitlist
-                return waitlistedStudents.stream()
-                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
-            }).get();
-
-            if (alreadyWaitlisted) {
-                Platform.runLater(() -> showAlert("Student " + studentUserId + " is already waitlisted for course " + course.getCourseName() + " (CRN: " + course.getCourseCRN() + ")"));
-                logger.warn("Student {} is already waitlisted for course {}", studentUserId, course.getCourseCRN());
-                return; // Exit the method to prevent dual notification output
-            }
-
-            //Add the student to the waitlist if not already waitlisted
             db.runTransaction(transaction -> {
+                //Read data for the course
                 DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
                 Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
                 List<Map<String, Object>> waitlistedStudents;
@@ -321,8 +299,21 @@ public class StudentEnrollController {
                 } else {
                     waitlistedStudents = new ArrayList<>();
                 }
+                //Check if the user is already waitlisted
+                boolean alreadyWaitlisted = waitlistedStudents.stream()
+                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
+                if (alreadyWaitlisted) {
+                    throw new IllegalStateException("Student is already waitlisted for the course.");
+                }
 
-                //Create a new waitlisted student entry
+                //Read data for the student
+                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                List<Map<String, Object>> enrolledCourses = enrolledCoursesObj instanceof List
+                        ? (List<Map<String, Object>>) enrolledCoursesObj
+                        : new ArrayList<>();
+
+                //Perform writes, add student to course waitlist
                 Map<String, Object> waitlistDetails = new HashMap<>();
                 waitlistDetails.put("DateWaitlisted", System.currentTimeMillis());
                 waitlistDetails.put("Status", "WAITLIST");
@@ -335,15 +326,7 @@ public class StudentEnrollController {
                 transaction.update(courseRef, "waitlistedStudents", waitlistedStudents);
                 transaction.update(courseRef, "currentWaitlistCount", FieldValue.increment(1));
 
-                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
-                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
-                List<Map<String, Object>> enrolledCourses;
-                if (enrolledCoursesObj instanceof List) {
-                    enrolledCourses = (List<Map<String, Object>>) enrolledCoursesObj;
-                } else {
-                    enrolledCourses = new ArrayList<>();
-                }
-
+                //Add course to student's enrolled courses list
                 Map<String, Object> enrolledCourseDetails = new HashMap<>();
                 enrolledCourseDetails.put("courseCRN", course.getCourseCRN());
                 enrolledCourseDetails.put("status", "WAITLIST");
