@@ -3,9 +3,9 @@ package org.group3.csc325project;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 
 /**
- * Controller for studentrequiredtextbooks.fxml
+ * Controller for studentgrades.fxml
  */
-public class StudentRequiredTextbooksController {
+public class StudentGradesController {
 
     /**
      * Method that switches scene to student.fxml
@@ -13,5 +13,4 @@ public class StudentRequiredTextbooksController {
     public void handleGoBackButton() {
         setRoot("student");
     }
-
 }
