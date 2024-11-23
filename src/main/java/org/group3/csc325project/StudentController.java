@@ -20,4 +20,11 @@ public class StudentController {
     public void goToEnrollPage() {
         setRoot("studentenroll");
     }
+
+    /**
+     * Upon call, switches scene to studentschedule.fxml
+     */
+    public void goToSchedulePage() {
+        setRoot("studentschedule");
+    }
 }
