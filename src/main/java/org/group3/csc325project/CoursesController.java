@@ -161,6 +161,8 @@ public class CoursesController {
                         String firstName = professorDocument.getString("FirstName");
                         String lastName = professorDocument.getString("LastName");
                         if (firstName != null && lastName != null) {
+                            course.getProfessor().setFirstName(firstName);
+                            course.getProfessor().setLastName(lastName);
                             String fullName = firstName + " " + lastName;
                             course.setProfessorName(fullName); // Set the full professor name
                         } else {
