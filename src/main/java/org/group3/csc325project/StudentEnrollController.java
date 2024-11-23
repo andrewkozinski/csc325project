@@ -1,5 +1,8 @@
 package org.group3.csc325project;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
@@ -11,6 +14,10 @@ import javafx.scene.input.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Student;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Controller for studentenroll.fxml. Handles the logic behind allowing a student to view and enroll in courses.
@@ -70,6 +77,7 @@ public class StudentEnrollController {
      * Runs when page is loaded. Each column in the TableView is associated with a variable in the Course class
      */
     public void initialize() {
+        //Associate each column with a Course object variable
         columnCrn.setCellValueFactory(new PropertyValueFactory<>("courseCRN"));
         columnCourseCode.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
         columnCourseName.setCellValueFactory(new PropertyValueFactory<>("courseName"));
@@ -106,7 +114,57 @@ public class StudentEnrollController {
      * Helper method which reads the Firestore course collection and adds those courses to the TableView
      */
     private void handleReadFirebase() {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference coursesCollection = db.collection("Course");
+        ApiFuture<QuerySnapshot> future = coursesCollection.get();
 
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            List<Course> courses = new ArrayList<>();
+            for (QueryDocumentSnapshot document : documents) {
+                Course course = document.toObject(Course.class);
+                course.setCourseCRN(document.getString("courseCRN"));
+                course.setCourseCode(document.getString("courseCode"));
+                course.setCourseName(document.getString("courseName"));
+                course.setCourseDays(document.getString("courseDays"));
+                course.setCourseTime(document.getString("courseTime"));
+                course.setCourseLocation(document.getString("courseLocation"));
+                course.setCredits(document.getLong("credits").intValue());
+                course.setCapacity(document.getLong("capacity").intValue());
+                course.setCurrentEnrolledCount(document.getLong("currentEnrolledCount").intValue());
+                // Get the professor reference
+                DocumentReference professorRef = document.get("Professor", DocumentReference.class);
+                if (professorRef != null) {
+                    // Resolve professor reference to get the professor name
+                    ApiFuture<DocumentSnapshot> professorFuture = professorRef.get();
+                    DocumentSnapshot professorDocument = professorFuture.get();
+                    if (professorDocument.exists()) {
+                        String firstName = professorDocument.getString("FirstName");
+                        String lastName = professorDocument.getString("LastName");
+                        if (firstName != null && lastName != null) {
+                            course.getProfessor().setFirstName(firstName);
+                            course.getProfessor().setLastName(lastName);
+                            String fullName = firstName + " " + lastName;
+                            course.setProfessorName(fullName); // Set the full professor name
+                        } else {
+                            System.err.println("Warning: Missing first name or last name for professor with ID: " + professorRef.getId());
+                        }
+                    } else {
+                        System.err.println("Warning: No professor found with ID: " + professorRef.getId());
+                    }
+                    // Set the professor reference in the course
+                    course.setProfessorReference(professorRef);
+                } else {
+                    System.err.println("Warning: No professor reference found for course: " + course.getCourseCRN());
+                }
+                courses.add(course);
+            }
+            // Set items to the courses table
+            coursesTable.getItems().setAll(courses);
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
