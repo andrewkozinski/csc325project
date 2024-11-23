@@ -58,20 +58,6 @@ public class StudentScheduleController {
     //Column where the room a course takes place is displayed
     @FXML
     private TableColumn<Course, String> columnCourseLocation;
-    //Column where the course capacity is displayed
-    @FXML
-    private TableColumn<Course, String> columnCourseCapacity;
-    @FXML
-    private TableColumn<Course, String> columnCourseWaitlist;
-    //TableView where Students enrolled in the selected course are displayed
-    @FXML
-    private TableView<Student> studentsTable;
-    //Column where the student name is displayed
-    @FXML
-    private TableColumn<Student, String> columnStudentName;
-    //Column where the student ID is displayed
-    @FXML
-    private TableColumn<Student, String> columnStudentID;
     //Currently selected course from the TableView
     private Course selectedCourse;
 
@@ -91,16 +77,6 @@ public class StudentScheduleController {
         columnCourseSchedule.setCellValueFactory(new PropertyValueFactory<>("courseTime"));
         columnCourseDays.setCellValueFactory(new PropertyValueFactory<>("courseDays"));
         columnCourseLocation.setCellValueFactory(new PropertyValueFactory<>("courseLocation"));
-        columnCourseCapacity.setCellValueFactory(cellData -> {
-            int capacity = cellData.getValue().getCapacity();
-            int enrolled = cellData.getValue().getCurrentEnrolledCount();
-            String returnString = String.format("%d/%d", enrolled, capacity);
-            return new SimpleStringProperty(returnString);
-        });
-        columnCourseWaitlist.setCellValueFactory(cellData -> {
-            int currentWaitlistCount = cellData.getValue().getCurrentWaitlistCount();
-            return new SimpleStringProperty(String.valueOf(currentWaitlistCount));
-        });
 
         handleReadFirebase();
     }
