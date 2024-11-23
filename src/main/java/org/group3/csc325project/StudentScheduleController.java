@@ -260,6 +260,7 @@ public class StudentScheduleController {
                 studentRef.update("EnrolledCourses", enrolledCourses);
             }
             showAlert("Student " + student.getUserId() + " has been removed from course " + course.getCourseCRN() + ".");
+            coursesTable.getItems().remove(course);
             coursesTable.refresh();
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error removing student {} from course {}: ", student.getUserId(), course.getCourseCRN(), e);
