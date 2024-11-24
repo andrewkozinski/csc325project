@@ -9,13 +9,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Professor;
 import user.Student;
+import javafx.geometry.Insets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +82,13 @@ public class CoursesController {
     private Course selectedCourse;
     private Student selectedStudent;
     @FXML
+    private HBox topHBox;
+    @FXML
     private AnchorPane coursesAnchorPane;
+    @FXML
+    private javafx.scene.image.ImageView adminCourseButton;
+    @FXML
+    private javafx.scene.image.ImageView adminAccountButton;
     /**
      * Runs when the page is loaded. Each column in the TableView is associated with a variable in the Course class
      */
@@ -161,8 +170,6 @@ public class CoursesController {
                         String firstName = professorDocument.getString("FirstName");
                         String lastName = professorDocument.getString("LastName");
                         if (firstName != null && lastName != null) {
-                            course.getProfessor().setFirstName(firstName);
-                            course.getProfessor().setLastName(lastName);
                             String fullName = firstName + " " + lastName;
                             course.setProfessorName(fullName); // Set the full professor name
                         } else {
@@ -816,8 +823,8 @@ public class CoursesController {
             }
             DocumentReference studentRef = studentDocuments.getFirst().getReference();
 
-            db.runTransaction(transaction -> {
-                //Read data for the course
+            //redid logic, check if user is in a waitlist instead of simply reading both documents
+            boolean alreadyWaitlisted = db.runTransaction(transaction -> {
                 DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
                 Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
                 List<Map<String, Object>> waitlistedStudents;
@@ -826,14 +833,13 @@ public class CoursesController {
                 } else {
                     waitlistedStudents = new ArrayList<>();
                 }
-                //Check if the user is already waitlisted
-                boolean alreadyWaitlisted = waitlistedStudents.stream()
-                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
-                if (alreadyWaitlisted) {
-                    throw new IllegalStateException("Student is already waitlisted for the course.");
-                }
 
-                //Read data for the student
+                //Check if the user is already on the waitlist
+                return waitlistedStudents.stream()
+                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
+            }).get();
+
+            //Read data for the student
                 DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
                 Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
                 /*
@@ -842,7 +848,18 @@ public class CoursesController {
                         : new ArrayList<>(); */
                 Map<String, Object> enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
 
-                //Perform writes, add student to course waitlist
+            //Add the student to the waitlist if not already waitlisted
+            db.runTransaction(transaction -> {
+                DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
+                Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
+                List<Map<String, Object>> waitlistedStudents;
+                if (waitlistedStudentsObj instanceof List) {
+                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
+                } else {
+                    waitlistedStudents = new ArrayList<>();
+                }
+
+                //Create a new waitlisted student entry
                 Map<String, Object> waitlistDetails = new HashMap<>();
                 waitlistDetails.put("DateWaitlisted", System.currentTimeMillis());
                 waitlistDetails.put("Status", "WAITLIST");
@@ -855,7 +872,15 @@ public class CoursesController {
                 transaction.update(courseRef, "waitlistedStudents", waitlistedStudents);
                 transaction.update(courseRef, "currentWaitlistCount", FieldValue.increment(1));
 
-                //Add course to student's enrolled courses list
+                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                List<Map<String, Object>> enrolledCourses;
+                if (enrolledCoursesObj instanceof List) {
+                    enrolledCourses = (List<Map<String, Object>>) enrolledCoursesObj;
+                } else {
+                    enrolledCourses = new ArrayList<>();
+                }
+
                 Map<String, Object> enrolledCourseDetails = new HashMap<>();
                 enrolledCourseDetails.put("courseCRN", course.getCourseCRN());
                 enrolledCourseDetails.put("EnrollmentStatus", "WAITLIST");
@@ -895,4 +920,6 @@ public class CoursesController {
     public void backButton() {
         setRoot("admin");
     }
+    public void coursesBackButton() {setRoot("courses");}
+    public void accountsBackButton() {setRoot("accounts");}
 }
