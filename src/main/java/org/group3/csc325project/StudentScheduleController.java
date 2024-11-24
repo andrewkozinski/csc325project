@@ -102,7 +102,18 @@ public class StudentScheduleController {
 
                 if(enrolledCourses != null && enrolledCourses.size() > 0) {
                     //Now get each course and stick it in the TableView
-                    handleGetCourses(enrolledCourses.keySet());
+                    //handleGetCourses(enrolledCourses.keySet());
+
+                    //Filter for courses with an enrollment status of "Active"
+                    //Reason for this filtering is that the student may be waitlisted for a course in the enrolledcourses field
+                    Set<String> activeCourses = new HashSet<>();
+                    for (Map.Entry<String, Map<String, Object>> entry : enrolledCourses.entrySet()) {
+                        if ("Active".equals(entry.getValue().get("EnrollmentStatus"))) {
+                            activeCourses.add(entry.getKey());
+                        }
+                    }
+                    // Now get each active course and stick it in the TableView
+                    handleGetCourses(activeCourses);
                 }
 
             }
