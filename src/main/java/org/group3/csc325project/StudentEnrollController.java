@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -98,9 +99,48 @@ public class StudentEnrollController {
             return new SimpleStringProperty(String.valueOf(currentWaitlistCount));
         });
 
+
+        // Set custom TableRow factory
+        coursesTable.setRowFactory(tv -> new TableRow<Course>() {
+            @Override
+            protected void updateItem(Course course, boolean empty) {
+                super.updateItem(course, empty);
+                if (course == null || empty) {
+                    setDisable(false);
+                } else {
+                    String studentUserId = SessionManager.getLoggedInUsername();
+                    setDisable(isStudentEnrolledInCourse(course, studentUserId));
+                }
+            }
+        });
+
         // Reads Course collection in the Firestore database and adds those courses to the TableView
         handleReadFirebase();
 
+    }
+
+    /**
+     * Helper method that checks if a student is enrolled in a course or not
+     * If a student is enrolled in a course, then the course will be disabled in the TableView
+     * @param course Course passed in
+     * @param studentUserId Student user id
+     * @return True if enrolled in course otherwise false
+     */
+    private boolean isStudentEnrolledInCourse(Course course, String studentUserId) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference studentsCollection = db.collection("Student");
+        ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", studentUserId).get();
+        try {
+            List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
+            if (!studentDocs.isEmpty()) {
+                DocumentSnapshot studentSnapshot = studentDocs.getFirst();
+                Map<String, Object> enrolledCourses = (Map<String, Object>) studentSnapshot.get("EnrolledCourses");
+                return enrolledCourses != null && enrolledCourses.containsKey(course.getCourseCRN());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
     /**
