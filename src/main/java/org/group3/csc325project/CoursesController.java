@@ -836,9 +836,11 @@ public class CoursesController {
                 //Read data for the student
                 DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
                 Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                /*
                 List<Map<String, Object>> enrolledCourses = enrolledCoursesObj instanceof List
                         ? (List<Map<String, Object>>) enrolledCoursesObj
-                        : new ArrayList<>();
+                        : new ArrayList<>(); */
+                Map<String, Object> enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
 
                 //Perform writes, add student to course waitlist
                 Map<String, Object> waitlistDetails = new HashMap<>();
@@ -856,10 +858,11 @@ public class CoursesController {
                 //Add course to student's enrolled courses list
                 Map<String, Object> enrolledCourseDetails = new HashMap<>();
                 enrolledCourseDetails.put("courseCRN", course.getCourseCRN());
-                enrolledCourseDetails.put("status", "WAITLIST");
+                enrolledCourseDetails.put("EnrollmentStatus", "WAITLIST");
                 enrolledCourseDetails.put("DateWaitlisted", System.currentTimeMillis());
 
-                enrolledCourses.add(enrolledCourseDetails);
+                //enrolledCourses.add(enrolledCourseDetails);
+                enrolledCourses.put(course.getCourseCRN(), enrolledCourseDetails);
                 transaction.update(studentRef, "EnrolledCourses", enrolledCourses);
 
                 return null;
