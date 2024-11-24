@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -98,9 +99,49 @@ public class StudentEnrollController {
             return new SimpleStringProperty(String.valueOf(currentWaitlistCount));
         });
 
+
+        //Set custom TableRow factory
+        //This will handle disabling a row from being clicked in the TableView if the student is already enrolled in the course
+        coursesTable.setRowFactory(tv -> new TableRow<Course>() {
+            @Override
+            protected void updateItem(Course course, boolean empty) {
+                super.updateItem(course, empty);
+                if (course == null || empty) {
+                    setDisable(false);
+                } else {
+                    String studentUserId = SessionManager.getLoggedInUsername();
+                    setDisable(isStudentEnrolledInCourse(course, studentUserId));
+                }
+            }
+        });
+
         // Reads Course collection in the Firestore database and adds those courses to the TableView
         handleReadFirebase();
 
+    }
+
+    /**
+     * Helper method that checks if a student is enrolled in a course or not
+     * If a student is enrolled in a course, then the course will be disabled in the TableView
+     * @param course Course passed in
+     * @param studentUserId Student user id
+     * @return True if enrolled in course otherwise false
+     */
+    private boolean isStudentEnrolledInCourse(Course course, String studentUserId) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference studentsCollection = db.collection("Student");
+        ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", studentUserId).get();
+        try {
+            List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
+            if (!studentDocs.isEmpty()) {
+                DocumentSnapshot studentSnapshot = studentDocs.getFirst();
+                Map<String, Object> enrolledCourses = (Map<String, Object>) studentSnapshot.get("EnrolledCourses");
+                return enrolledCourses != null && enrolledCourses.containsKey(course.getCourseCRN());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
     /**
@@ -289,30 +330,8 @@ public class StudentEnrollController {
             }
             DocumentReference studentRef = studentDocuments.getFirst().getReference();
 
-            //redid logic, check if user is in a waitlist instead of simply reading both documents
-            boolean alreadyWaitlisted = db.runTransaction(transaction -> {
-                DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
-                Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
-                List<Map<String, Object>> waitlistedStudents;
-                if (waitlistedStudentsObj instanceof List) {
-                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
-                } else {
-                    waitlistedStudents = new ArrayList<>();
-                }
-
-                //Check if the user is already on the waitlist
-                return waitlistedStudents.stream()
-                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
-            }).get();
-
-            if (alreadyWaitlisted) {
-                Platform.runLater(() -> showAlert("Student " + studentUserId + " is already waitlisted for course " + course.getCourseName() + " (CRN: " + course.getCourseCRN() + ")"));
-                logger.warn("Student {} is already waitlisted for course {}", studentUserId, course.getCourseCRN());
-                return; // Exit the method to prevent dual notification output
-            }
-
-            //Add the student to the waitlist if not already waitlisted
             db.runTransaction(transaction -> {
+                //Read data for the course
                 DocumentSnapshot courseSnapshot = transaction.get(courseRef).get();
                 Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
                 List<Map<String, Object>> waitlistedStudents;
@@ -321,8 +340,21 @@ public class StudentEnrollController {
                 } else {
                     waitlistedStudents = new ArrayList<>();
                 }
+                //Check if the user is already waitlisted
+                boolean alreadyWaitlisted = waitlistedStudents.stream()
+                        .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
+                if (alreadyWaitlisted) {
+                    throw new IllegalStateException("Student is already waitlisted for the course.");
+                }
 
-                //Create a new waitlisted student entry
+                //Read data for the student
+                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                List<Map<String, Object>> enrolledCourses = enrolledCoursesObj instanceof List
+                        ? (List<Map<String, Object>>) enrolledCoursesObj
+                        : new ArrayList<>();
+
+                //Perform writes, add student to course waitlist
                 Map<String, Object> waitlistDetails = new HashMap<>();
                 waitlistDetails.put("DateWaitlisted", System.currentTimeMillis());
                 waitlistDetails.put("Status", "WAITLIST");
@@ -335,15 +367,7 @@ public class StudentEnrollController {
                 transaction.update(courseRef, "waitlistedStudents", waitlistedStudents);
                 transaction.update(courseRef, "currentWaitlistCount", FieldValue.increment(1));
 
-                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
-                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
-                List<Map<String, Object>> enrolledCourses;
-                if (enrolledCoursesObj instanceof List) {
-                    enrolledCourses = (List<Map<String, Object>>) enrolledCoursesObj;
-                } else {
-                    enrolledCourses = new ArrayList<>();
-                }
-
+                //Add course to student's enrolled courses list
                 Map<String, Object> enrolledCourseDetails = new HashMap<>();
                 enrolledCourseDetails.put("courseCRN", course.getCourseCRN());
                 enrolledCourseDetails.put("status", "WAITLIST");

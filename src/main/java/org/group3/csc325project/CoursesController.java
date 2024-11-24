@@ -839,11 +839,14 @@ public class CoursesController {
                         .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
             }).get();
 
-            if (alreadyWaitlisted) {
-                Platform.runLater(() -> showAlert("Student " + studentUserId + " is already waitlisted for course " + course.getCourseName() + " (CRN: " + course.getCourseCRN() + ")"));
-                logger.warn("Student {} is already waitlisted for course {}", studentUserId, course.getCourseCRN());
-                return; // Exit the method to prevent dual notification output
-            }
+            //Read data for the student
+                DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                /*
+                List<Map<String, Object>> enrolledCourses = enrolledCoursesObj instanceof List
+                        ? (List<Map<String, Object>>) enrolledCoursesObj
+                        : new ArrayList<>(); */
+                Map<String, Object> enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
 
             //Add the student to the waitlist if not already waitlisted
             db.runTransaction(transaction -> {
@@ -880,10 +883,11 @@ public class CoursesController {
 
                 Map<String, Object> enrolledCourseDetails = new HashMap<>();
                 enrolledCourseDetails.put("courseCRN", course.getCourseCRN());
-                enrolledCourseDetails.put("status", "WAITLIST");
+                enrolledCourseDetails.put("EnrollmentStatus", "WAITLIST");
                 enrolledCourseDetails.put("DateWaitlisted", System.currentTimeMillis());
 
-                enrolledCourses.add(enrolledCourseDetails);
+                //enrolledCourses.add(enrolledCourseDetails);
+                enrolledCourses.put(course.getCourseCRN(), enrolledCourseDetails);
                 transaction.update(studentRef, "EnrolledCourses", enrolledCourses);
 
                 return null;
