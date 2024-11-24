@@ -29,6 +29,10 @@
     -fx-background-color: rgba(0, 120, 215, 0.4); /* Slightly darker blue for selected row with 40% transparency */
 }
 
+.table-view .cell:disabled {
+    -fx-background-color: rgba(108, 122, 137, 0.3); /* Light blue with 30% transparency */
+}
+
 .root {
     -fx-background-image: url("../Images/Atlantis_Background.png");
 }

@@ -100,7 +100,8 @@ public class StudentEnrollController {
         });
 
 
-        // Set custom TableRow factory
+        //Set custom TableRow factory
+        //This will handle disabling a row from being clicked in the TableView if the student is already enrolled in the course
         coursesTable.setRowFactory(tv -> new TableRow<Course>() {
             @Override
             protected void updateItem(Course course, boolean empty) {
