@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Admin;
@@ -17,6 +18,7 @@ import user.Professor;
 import user.Student;
 import user.User;
 
+import javax.swing.text.html.ImageView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,15 @@ public class AccountsController {
 
     @FXML
     private ChoiceBox<String> editDepartmentField, editClassificationField, editAccountTypeField;
+    @FXML
+    private HBox accountsHBox;
+    @FXML
+    private javafx.scene.image.ImageView adminAccountButton;
+    @FXML
+    private javafx.scene.image.ImageView adminCourseButton;
+    @FXML
+    private HBox adminTableBottonButtons;
+
 
     /**
      * Runs when page is loaded. Each column in the TableView is associated with a variable in the User class
@@ -355,5 +366,6 @@ public class AccountsController {
     public void backButton() {
         setRoot("admin");
     }
-
+    public void coursesBackButton() {setRoot("courses");}
+    public void accountsBackButton() {setRoot("accounts");}
 }

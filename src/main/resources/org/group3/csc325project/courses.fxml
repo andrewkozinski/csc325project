@@ -9,75 +9,80 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="coursesAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
-    <children>
-        <ImageView fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../Images/general_button_background.png" />
-            </image>
-        </ImageView>
-        <ImageView fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../Images/registrationSystem_header_no_user.png" />
-            </image>
-        </ImageView>
-        <ImageView fx:id="adminCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../Images/admin_Courses_button.png" />
-            </image>
-        </ImageView>
-        <ImageView fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../Images/admin_Account_button.png" />
-            </image>
-        </ImageView>
-        <TableView fx:id="coursesTable" layoutX="126.0" layoutY="63.0" maxHeight="-Infinity" onMouseClicked="#handleCoursesTableViewMouseClick" prefHeight="188.0" prefWidth="676.0" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="126.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="63.0">
-            <columns>
-                <TableColumn fx:id="columnCrn" prefWidth="50.40002363920212" text="CRN" />
-                <TableColumn fx:id="columnCourseCode" prefWidth="81.0" text="Course Code" />
-                <TableColumn fx:id="columnCourseName" prefWidth="89.0" text="Course Name" />
-                <TableColumn fx:id="columnInstructor" prefWidth="85.60002136230469" text="Instructor" />
-                <TableColumn fx:id="columnCredits" prefWidth="57.59991455078125" text="Credits" />
-                <TableColumn fx:id="columnCourseSchedule" prefWidth="115.0" text="Course Schedule" />
-                <TableColumn fx:id="columnCourseDays" prefWidth="89.0" text="Course Days" />
-                <TableColumn fx:id="columnCourseLocation" prefWidth="100.0" text="Course Location" />
-                <TableColumn fx:id="columnCourseWaitlist" prefWidth="100.0" text="Course Waitlist" />
-                <TableColumn fx:id="columnCourseCapacity" prefWidth="83.0" text="Capacity" />
-            </columns>
-        </TableView>
-        <HBox alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
-            <children>
-                <Button mnemonicParsing="false" onAction="#handleAddCourseButton" text="Add Course" />
-                <Button mnemonicParsing="false" onAction="#handleEditCourseButton" text="Edit Course" />
-                <Button mnemonicParsing="false" onAction="#assignCourseButton" text="Assign Course" />
-                <Button mnemonicParsing="false" onAction="#backButton" text="Back (temp button)" />
-            </children>
-        </HBox>
-        <TabPane layoutX="126.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="153.0" prefWidth="675.0">
-            <tabs>
-                <Tab fx:id="coursesEnrolllTab" styleClass="pre" text="Enrolled Students">
-                    <content>
+<VBox fx:id="adminVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../../../CSS/courses.css" fx:controller="org.group3.csc325project.CoursesController">
+   <children>
+      <AnchorPane fx:id="coursesAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
+         <children>
+            <ImageView fx:id="adminSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/general_button_background.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="adminHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/registrationSystem_header_no_user.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="adminCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" onMouseClicked="#coursesBackButton" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/admin_Courses_button.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="adminAccountButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="118.0" onMouseClicked="#accountsBackButton" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/admin_Account_button.png" />
+               </image>
+            </ImageView>
+            <TableView fx:id="coursesTable" layoutX="126.0" layoutY="63.0" maxHeight="-Infinity" onMouseClicked="#handleCoursesTableViewMouseClick" prefHeight="188.0" prefWidth="676.0" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="126.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="63.0">
+               <columns>
+                  <TableColumn fx:id="columnCrn" prefWidth="50.40002363920212" text="CRN" />
+                  <TableColumn fx:id="columnCourseCode" prefWidth="81.0" text="Course Code" />
+                  <TableColumn fx:id="columnCourseName" prefWidth="89.0" text="Course Name" />
+                  <TableColumn fx:id="columnInstructor" prefWidth="85.60002136230469" text="Instructor" />
+                  <TableColumn fx:id="columnCredits" prefWidth="57.59991455078125" text="Credits" />
+                  <TableColumn fx:id="columnCourseSchedule" prefWidth="115.0" text="Course Schedule" />
+                  <TableColumn fx:id="columnCourseDays" prefWidth="89.0" text="Course Days" />
+                  <TableColumn fx:id="columnCourseLocation" prefWidth="100.0" text="Course Location" />
+                  <TableColumn fx:id="columnCourseWaitlist" prefWidth="100.0" text="Course Waitlist" />
+                  <TableColumn fx:id="columnCourseCapacity" prefWidth="83.0" text="Capacity" />
+               </columns>
+            </TableView>
+            <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleAddCourseButton" text="Add Course" />
+                  <Button mnemonicParsing="false" onAction="#handleEditCourseButton" text="Edit Course" />
+                  <Button mnemonicParsing="false" onAction="#assignCourseButton" text="Assign Course" />
+                  <Button mnemonicParsing="false" onAction="#backButton" text="Back (temp button)" />
+               </children>
+            </HBox>
+            <TabPane fx:id="tabPane" layoutX="126.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="153.0" prefWidth="675.0">
+               <tabs>
+                  <Tab fx:id="coursesEnrolllTab" styleClass="pre" text="Enrolled Students">
+                     <content>
                         <TableView fx:id="studentsTable" onMouseClicked="#handleStudentsTableViewMouseClick" prefHeight="300.0" prefWidth="793.0">
-                            <columns>
-                                <TableColumn fx:id="columnStudentName" prefWidth="150.0" text="Student Name" />
-                                <TableColumn fx:id="columnStudentID" prefWidth="120.0" text="Student ID" />
-                            </columns>
+                           <columns>
+                              <TableColumn fx:id="columnStudentName" prefWidth="150.0" text="Student Name" />
+                              <TableColumn fx:id="columnStudentID" prefWidth="120.0" text="Student ID" />
+                           </columns>
                         </TableView>
-                    </content>
-                </Tab>
-                <Tab text="Waitlisted Students">
-                    <content>
+                     </content>
+                  </Tab>
+                  <Tab text="Waitlisted Students">
+                     <content>
                         <TableView fx:id="waitlistTable" onMouseClicked="#handleWaitlistTableViewMouseClick" prefHeight="300.0">
-                            <columns>
-                                <TableColumn fx:id="columnWaitlistStudentName" text="Student Name" />
-                                <TableColumn fx:id="columnWaitlistStudentID" text="Student ID" />
-                                <TableColumn fx:id="columnWaitlistDate" text="Date Waitlisted" />
-                            </columns>
+                           <columns>
+                              <TableColumn fx:id="columnWaitlistStudentName" text="Student Name" />
+                              <TableColumn fx:id="columnWaitlistStudentID" text="Student ID" />
+                              <TableColumn fx:id="columnWaitlistDate" text="Date Waitlisted" />
+                           </columns>
                         </TableView>
-                    </content>
-                </Tab>
-            </tabs>
-        </TabPane>
-    </children>
-</AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
