@@ -238,5 +238,16 @@ public class ProfessorCoursesController {
         RegistrationApp.setRoot("professorgrades");
     }
 
+    /**
+     * Method to handle adding a textbook to a course
+     */
+    public void handleAddTextbookButton() {
+        if(selectedCourse == null) {
+            raiseAlert("Course not selected", "Please select a course before trying to add a textbook");
+            return;
+        }
+        System.out.println("Add textbook stuff here");
+    }
+
 
 }

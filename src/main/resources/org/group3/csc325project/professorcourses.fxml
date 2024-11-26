@@ -20,7 +20,8 @@
             <TableColumn fx:id="columnCourseCapacity" prefWidth="60.7999267578125" text="Capacity" />
          </columns>
       </TableView>
-      <Button layoutX="424.0" layoutY="213.0" mnemonicParsing="false" onAction="#backButton" text="Go back (temporary)" AnchorPane.bottomAnchor="161.4" />
-      <Button layoutX="302.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleViewGradesButton" text="View Grades" AnchorPane.bottomAnchor="161.4" />
+      <Button layoutX="518.0" layoutY="225.0" mnemonicParsing="false" onAction="#backButton" text="Go back (temporary)" AnchorPane.bottomAnchor="149.4" />
+      <Button layoutX="218.0" layoutY="225.0" mnemonicParsing="false" onAction="#handleViewGradesButton" text="View Grades" AnchorPane.bottomAnchor="149.4" />
+      <Button layoutX="365.0" layoutY="225.0" mnemonicParsing="false" onAction="#handleAddTextbookButton" prefHeight="26.0" prefWidth="90.0" text="Add Textbook" AnchorPane.bottomAnchor="148.6" />
    </children>
 </AnchorPane>
