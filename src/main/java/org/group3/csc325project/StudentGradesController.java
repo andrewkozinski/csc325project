@@ -13,9 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import user.Student;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static org.group3.csc325project.RegistrationApp.raiseAlert;
@@ -110,8 +108,17 @@ public class StudentGradesController {
         //Initialize the ArrayList that we will use
         List<Grade> enrolledCourseInformation = new ArrayList<>();
 
+        //Make sure we only display courses a student is actually registered for
+        //Waitlisted courses should not be displayed
+        Set<String> activeCourses = new HashSet<>();
+        for (Map.Entry<String, Map<String, Object>> entry : enrolled.entrySet()) {
+            if ("Active".equals(entry.getValue().get("EnrollmentStatus"))) {
+                activeCourses.add(entry.getKey());
+            }
+        }
+
         //For each CRN in the EnrolledCourses map we need to get information about that course and put that information in a Grade object
-        for(String courseCrn : enrolled.keySet()) {
+        for(String courseCrn : activeCourses) {
             //Grade object that we'll add to the list
             Grade grade = new Grade();
 
