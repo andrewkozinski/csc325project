@@ -1,10 +1,7 @@
 package org.group3.csc325project;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import javafx.beans.property.SimpleStringProperty;
@@ -251,10 +248,35 @@ public class ProfessorCoursesController {
 
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Set Textbook");
-        dialog.setHeaderText("Assigning Student to Course: " + selectedCourse.getCourseCRN());
-        dialog.setContentText("Enter Student User ID:");
-        String studentUserId = dialog.showAndWait().orElse(null);
+        dialog.setHeaderText(String.format("Set the textbook for course %s (%s)", selectedCourse.getCourseName(), selectedCourse.getCourseCRN()));
+        dialog.setContentText("Enter Textbook Name:");
+        String textbookName = dialog.showAndWait().orElse(null);
 
+        if(textbookName == null || textbookName.isEmpty()) {
+            raiseAlert("Invalid Textbook Name", "Please enter a valid textbook name");
+            return;
+        }
+
+        //Update selectedCourse
+        selectedCourse.setCourseTextbook(textbookName);
+
+        //Now update Firebase
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference courseCollection = db.collection("Course");
+        ApiFuture<QuerySnapshot> courseFuture = courseCollection.whereEqualTo("courseCRN", selectedCourse.getCourseCRN()).get();
+
+        try {
+            QuerySnapshot courseSnapshot = courseFuture.get();
+            if(!courseSnapshot.isEmpty()) {
+                DocumentSnapshot courseDoc = courseSnapshot.getDocuments().get(0);
+                courseDoc.getReference().update("courseTextbook", textbookName);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            raiseAlert("Error Updating Textbook", "An error occurred while updating the textbook in the database");
+        }
+
+        //Now finally, call refresh on the TableView
+        assignedCoursesTable.refresh();
     }
 
 
