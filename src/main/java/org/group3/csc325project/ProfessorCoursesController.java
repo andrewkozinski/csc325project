@@ -69,6 +69,10 @@ public class ProfessorCoursesController {
     @FXML
     private TableColumn<Course,String> columnCourseCapacity;
 
+    //Column where the course textbook is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseTextbook;
+
     //selectedCourse is the currently selected item from the TableView
     //Updated when user selects an item in the table view
     private static Course selectedCourse;
@@ -96,6 +100,7 @@ public class ProfessorCoursesController {
             String returnString = String.format("%d/%d", enrolled, capacity);
             return new SimpleStringProperty(returnString);
         });
+        columnCourseTextbook.setCellValueFactory(new PropertyValueFactory<Course,String>("courseTextbook"));
 
         //This method call will get all the courses the logged in professor is assigned to in Firebase and retrieve them
         List<Course> courses = getAssignedCourses();
@@ -179,7 +184,7 @@ public class ProfessorCoursesController {
         returnCourse.setCredits(course.get("credits", Integer.class));
         returnCourse.setCapacity(course.get("capacity", Integer.class));
         returnCourse.setCurrentEnrolledCount(course.get("currentEnrolledCount", Integer.class));
-        returnCourse.setCourseTextbook(course.getString("requiredTextbook"));
+        returnCourse.setCourseTextbook(course.getString("courseTextbook"));
 
         //Get the list of enrolled and waitlisted students
         List<String> enrolled = (List<String>) course.get("enrolledStudents");

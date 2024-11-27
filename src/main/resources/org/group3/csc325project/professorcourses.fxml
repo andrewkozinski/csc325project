@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="821.0" stylesheets="@../../../CSS/tableviewstylings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorCoursesController">
+<AnchorPane prefHeight="400.0" prefWidth="896.0" stylesheets="@../../../CSS/tableviewstylings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorCoursesController">
    <children>
       <TableView fx:id="assignedCoursesTable" layoutX="52.0" layoutY="68.0" onMouseClicked="#handleAssignedCoursesTableViewMouseClick" prefHeight="171.0" prefWidth="576.0" AnchorPane.bottomAnchor="209.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="20.0">
          <columns>
@@ -18,6 +18,7 @@
             <TableColumn fx:id="columnCourseDays" prefWidth="96.0" text="Course Days" />
             <TableColumn fx:id="columnCourseLocation" prefWidth="108.0" text="Course Location" />
             <TableColumn fx:id="columnCourseCapacity" prefWidth="60.7999267578125" text="Capacity" />
+            <TableColumn fx:id="columnCourseTextbook" prefWidth="75.0" text="Textbook" />
          </columns>
       </TableView>
       <Button layoutX="518.0" layoutY="225.0" mnemonicParsing="false" onAction="#backButton" text="Go back (temporary)" AnchorPane.bottomAnchor="149.4" />
