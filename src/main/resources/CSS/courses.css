@@ -35,7 +35,7 @@
 }
 .root {
     -fx-background-image: url("../Images/Atlantis_Background.png");
-    -fx-font-size: 20;
+    -fx-font-size: 18;
 }
 /* old school theme*/
 /* scroll-bar */
@@ -156,21 +156,20 @@
 }
 /* Button Style */
 .button {
-    -fx-background-color: #d3d3d3;
-    fx-border-color: black;
-    -fx-border-width: 1px;
-    -fx-padding: 5px 10px;
-    -fx-text-fill: black;
+    -fx-background-color: lightgrey, linear-gradient(to bottom, white, lightgrey);
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 2px 4px;
+    -fx-font-family: "Courier New", monospace;
     -fx-font-size: 12px;
-    -fx-background-radius: 0;
-    -fx-effect: dropshadow(gaussian, #808080, 4, 0.7, 1, 1);
-
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0.5, 1, 1);
+    -fx-text-fill: black;
 }
 
 /* Button Hover Style */
 .button:hover {
-    -fx-background-color: #c0c0c0; /* Darker gray when hovered */
-    -fx-border-color: #808080; /* Darker border on hover */
+    -fx-background-color: #c0c0c0;
+    -fx-border-color: #808080;
 }
 
 /* Button Pressed Style */
@@ -178,4 +177,23 @@
     -fx-background-color: #808080;
     -fx-border-color: #404040;
     -fx-effect: inset(0 0 2px 0 rgba(0, 0, 0, 0.3));
+}
+/* textfield */
+.text-field {
+    -fx-background-color: lightgrey;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 2px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: black;
+}
+/* choicebox */
+.choice-box {
+    -fx-background-color: lightgrey;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 2px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
 }
