@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import user.Professor;
@@ -241,12 +242,19 @@ public class ProfessorCoursesController {
     /**
      * Method to handle adding a textbook to a course
      */
-    public void handleAddTextbookButton() {
+    public void handleSetTextbookButton() {
         if(selectedCourse == null) {
             raiseAlert("Course not selected", "Please select a course before trying to add a textbook");
             return;
         }
         System.out.println("Add textbook stuff here");
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Set Textbook");
+        dialog.setHeaderText("Assigning Student to Course: " + selectedCourse.getCourseCRN());
+        dialog.setContentText("Enter Student User ID:");
+        String studentUserId = dialog.showAndWait().orElse(null);
+
     }
 
 
