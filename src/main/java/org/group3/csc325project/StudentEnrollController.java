@@ -69,6 +69,8 @@ public class StudentEnrollController {
     private TableColumn<Course, String> columnCourseCapacity;
     @FXML
     private TableColumn<Course, String> columnCourseWaitlist;
+    //Courses a student is enrolled from
+    private Map<String, Object> enrolledCourses;
     //Currently selected course from the TableView
     private Course selectedCourse;
 
@@ -100,6 +102,9 @@ public class StudentEnrollController {
         });
 
 
+        //Get what courses a student is in
+        getEnrolledCourses(SessionManager.getLoggedInUsername());
+
         //Set custom TableRow factory
         //This will handle disabling a row from being clicked in the TableView if the student is already enrolled in the course
         coursesTable.setRowFactory(tv -> new TableRow<Course>() {
@@ -110,7 +115,7 @@ public class StudentEnrollController {
                     setDisable(false);
                 } else {
                     String studentUserId = SessionManager.getLoggedInUsername();
-                    setDisable(isStudentEnrolledInCourse(course, studentUserId));
+                    setDisable(enrolledCourses != null && enrolledCourses.containsKey(course.getCourseCRN()));
                 }
             }
         });
@@ -121,13 +126,10 @@ public class StudentEnrollController {
     }
 
     /**
-     * Helper method that checks if a student is enrolled in a course or not
-     * If a student is enrolled in a course, then the course will be disabled in the TableView
-     * @param course Course passed in
-     * @param studentUserId Student user id
-     * @return True if enrolled in course otherwise false
+     * Helper method that when called gets the courses a student is enrolled in and sets it to be the enrolledCourses member variable
+     * @param studentUserId student id passed in
      */
-    private boolean isStudentEnrolledInCourse(Course course, String studentUserId) {
+    private void getEnrolledCourses(String studentUserId) {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference studentsCollection = db.collection("Student");
         ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", studentUserId).get();
@@ -135,13 +137,11 @@ public class StudentEnrollController {
             List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
             if (!studentDocs.isEmpty()) {
                 DocumentSnapshot studentSnapshot = studentDocs.getFirst();
-                Map<String, Object> enrolledCourses = (Map<String, Object>) studentSnapshot.get("EnrolledCourses");
-                return enrolledCourses != null && enrolledCourses.containsKey(course.getCourseCRN());
+                enrolledCourses = (Map<String, Object>) studentSnapshot.get("EnrolledCourses");
             }
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-        return false;
     }
 
     /**
