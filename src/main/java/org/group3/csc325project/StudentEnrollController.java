@@ -102,7 +102,7 @@ public class StudentEnrollController {
         });
 
 
-        //Get what courses a student is in
+        //Get what courses a student is in, I just set the enrolledCourses variable to be the courses a student is in
         getEnrolledCourses(SessionManager.getLoggedInUsername());
 
         //Set custom TableRow factory
