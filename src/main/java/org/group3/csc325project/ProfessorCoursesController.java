@@ -1,10 +1,7 @@
 package org.group3.csc325project;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import course.Course;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import user.Professor;
@@ -71,6 +69,10 @@ public class ProfessorCoursesController {
     @FXML
     private TableColumn<Course,String> columnCourseCapacity;
 
+    //Column where the course textbook is displayed
+    @FXML
+    private TableColumn<Course,String> columnCourseTextbook;
+
     //selectedCourse is the currently selected item from the TableView
     //Updated when user selects an item in the table view
     private static Course selectedCourse;
@@ -98,6 +100,7 @@ public class ProfessorCoursesController {
             String returnString = String.format("%d/%d", enrolled, capacity);
             return new SimpleStringProperty(returnString);
         });
+        columnCourseTextbook.setCellValueFactory(new PropertyValueFactory<Course,String>("courseTextbook"));
 
         //This method call will get all the courses the logged in professor is assigned to in Firebase and retrieve them
         List<Course> courses = getAssignedCourses();
@@ -181,7 +184,7 @@ public class ProfessorCoursesController {
         returnCourse.setCredits(course.get("credits", Integer.class));
         returnCourse.setCapacity(course.get("capacity", Integer.class));
         returnCourse.setCurrentEnrolledCount(course.get("currentEnrolledCount", Integer.class));
-        returnCourse.setCourseTextbook(course.getString("requiredTextbook"));
+        returnCourse.setCourseTextbook(course.getString("courseTextbook"));
 
         //Get the list of enrolled and waitlisted students
         List<String> enrolled = (List<String>) course.get("enrolledStudents");
@@ -236,6 +239,49 @@ public class ProfessorCoursesController {
             return;
         }
         RegistrationApp.setRoot("professorgrades");
+    }
+
+    /**
+     * Method to handle adding a textbook to a course
+     */
+    public void handleSetTextbookButton() {
+        if(selectedCourse == null) {
+            raiseAlert("Course not selected", "Please select a course before trying to add a textbook");
+            return;
+        }
+        System.out.println("Add textbook stuff here");
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Set Textbook");
+        dialog.setHeaderText(String.format("Set the textbook for course %s (%s)", selectedCourse.getCourseName(), selectedCourse.getCourseCRN()));
+        dialog.setContentText("Enter Textbook Name:");
+        String textbookName = dialog.showAndWait().orElse(null);
+
+        if(textbookName == null || textbookName.isEmpty()) {
+            raiseAlert("Invalid Textbook Name", "Please enter a valid textbook name");
+            return;
+        }
+
+        //Update selectedCourse
+        selectedCourse.setCourseTextbook(textbookName);
+
+        //Now update Firebase
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference courseCollection = db.collection("Course");
+        ApiFuture<QuerySnapshot> courseFuture = courseCollection.whereEqualTo("courseCRN", selectedCourse.getCourseCRN()).get();
+
+        try {
+            QuerySnapshot courseSnapshot = courseFuture.get();
+            if(!courseSnapshot.isEmpty()) {
+                DocumentSnapshot courseDoc = courseSnapshot.getDocuments().get(0);
+                courseDoc.getReference().update("courseTextbook", textbookName);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            raiseAlert("Error Updating Textbook", "An error occurred while updating the textbook in the database");
+        }
+
+        //Now finally, call refresh on the TableView
+        assignedCoursesTable.refresh();
     }
 
 
