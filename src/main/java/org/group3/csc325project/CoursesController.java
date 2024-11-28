@@ -940,16 +940,65 @@ public class CoursesController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if(result.get() == ButtonType.OK) {
+
             Firestore db = FirestoreClient.getFirestore();
             CollectionReference coursesCollection = db.collection("Course");
             ApiFuture<QuerySnapshot> future = coursesCollection.whereEqualTo("courseCRN", selectedCourse.getCourseCRN()).get();
+
             try {
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
                 if (documents.isEmpty()) {
                     showAlert("No course found with CRN: " + selectedCourse.getCourseCRN());
                     return;
                 }
-                DocumentReference courseRef = documents.get(0).getReference();
+
+                //Before deleting, let's make sure we update the students enrolled
+                DocumentSnapshot courseDocument = documents.get(0);
+                List<String> enrolled = (List<String>) courseDocument.get("enrolledStudents");
+
+                //Get the studentUserIds out of waitlisted
+                List<Map<String, Object>> waitlistedArray = (List<Map<String, Object>>) courseDocument.get("waitlistedStudents");
+                List<String> waitlisted = new ArrayList<>();
+                if(waitlistedArray != null) {
+                    for(Map<String, Object> waitlistedStudent : waitlistedArray) {
+                        waitlisted.add((String) waitlistedStudent.get("studentUserId"));
+                    }
+                }
+
+                //Get the students collection
+                CollectionReference studentsCollection = db.collection("Student");
+
+                //Check if enrolled is empty, if it's not we're good
+                if(enrolled != null && !enrolled.isEmpty()) {
+
+                    for(String studentId : enrolled) {
+                        ApiFuture<QuerySnapshot> studentFuture = studentsCollection.whereEqualTo("UserId", studentId).get();
+                        List<QueryDocumentSnapshot> studentDocuments = studentFuture.get().getDocuments();
+                        if(studentDocuments.isEmpty()) {
+                            logger.warn("No student found with UserId: {}", studentId);
+                            continue;
+                        }
+                        DocumentReference studentRef = studentDocuments.getFirst().getReference();
+                        studentRef.update("EnrolledCourses." + selectedCourse.getCourseCRN(), FieldValue.delete());
+                    }
+
+                }
+                //Now let's remove those on the waitlist
+                if(!waitlisted.isEmpty()) {
+                    for(String studentId : waitlisted) {
+                        ApiFuture<QuerySnapshot> studentFuture = studentsCollection.whereEqualTo("UserId", studentId).get();
+                        List<QueryDocumentSnapshot> studentDocuments = studentFuture.get().getDocuments();
+                        if(studentDocuments.isEmpty()) {
+                            logger.warn("No student found with UserId: {}", studentId);
+                            continue;
+                        }
+                        DocumentReference studentRef = studentDocuments.getFirst().getReference();
+                        studentRef.update("EnrolledCourses." + selectedCourse.getCourseCRN(), FieldValue.delete());
+                    }
+                }
+
+                //Now delete the course itself in firebase
+                DocumentReference courseRef = documents.getFirst().getReference();
                 courseRef.delete();
                 coursesTable.getItems().remove(selectedCourse);
                 coursesTable.refresh();
