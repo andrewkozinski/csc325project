@@ -13,7 +13,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import user.Student;
 
 import java.util.HashMap;
@@ -25,7 +29,18 @@ import static org.group3.csc325project.RegistrationApp.raiseAlert;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 
 public class ProfessorCourseGrades {
-
+    @FXML
+    public VBox professorVbox;
+    @FXML
+    public AnchorPane professorAnchorPane;
+    @FXML
+    public ImageView proffessorSideBackground;
+    @FXML
+    public ImageView proffessorHeader;
+    @FXML
+    public ImageView proffessorCourseButton;
+    @FXML
+    public HBox topHBox;
     //Table to display student grades
     @FXML
     private TableView<Grade> gradesTable;
@@ -55,7 +70,7 @@ public class ProfessorCourseGrades {
         currentCourse = ProfessorCoursesController.getSelectedCourse();
 
         //This label can be removed later, made it for testing purposes
-        courseLabel.setText(String.format("Student grades for: %s (%s)", currentCourse.getCourseName(), currentCourse.getCourseCode()));
+        //courseLabel.setText(String.format("Student grades for: %s (%s)", currentCourse.getCourseName(), currentCourse.getCourseCode()));
 
         //Now associate each column with something in a Grade obj
         studentFirstNameColumn.setCellValueFactory(cellData -> {

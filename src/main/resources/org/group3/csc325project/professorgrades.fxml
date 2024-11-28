@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorCourseGrades">
+<VBox fx:id="professorVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/tableviewstylings.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorCourseGrades">
    <children>
-      <TableView fx:id="gradesTable" layoutX="45.0" layoutY="87.0" onMouseClicked="#handleGradesTableMouseClick" prefHeight="210.0" prefWidth="510.0">
-        <columns>
-          <TableColumn fx:id="studentFirstNameColumn" prefWidth="75.0" text="First Name" />
-          <TableColumn fx:id="studentLastNameColumn" prefWidth="75.0" text="Last Name" />
-            <TableColumn fx:id="studentGradeColumn" prefWidth="75.0" text="Grade" />
-        </columns>
-      </TableView>
-      <Label fx:id="courseLabel" layoutX="45.0" layoutY="46.0" text="Student Grades for: ">
-         <font>
-            <Font name="Bell MT" size="20.0" />
-         </font></Label>
-      <Button layoutX="211.0" layoutY="310.0" mnemonicParsing="false" onAction="#handleModifyGradeButton" text="Modify" />
-      <Button layoutX="314.0" layoutY="310.0" mnemonicParsing="false" onAction="#handleGoBackToCourses" text="Back (Temp)" />
+      <AnchorPane fx:id="professorAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
+         <ImageView fx:id="proffessorSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true"
+                    preserveRatio="true">
+            <image>
+               <Image url="@../../../Images/general_button_background.png"/>
+            </image>
+         </ImageView>
+         <ImageView fx:id="proffessorHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true"
+                    preserveRatio="true">
+            <image>
+               <Image url="@../../../Images/registrationSystem_header_no_user.png"/>
+            </image>
+         </ImageView>
+         <ImageView fx:id="proffessorCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0"
+                    onMouseClicked="#handleGoBackToCourses" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../../Images/admin_Courses_button.png"/>
+            </image>
+         </ImageView>
+         <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0"
+               spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
+            <children>
+               <Button mnemonicParsing="false" onAction="#handleModifyGradeButton" text="Modify"/>
+            </children>
+         </HBox>
+         <TableView fx:id="gradesTable" layoutX="123.0" layoutY="64.0" onMouseClicked="#handleGradesTableMouseClick"
+                    prefHeight="341.0" prefWidth="676.0">
+            <columns>
+               <TableColumn fx:id="studentFirstNameColumn" minWidth="30.0" prefWidth="310.0" text="First Name"/>
+               <TableColumn fx:id="studentLastNameColumn" minWidth="0.0" prefWidth="238.0" text="Last Name"/>
+               <TableColumn fx:id="studentGradeColumn" minWidth="4.0" prefWidth="126.0" text="Grade"/>
+            </columns>
+         </TableView>
+      </AnchorPane>
    </children>
-   <stylesheets>
-      <URL value="@../../../CSS/tableviewstylings.css" />
-      <URL value="@../../../CSS/coursegrades.css" />
-   </stylesheets>
-</AnchorPane>
+</VBox>
