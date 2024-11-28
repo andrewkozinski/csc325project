@@ -113,6 +113,8 @@ public class StudentGradesController {
                     //Now add the list of Grade objects to the table
                     gradesTable.getItems().addAll(enrolledCourseInformation);
                 }
+                //Maybe add an else statement here in the future to add a field in Firebase for enrolledCourses to a student document if they do not have one already
+                //This is definitely an edge case so it may be fine in most scenarios
 
             }
 
