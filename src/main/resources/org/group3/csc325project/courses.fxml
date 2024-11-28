@@ -54,7 +54,7 @@
                   <Button mnemonicParsing="false" onAction="#handleAddCourseButton" text="Add Course" />
                   <Button mnemonicParsing="false" onAction="#handleEditCourseButton" text="Edit Course" />
                   <Button mnemonicParsing="false" onAction="#assignCourseButton" text="Assign Course" />
-                  <Button mnemonicParsing="false" onAction="#backButton" text="Back (temp button)" />
+                  <Button mnemonicParsing="false" onAction="#handleRemoveStudentButton" text="Remove Student" />
                </children>
             </HBox>
             <TabPane fx:id="tabPane" layoutX="126.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="153.0" prefWidth="675.0">
