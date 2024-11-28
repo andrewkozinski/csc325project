@@ -133,7 +133,9 @@ public class StudentScheduleController {
                         }
                     }
                     // Now get each active course and stick it in the TableView
-                    handleGetCourses(activeCourses);
+                    if(!activeCourses.isEmpty()) { //Check if activeCourses is empty or not
+                        handleGetCourses(activeCourses);
+                    }
                 }
 
             }
