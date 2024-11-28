@@ -19,10 +19,8 @@ import org.slf4j.LoggerFactory;
 import user.Professor;
 import user.Student;
 import javafx.geometry.Insets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 /**
@@ -923,6 +921,98 @@ public class CoursesController {
             logger.error("Failed to add student {} to waitlist for course {}: {}", studentUserId, course.getCourseCRN(), e.getMessage() + e);
         }
     }
+
+    /**
+     * Method which will handle deleting a course
+     * Will make appropriate updates in Firebase
+     */
+    public void handleDeleteCourse() {
+        if(selectedCourse == null) {
+            showAlert("Please select a course to delete.");
+            return;
+        }
+
+        //show alert to asking if the user really wants to delete the course
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Course");
+        alert.setHeaderText("Are you sure you want to delete this course?");
+        alert.setContentText("This action cannot be undone.");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == ButtonType.OK) {
+
+            Firestore db = FirestoreClient.getFirestore();
+            CollectionReference coursesCollection = db.collection("Course");
+            ApiFuture<QuerySnapshot> future = coursesCollection.whereEqualTo("courseCRN", selectedCourse.getCourseCRN()).get();
+
+            try {
+                List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+                if (documents.isEmpty()) {
+                    showAlert("No course found with CRN: " + selectedCourse.getCourseCRN());
+                    return;
+                }
+
+                //Before deleting, let's make sure we update the students enrolled
+                DocumentSnapshot courseDocument = documents.get(0);
+                List<String> enrolled = (List<String>) courseDocument.get("enrolledStudents");
+
+                //Get the studentUserIds out of waitlisted
+                List<Map<String, Object>> waitlistedArray = (List<Map<String, Object>>) courseDocument.get("waitlistedStudents");
+                List<String> waitlisted = new ArrayList<>();
+                if(waitlistedArray != null) {
+                    for(Map<String, Object> waitlistedStudent : waitlistedArray) {
+                        waitlisted.add((String) waitlistedStudent.get("studentUserId"));
+                    }
+                }
+
+                //Get the students collection
+                CollectionReference studentsCollection = db.collection("Student");
+
+                //Check if enrolled is empty, if it's not we're good
+                if(enrolled != null && !enrolled.isEmpty()) {
+
+                    for(String studentId : enrolled) {
+                        ApiFuture<QuerySnapshot> studentFuture = studentsCollection.whereEqualTo("UserId", studentId).get();
+                        List<QueryDocumentSnapshot> studentDocuments = studentFuture.get().getDocuments();
+                        if(studentDocuments.isEmpty()) {
+                            logger.warn("No student found with UserId: {}", studentId);
+                            continue;
+                        }
+                        DocumentReference studentRef = studentDocuments.getFirst().getReference();
+                        studentRef.update("EnrolledCourses." + selectedCourse.getCourseCRN(), FieldValue.delete());
+                    }
+
+                }
+                //Now let's remove those on the waitlist
+                if(!waitlisted.isEmpty()) {
+                    for(String studentId : waitlisted) {
+                        ApiFuture<QuerySnapshot> studentFuture = studentsCollection.whereEqualTo("UserId", studentId).get();
+                        List<QueryDocumentSnapshot> studentDocuments = studentFuture.get().getDocuments();
+                        if(studentDocuments.isEmpty()) {
+                            logger.warn("No student found with UserId: {}", studentId);
+                            continue;
+                        }
+                        DocumentReference studentRef = studentDocuments.getFirst().getReference();
+                        studentRef.update("EnrolledCourses." + selectedCourse.getCourseCRN(), FieldValue.delete());
+                    }
+                }
+
+                //Now delete the course itself in firebase
+                DocumentReference courseRef = documents.getFirst().getReference();
+                courseRef.delete();
+                coursesTable.getItems().remove(selectedCourse);
+                coursesTable.refresh();
+                showAlert("Course " + selectedCourse.getCourseCRN() + " has been deleted.");
+            } catch (InterruptedException | ExecutionException e) {
+                logger.error("Error deleting course: " + e.getMessage());
+                showAlert("Error deleting course: " + e.getMessage());
+            }
+        }
+
+
+
+    }
+
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Modify Course System");
