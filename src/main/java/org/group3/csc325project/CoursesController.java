@@ -19,10 +19,8 @@ import org.slf4j.LoggerFactory;
 import user.Professor;
 import user.Student;
 import javafx.geometry.Insets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 /**
@@ -923,6 +921,49 @@ public class CoursesController {
             logger.error("Failed to add student {} to waitlist for course {}: {}", studentUserId, course.getCourseCRN(), e.getMessage() + e);
         }
     }
+
+    /**
+     * Method which will handle deleting a course
+     * Will make appropriate updates in Firebase
+     */
+    public void handleDeleteCourse() {
+        if(selectedCourse == null) {
+            showAlert("Please select a course to delete.");
+            return;
+        }
+
+        //show alert to asking if the user really wants to delete the course
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Course");
+        alert.setHeaderText("Are you sure you want to delete this course?");
+        alert.setContentText("This action cannot be undone.");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == ButtonType.OK) {
+            Firestore db = FirestoreClient.getFirestore();
+            CollectionReference coursesCollection = db.collection("Course");
+            ApiFuture<QuerySnapshot> future = coursesCollection.whereEqualTo("courseCRN", selectedCourse.getCourseCRN()).get();
+            try {
+                List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+                if (documents.isEmpty()) {
+                    showAlert("No course found with CRN: " + selectedCourse.getCourseCRN());
+                    return;
+                }
+                DocumentReference courseRef = documents.get(0).getReference();
+                courseRef.delete();
+                coursesTable.getItems().remove(selectedCourse);
+                coursesTable.refresh();
+                showAlert("Course " + selectedCourse.getCourseCRN() + " has been deleted.");
+            } catch (InterruptedException | ExecutionException e) {
+                logger.error("Error deleting course: " + e.getMessage());
+                showAlert("Error deleting course: " + e.getMessage());
+            }
+        }
+
+
+
+    }
+
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Modify Course System");
