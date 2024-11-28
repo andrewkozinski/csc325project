@@ -15,9 +15,7 @@
                   prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
          <ImageView fx:id="proffessorSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true"
                     preserveRatio="true">
-            <image>
-               <Image url="@../../../Images/general_button_background.png"/>
-            </image>
+            <Image url="@../../../Images/general_button_background.png"/>
          </ImageView>
          <ImageView fx:id="professorHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -26,9 +24,7 @@
          </ImageView>
          <ImageView fx:id="proffessorCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0"
                     onMouseClicked="#backButton" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../Images/admin_Courses_button.png"/>
-            </image>
+            <Image url="@../../../Images/admin_Courses_button.png"/>
          </ImageView>
          <TableView fx:id="assignedCoursesTable" layoutX="123.0" layoutY="64.0"
                     onMouseClicked="#handleAssignedCoursesTableViewMouseClick" prefHeight="341.0" prefWidth="676.0">

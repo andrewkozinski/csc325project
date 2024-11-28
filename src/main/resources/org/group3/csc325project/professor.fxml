@@ -13,26 +13,18 @@
                   prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
          <ImageView fx:id="professorSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true"
                     preserveRatio="true">
-            <image>
-               <Image url="@../../../Images/general_button_background.png"/>
-            </image>
+            <Image url="@../../../Images/general_button_background.png"/>
          </ImageView>
          <ImageView fx:id="professorHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../Images/registrationSystem_header_no_user.png"/>
-            </image>
+            <Image url="@../../../Images/registrationSystem_header_no_user.png"/>
          </ImageView>
          <ImageView fx:id="professorCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0"
                     onMouseClicked="#goToCoursesView" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../Images/admin_Courses_button.png"/>
-            </image>
+            <Image url="@../../../Images/admin_Courses_button.png"/>
          </ImageView>
          <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0"
                spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
-            <children>
-               <Button mnemonicParsing="false" onAction="#returnToLogin" text="Back (temp button)"/>
-            </children>
+            <Button mnemonicParsing="false" onAction="#returnToLogin" text="Back (temp button)"/>
          </HBox>
       </AnchorPane>
    </children>
