@@ -12,7 +12,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import user.Professor;
 
 import java.util.ArrayList;
@@ -28,6 +32,18 @@ import static org.group3.csc325project.SessionManager.getLoggedInUsername;
  * Controller which handles the code behind displaying the courses a Professor is assigned to
  */
 public class ProfessorCoursesController {
+    @FXML
+    public AnchorPane professorAnchorPane;
+    @FXML
+    public VBox professorVbox;
+    @FXML
+    public ImageView proffessorSideBackground;
+    @FXML
+    public ImageView professorHeader;
+    @FXML
+    public ImageView proffessorCourseButton;
+    @FXML
+    public HBox topHBox;
 
     //TableView where Courses stored in Firebase are displayed
     @FXML

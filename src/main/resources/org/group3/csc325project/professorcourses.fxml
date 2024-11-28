@@ -3,26 +3,52 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="896.0" stylesheets="@../../../CSS/tableviewstylings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorCoursesController">
+<VBox fx:id="professorVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/tableviewstylings.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorCoursesController">
    <children>
-      <TableView fx:id="assignedCoursesTable" layoutX="52.0" layoutY="68.0" onMouseClicked="#handleAssignedCoursesTableViewMouseClick" prefHeight="171.0" prefWidth="576.0" AnchorPane.bottomAnchor="209.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="20.0">
-         <columns>
-            <TableColumn fx:id="columnCrn" prefWidth="57.60000228881836" text="CRN" />
-            <TableColumn fx:id="columnCourseCode" prefWidth="76.00003051757812" text="Course Code" />
-            <TableColumn fx:id="columnCourseName" prefWidth="117.60005187988281" text="Course Name" />
-            <TableColumn fx:id="columnCourseDescription" prefWidth="119.199951171875" text="Course Description" />
-            <TableColumn fx:id="columnCredits" minWidth="7.2000732421875" prefWidth="48.7999267578125" text="Credits" />
-            <TableColumn fx:id="columnCourseSchedule" prefWidth="108.79998779296875" text="Course Schedule" />
-            <TableColumn fx:id="columnCourseDays" prefWidth="96.0" text="Course Days" />
-            <TableColumn fx:id="columnCourseLocation" prefWidth="108.0" text="Course Location" />
-            <TableColumn fx:id="columnCourseCapacity" prefWidth="60.7999267578125" text="Capacity" />
-            <TableColumn fx:id="columnCourseTextbook" prefWidth="75.0" text="Textbook" />
-         </columns>
-      </TableView>
-      <Button layoutX="518.0" layoutY="225.0" mnemonicParsing="false" onAction="#backButton" text="Go back (temporary)" AnchorPane.bottomAnchor="149.4" />
-      <Button layoutX="218.0" layoutY="225.0" mnemonicParsing="false" onAction="#handleViewGradesButton" text="View Grades" AnchorPane.bottomAnchor="149.4" />
-      <Button layoutX="365.0" layoutY="225.0" mnemonicParsing="false" onAction="#handleSetTextbookButton" prefHeight="26.0" prefWidth="90.0" text="Set Textbook" AnchorPane.bottomAnchor="148.6" />
+      <AnchorPane fx:id="professorAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
+         <ImageView fx:id="proffessorSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true"
+                    preserveRatio="true">
+            <Image url="@../../../Images/general_button_background.png"/>
+         </ImageView>
+         <ImageView fx:id="professorHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../../Images/registrationSystem_header_no_user.png"/>
+            </image>
+         </ImageView>
+         <ImageView fx:id="proffessorCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0"
+                    onMouseClicked="#backButton" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../Images/admin_Courses_button.png"/>
+         </ImageView>
+         <TableView fx:id="assignedCoursesTable" layoutX="123.0" layoutY="64.0"
+                    onMouseClicked="#handleAssignedCoursesTableViewMouseClick" prefHeight="341.0" prefWidth="676.0">
+            <columns>
+               <TableColumn fx:id="columnCrn" prefWidth="57.60000228881836" text="CRN"/>
+               <TableColumn fx:id="columnCourseCode" prefWidth="76.00003051757812" text="Course Code"/>
+               <TableColumn fx:id="columnCourseName" prefWidth="117.60005187988281" text="Course Name"/>
+               <TableColumn fx:id="columnCourseDescription" prefWidth="119.199951171875" text="Course Description"/>
+               <TableColumn fx:id="columnCredits" minWidth="7.2000732421875" prefWidth="48.7999267578125"
+                            text="Credits"/>
+               <TableColumn fx:id="columnCourseSchedule" prefWidth="108.79998779296875" text="Course Schedule"/>
+               <TableColumn fx:id="columnCourseDays" prefWidth="96.0" text="Course Days"/>
+               <TableColumn fx:id="columnCourseLocation" prefWidth="108.0" text="Course Location"/>
+               <TableColumn fx:id="columnCourseTextbook" prefWidth="75.0" text="Textbook"/>
+               <TableColumn fx:id="columnCourseCapacity" prefWidth="60.7999267578125" text="Capacity"/>
+            </columns>
+         </TableView>
+         <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0"
+               spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
+            <children>
+               <Button mnemonicParsing="false" onAction="#handleViewGradesButton" text="View Grades"/>
+               <Button mnemonicParsing="false" onAction="#handleSetTextbookButton" text="Set Textbook"/>
+            </children>
+         </HBox>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</VBox>
