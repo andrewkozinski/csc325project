@@ -264,6 +264,8 @@ public class AccountsController {
             }
             // Show the edit pane
             editUserPane.setVisible(true);
+            accountsTable.setVisible(false);
+            adminTableBottonButtons.setVisible(false);
         } else {
             showAlert("Edit User", "Please select a user to edit.");
         }
@@ -283,11 +285,15 @@ public class AccountsController {
 
             saveUpdatedUserToDatabase(selectedUser);
             editUserPane.setVisible(false);
+            accountsTable.setVisible(true);
+            adminTableBottonButtons.setVisible(true);
         }
     }
     public void handleCancelEdit() {
         // Simply hide the edit pane without saving
         editUserPane.setVisible(false);
+        accountsTable.setVisible(true);
+        adminTableBottonButtons.setVisible(true);
     }
     private void saveUpdatedUserToDatabase(User user) {
         Firestore db = FirestoreClient.getFirestore();
