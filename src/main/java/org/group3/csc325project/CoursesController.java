@@ -699,7 +699,6 @@ public class CoursesController {
             if (wasEnrolled) {
                 course.decrementEnrolledCount();
             } else {
-                //If the student was not found, display a message and return early
                 showAlert("Student not found in course enrollment!");
                 return;
             }
@@ -708,7 +707,6 @@ public class CoursesController {
             List<QueryDocumentSnapshot> courseDocs = courseQuery.get().getDocuments();
             if (!courseDocs.isEmpty()) {
                 DocumentReference courseRef = courseDocs.getFirst().getReference();
-                //Update Firestore course document
                 Map<String, Object> updatedData = new HashMap<>();
                 updatedData.put("currentEnrolledCount", course.getCurrentEnrolledCount());
                 updatedData.put("enrolledStudents", course.getEnrolledStudents());
@@ -719,22 +717,58 @@ public class CoursesController {
             List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
             if (!studentDocs.isEmpty()) {
                 DocumentReference studentRef = studentDocs.getFirst().getReference();
-                //Update Firestore student document
                 Object existingEnrolledCourses = studentDocs.getFirst().get("EnrolledCourses");
-                List<Map<String, Object>> enrolledCourses;
-                if (existingEnrolledCourses instanceof List) {
-                    enrolledCourses = (List<Map<String, Object>>) existingEnrolledCourses;
-                } else {
-                    enrolledCourses = new ArrayList<>();
-                }
-                //Remove the course from enrolled courses in the student's document
-                enrolledCourses.removeIf(courseEntry -> course.getCourseCRN().equals(courseEntry.get("courseCRN")));
+                Map<String, Map<String, Object>> enrolledCourses = (Map<String, Map<String, Object>>) existingEnrolledCourses;
+                enrolledCourses.remove(course.getCourseCRN());
                 studentRef.update("EnrolledCourses", enrolledCourses);
             }
-            //Refresh the student table after removal
+
+            //Process waitlist
+            if (course.getCurrentWaitlistCount() > 0) {
+                List<Map<String, Object>> waitlistedStudents = course.getWaitlistedStudents();
+                Map<String, Object> firstWaitlistedStudent = waitlistedStudents.getFirst();
+                String waitlistedStudentId = (String) firstWaitlistedStudent.get("studentUserId");
+
+                //Update the waitlist
+                waitlistedStudents.removeFirst();
+                course.decrementWaitlistCount();
+
+                //Update course document with new waitlist
+                ApiFuture<QuerySnapshot> courseUpdateQuery = coursesCollection.whereEqualTo("courseCRN", course.getCourseCRN()).get();
+                List<QueryDocumentSnapshot> courseUpdateDocs = courseUpdateQuery.get().getDocuments();
+                if (!courseUpdateDocs.isEmpty()) {
+                    DocumentReference courseUpdateRef = courseUpdateDocs.getFirst().getReference();
+                    Map<String, Object> waitlistUpdateData = new HashMap<>();
+                    waitlistUpdateData.put("currentWaitlistCount", course.getCurrentWaitlistCount());
+                    waitlistUpdateData.put("waitlistedStudents", waitlistedStudents);
+                    courseUpdateRef.update(waitlistUpdateData);
+                }
+
+                //Move the waitlisted student to enrolled
+                ApiFuture<QuerySnapshot> waitlistedStudentQuery = studentsCollection.whereEqualTo("UserId", waitlistedStudentId).get();
+                List<QueryDocumentSnapshot> waitlistedStudentDocs = waitlistedStudentQuery.get().getDocuments();
+                if (!waitlistedStudentDocs.isEmpty()) {
+                    DocumentReference waitlistedStudentRef = waitlistedStudentDocs.getFirst().getReference();
+                    Object waitlistedEnrolledCourses = waitlistedStudentDocs.getFirst().get("EnrolledCourses");
+                    Map<String, Map<String, Object>> waitlistedStudentCourses = (Map<String, Map<String, Object>>) waitlistedEnrolledCourses;
+                    Map<String, Object> enrollmentDetails = new HashMap<>();
+                    enrollmentDetails.put("DateEnrolled", System.currentTimeMillis());
+                    enrollmentDetails.put("EnrollmentStatus", "Active");
+                    waitlistedStudentCourses.put(course.getCourseCRN(), enrollmentDetails);
+                    waitlistedStudentRef.update("EnrolledCourses", waitlistedStudentCourses);
+
+                    //Add the student to the course's enrolled list
+                    course.incrementEnrolledCount();
+                    course.getEnrolledStudents().add(waitlistedStudentId);
+                    courseUpdateDocs.getFirst().getReference().update("enrolledStudents", course.getEnrolledStudents());
+                    courseUpdateDocs.getFirst().getReference().update("currentEnrolledCount", course.getCurrentEnrolledCount());
+                }
+            }
             loadStudentsForSelectedCourse();
+            loadWaitlistedStudentsForSelectedCourse();
             showAlert("Student " + student.getUserId() + " has been removed from course " + course.getCourseCRN() + ".");
             coursesTable.refresh();
+            studentsTable.refresh();
             waitlistTable.refresh();
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error removing student {} from course {}: ", student.getUserId(), course.getCourseCRN(), e);
@@ -829,11 +863,12 @@ public class CoursesController {
                 Object waitlistedStudentsObj = courseSnapshot.get("waitlistedStudents");
                 List<Map<String, Object>> waitlistedStudents;
                 if (waitlistedStudentsObj instanceof List) {
-                    waitlistedStudents = (List<Map<String, Object>>) waitlistedStudentsObj;
+                    waitlistedStudents = new ArrayList<>((List<Map<String, Object>>) waitlistedStudentsObj);
                 } else {
                     waitlistedStudents = new ArrayList<>();
                 }
-                //Check if the user is already waitlisted
+
+                // Check if the user is already waitlisted
                 boolean alreadyWaitlisted = waitlistedStudents.stream()
                         .anyMatch(student -> studentUserId.equals(student.get("studentUserId")));
                 if (alreadyWaitlisted) {
@@ -843,11 +878,12 @@ public class CoursesController {
                 //Read data for the student
                 DocumentSnapshot studentSnapshot = transaction.get(studentRef).get();
                 Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
-                /*
-                List<Map<String, Object>> enrolledCourses = enrolledCoursesObj instanceof List
-                        ? (List<Map<String, Object>>) enrolledCoursesObj
-                        : new ArrayList<>(); */
-                Map<String, Object> enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
+                Map<String, Object> enrolledCourses;
+                if (enrolledCoursesObj instanceof Map) {
+                    enrolledCourses = new HashMap<>((Map<String, Object>) enrolledCoursesObj);
+                } else {
+                    enrolledCourses = new HashMap<>();
+                }
 
                 //Perform writes, add student to course waitlist
                 Map<String, Object> waitlistDetails = new HashMap<>();
@@ -868,7 +904,6 @@ public class CoursesController {
                 enrolledCourseDetails.put("EnrollmentStatus", "WAITLIST");
                 enrolledCourseDetails.put("DateWaitlisted", System.currentTimeMillis());
 
-                //enrolledCourses.add(enrolledCourseDetails);
                 enrolledCourses.put(course.getCourseCRN(), enrolledCourseDetails);
                 transaction.update(studentRef, "EnrolledCourses", enrolledCourses);
 

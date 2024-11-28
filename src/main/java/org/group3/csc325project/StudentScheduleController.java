@@ -11,7 +11,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Student;
@@ -29,6 +33,22 @@ import static org.group3.csc325project.SessionManager.getLoggedInUsername;
 public class StudentScheduleController {
     //Just took this from CoursesController, feel free to change as you'd like Yash
     private static final Logger logger = LoggerFactory.getLogger(CoursesController.class);
+    @FXML
+    public VBox studentVbox;
+    @FXML
+    public AnchorPane studentAnchorPane;
+    @FXML
+    public ImageView studentSideBackground;
+    @FXML
+    public ImageView studentHeader;
+    @FXML
+    public ImageView studentCoursesButton;
+    @FXML
+    public ImageView studentGradesButton;
+    @FXML
+    public ImageView studentSchedule;
+    @FXML
+    public HBox topHBox;
 
     //TableView where course information is stored
     @FXML
@@ -95,15 +115,26 @@ public class StudentScheduleController {
         try {
             QuerySnapshot studentSnapshot = studentQuery.get();
 
-            if(!studentSnapshot.isEmpty()) {
+            if (!studentSnapshot.isEmpty()) {
                 DocumentSnapshot studentDoc = studentSnapshot.getDocuments().get(0);
 
-                Map<String, Map<String, Object>> enrolledCourses = (Map<String, Map<String, Object>>) studentDoc.get("EnrolledCourses");
+                //Handle both Map and List types for EnrolledCourses, prevent ClassCastException
+                Object enrolledCoursesObj = studentDoc.get("EnrolledCourses");
+                Map<String, Map<String, Object>> enrolledCourses = new HashMap<>();
 
-                if(enrolledCourses != null && enrolledCourses.size() > 0) {
-                    //Now get each course and stick it in the TableView
-                    //handleGetCourses(enrolledCourses.keySet());
+                if (enrolledCoursesObj instanceof Map) {
+                    enrolledCourses = (Map<String, Map<String, Object>>) enrolledCoursesObj;
+                } else if (enrolledCoursesObj instanceof List) {
+                    List<Map<String, Object>> enrolledCoursesList = (List<Map<String, Object>>) enrolledCoursesObj;
+                    for (Map<String, Object> courseEntry : enrolledCoursesList) {
+                        String courseCRN = (String) courseEntry.get("courseCRN");
+                        enrolledCourses.put(courseCRN, courseEntry);
+                    }
+                } else if (enrolledCoursesObj != null) {
+                    throw new IllegalStateException("Unexpected type for EnrolledCourses: " + enrolledCoursesObj.getClass());
+                }
 
+                if (!enrolledCourses.isEmpty()) {
                     //Filter for courses with an enrollment status of "Active"
                     //Reason for this filtering is that the student may be waitlisted for a course in the enrolledcourses field
                     Set<String> activeCourses = new HashSet<>();
@@ -115,14 +146,10 @@ public class StudentScheduleController {
                     // Now get each active course and stick it in the TableView
                     handleGetCourses(activeCourses);
                 }
-
             }
-
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error reading Firestore for student schedule", e);
         }
-
-
     } // end - handleReadFirebase
 
     /**
@@ -130,6 +157,11 @@ public class StudentScheduleController {
      * @param crnSet set containing the CRNs passed in
      */
     private void handleGetCourses(Set<String> crnSet) {
+        if (crnSet == null || crnSet.isEmpty()) {
+            logger.warn("No CRNs provided for query. Skipping Firestore request.");
+            return; //Return early if the set is null or empty
+        }
+
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference coursesCollection = db.collection("Course");
 
@@ -139,21 +171,23 @@ public class StudentScheduleController {
         //Get any courses that have a matching CRN
         ApiFuture<QuerySnapshot> future = coursesCollection.whereIn("courseCRN", crnList).get();
 
+
+        //Now read through the documents and put the information in a course document
+        //Just calls a helper method to do this
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-            //Now read through the documents and put the information in a course document
-            //Just calls a helper method to do this
-            for (QueryDocumentSnapshot document : documents) {
-                documentToCourseInstance(document);
+            if (documents.isEmpty()) {
+                logger.info("No matching courses found for the provided CRNs.");
+            } else {
+                for (QueryDocumentSnapshot document : documents) {
+                    documentToCourseInstance(document);
+                }
             }
-
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error fetching courses from Firestore.", e);
         }
-
     }
-
     /**
      * Helper method that converts a course document to a course object instance and adds it to the TableView
      */
@@ -222,7 +256,6 @@ public class StudentScheduleController {
 
         removeStudentFromCourse(selectedCourse, student);
     }
-
     /**
      * Helper method that handles removing the logged in student from a course
      * Taken from CoursesController with minimal changes
@@ -232,9 +265,9 @@ public class StudentScheduleController {
     private void removeStudentFromCourse(Course course, Student student) {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference studentsCollection = db.collection("Student");
+        CollectionReference coursesCollection = db.collection("Course");
         try {
             boolean wasEnrolled = course.getEnrolledStudents().remove(student.getUserId());
-            //Update counts based on whether the student was enrolled
             if (wasEnrolled) {
                 course.decrementEnrolledCount();
             } else {
@@ -242,40 +275,84 @@ public class StudentScheduleController {
                 showAlert("Student not found in course enrollment!");
                 return;
             }
-            CollectionReference coursesCollection = db.collection("Course");
+
             ApiFuture<QuerySnapshot> courseQuery = coursesCollection.whereEqualTo("courseCRN", course.getCourseCRN()).get();
             List<QueryDocumentSnapshot> courseDocs = courseQuery.get().getDocuments();
             if (!courseDocs.isEmpty()) {
                 DocumentReference courseRef = courseDocs.getFirst().getReference();
-                //Update Firestore course document
-                Map<String, Object> updatedData = new HashMap<>();
-                updatedData.put("currentEnrolledCount", course.getCurrentEnrolledCount());
-                updatedData.put("enrolledStudents", course.getEnrolledStudents());
-                courseRef.update(updatedData);
+                courseRef.update("currentEnrolledCount", course.getCurrentEnrolledCount());
+                courseRef.update("enrolledStudents", course.getEnrolledStudents());
             }
+
             //Update the student document to remove the course from enrolled courses
             ApiFuture<QuerySnapshot> studentQuery = studentsCollection.whereEqualTo("UserId", student.getUserId()).get();
             List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
             if (!studentDocs.isEmpty()) {
                 DocumentReference studentRef = studentDocs.getFirst().getReference();
-                //Update Firestore student document
-                Object existingEnrolledCourses = studentDocs.getFirst().get("EnrolledCourses");
-                //This needs to be a Map and not a list
-                //List<Map<String, Object>> enrolledCourses;
-                Map<String, Map<String, Object>> enrolledCourses = (Map<String, Map<String, Object>>) existingEnrolledCourses;
-                //Remove the course from enrolled courses in the student's document
-                //enrolledCourses.removeIf(courseEntry -> course.getCourseCRN().equals(courseEntry.get("courseCRN")));
-                enrolledCourses.remove(course.getCourseCRN());
-                studentRef.update("EnrolledCourses", enrolledCourses);
+                Object enrolledCoursesObj = studentDocs.getFirst().get("EnrolledCourses");
+
+                if (enrolledCoursesObj instanceof Map) {
+                    //Handle Map data structure
+                    Map<String, Map<String, Object>> enrolledCourses = (Map<String, Map<String, Object>>) enrolledCoursesObj;
+                    enrolledCourses.remove(course.getCourseCRN());
+                    studentRef.update("EnrolledCourses", enrolledCourses);
+                } else if (enrolledCoursesObj instanceof ArrayList) {
+                    //Handle ArrayList data structure
+                    List<Map<String, Object>> enrolledCourses = (ArrayList<Map<String, Object>>) enrolledCoursesObj;
+                    enrolledCourses.removeIf(courseEntry -> course.getCourseCRN().equals(courseEntry.get("courseCRN")));
+                    studentRef.update("EnrolledCourses", enrolledCourses);
+                } else {
+                    logger.warn("Unrecognized data structure for EnrolledCourses: {}", enrolledCoursesObj.getClass());
+                }
             }
-            showAlert("Student " + student.getUserId() + " has been removed from course " + course.getCourseCRN() + ".");
-            coursesTable.getItems().remove(course);
+            //Process waitlist if applicable
+            if (course.getCurrentWaitlistCount() > 0) {
+                List<Map<String, Object>> waitlistedStudents = course.getWaitlistedStudents();
+                Map<String, Object> firstWaitlistedStudent = waitlistedStudents.removeFirst();
+                course.decrementWaitlistCount();
+
+                String waitlistedStudentId = (String) firstWaitlistedStudent.get("studentUserId");
+
+                //Update the student document of the waitlisted student
+                ApiFuture<QuerySnapshot> waitlistedStudentQuery = studentsCollection.whereEqualTo("UserId", waitlistedStudentId).get();
+                List<QueryDocumentSnapshot> waitlistedStudentDocs = waitlistedStudentQuery.get().getDocuments();
+                if (!waitlistedStudentDocs.isEmpty()) {
+                    DocumentReference waitlistedStudentRef = waitlistedStudentDocs.getFirst().getReference();
+
+                    Object waitlistedStudentCoursesObj = waitlistedStudentDocs.getFirst().get("EnrolledCourses");
+                    Map<String, Map<String, Object>> waitlistedStudentCourses = new HashMap<>();
+
+                    if (waitlistedStudentCoursesObj instanceof Map) {
+                        waitlistedStudentCourses = (Map<String, Map<String, Object>>) waitlistedStudentCoursesObj;
+                    } else if (waitlistedStudentCoursesObj instanceof ArrayList) {
+                        List<Map<String, Object>> coursesList = (ArrayList<Map<String, Object>>) waitlistedStudentCoursesObj;
+                        for (Map<String, Object> courseMap : coursesList) {
+                            waitlistedStudentCourses.put((String) courseMap.get("courseCRN"), courseMap);
+                        }
+                    }
+                    //Add the course to the student's enrolled courses
+                    Map<String, Object> enrollmentDetails = new HashMap<>();
+                    enrollmentDetails.put("DateEnrolled", System.currentTimeMillis());
+                    enrollmentDetails.put("EnrollmentStatus", "Active");
+                    waitlistedStudentCourses.put(course.getCourseCRN(), enrollmentDetails);
+                    waitlistedStudentRef.update("EnrolledCourses", waitlistedStudentCourses);
+
+                    //Add the student to the enrolled list of the course
+                    course.incrementEnrolledCount();
+                    course.getEnrolledStudents().add(waitlistedStudentId);
+                    courseDocs.getFirst().getReference().update("enrolledStudents", course.getEnrolledStudents());
+                    courseDocs.getFirst().getReference().update("currentEnrolledCount", course.getCurrentEnrolledCount());
+                }
+                //Update the course document to reflect the updated waitlist
+                courseDocs.getFirst().getReference().update("waitlistedStudents", waitlistedStudents);
+                courseDocs.getFirst().getReference().update("currentWaitlistCount", course.getCurrentWaitlistCount());
+            }
             coursesTable.refresh();
+            showAlert("Student " + student.getUserId() + " has been removed from the course " + course.getCourseCRN() + ".");
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error removing student {} from course {}: ", student.getUserId(), course.getCourseCRN(), e);
         }
     }
-
     /**
      * Shows an alert with the given message when called
      * Taken from CoursesController
@@ -296,6 +373,26 @@ public class StudentScheduleController {
     public void handleGoBackButton() {
         setRoot("student");
     }
+    /**
+     * Upon call, switches scene to studentenroll.fxml
+     */
+    public void goToEnrollPage() {
+        setRoot("studentenroll");
+    }
+
+    /**
+     * Upon call, switches scene to studentschedule.fxml
+     */
+    public void goToSchedulePage() {
+        setRoot("studentschedule");
+    }
+
+    /**
+     * Upon call, switches scene to studentgrades.fxml
+     */
+    public void goToGradesPage() {
+        setRoot("studentgrades");
+    }
 
     /**
      * Handles the user selecting an item in the TableView
@@ -311,5 +408,4 @@ public class StudentScheduleController {
             logger.info("Selected course: {} - {}", selectedCourse.getCourseName(), selectedCourse.getProfessor());
         }
     }
-
 }

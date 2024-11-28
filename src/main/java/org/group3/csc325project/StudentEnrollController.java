@@ -13,7 +13,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Student;
@@ -36,6 +40,22 @@ public class StudentEnrollController {
 
     //Just took this from CoursesController, feel free to change as you'd like Yash
     private static final Logger logger = LoggerFactory.getLogger(CoursesController.class);
+    @FXML
+    public VBox studentVbox;
+    @FXML
+    public AnchorPane studentAnchorPane;
+    @FXML
+    public ImageView studentSideBackground;
+    @FXML
+    public ImageView studentHeader;
+    @FXML
+    public ImageView studentCoursesButton;
+    @FXML
+    public ImageView studentGradesButton;
+    @FXML
+    public ImageView studentSchedule;
+    @FXML
+    public HBox topHBox;
 
     //TableView where course information is stored
     @FXML
@@ -136,11 +156,26 @@ public class StudentEnrollController {
         try {
             List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
             if (!studentDocs.isEmpty()) {
-                DocumentSnapshot studentSnapshot = studentDocs.getFirst();
-                enrolledCourses = (Map<String, Object>) studentSnapshot.get("EnrolledCourses");
+                DocumentSnapshot studentSnapshot = studentDocs.get(0);
+
+                //Handle both Map and List for EnrolledCourses, Prevent ClassCastException
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                if (enrolledCoursesObj instanceof Map) {
+                    enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
+                } else if (enrolledCoursesObj instanceof List) {
+                    // Convert List to Map
+                    List<Map<String, Object>> enrolledCoursesList = (List<Map<String, Object>>) enrolledCoursesObj;
+                    enrolledCourses = new HashMap<>();
+                    for (Map<String, Object> courseEntry : enrolledCoursesList) {
+                        String courseCRN = (String) courseEntry.get("courseCRN");
+                        enrolledCourses.put(courseCRN, courseEntry);
+                    }
+                } else {
+                    throw new IllegalStateException("Unexpected type for EnrolledCourses: " + (enrolledCoursesObj != null ? enrolledCoursesObj.getClass() : "null"));
+                }
             }
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error fetching enrolled courses for student", e);
         }
     }
 
@@ -410,6 +445,26 @@ public class StudentEnrollController {
      */
     public void handleGoBackButton() {
         setRoot("student");
+    }
+    /**
+     * Upon call, switches scene to studentenroll.fxml
+     */
+    public void goToEnrollPage() {
+        setRoot("studentenroll");
+    }
+
+    /**
+     * Upon call, switches scene to studentschedule.fxml
+     */
+    public void goToSchedulePage() {
+        setRoot("studentschedule");
+    }
+
+    /**
+     * Upon call, switches scene to studentgrades.fxml
+     */
+    public void goToGradesPage() {
+        setRoot("studentgrades");
     }
 
 }
