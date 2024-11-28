@@ -10,7 +10,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import user.Student;
 
 import java.util.*;
@@ -23,7 +27,22 @@ import static org.group3.csc325project.RegistrationApp.setRoot;
  * Controller for studentgrades.fxml, gets the students grades and displays them in a TableView
  */
 public class StudentGradesController {
-
+    @FXML
+    public VBox studentVbox;
+    @FXML
+    public AnchorPane studentAnchorPane;
+    @FXML
+    public ImageView studentSideBackground;
+    @FXML
+    public ImageView studentHeader;
+    @FXML
+    public ImageView studentCoursesButton;
+    @FXML
+    public ImageView studentGradesButton;
+    @FXML
+    public ImageView studentSchedule;
+    @FXML
+    public HBox topHBox;
     //TableView where grades will be stored
     //Uses same Grade object that ProfessorCoursesGrades uses
     @FXML
@@ -228,5 +247,25 @@ public class StudentGradesController {
      */
     public void handleGoBackButton() {
         setRoot("student");
+    }
+    /**
+     * Upon call, switches scene to studentenroll.fxml
+     */
+    public void goToEnrollPage() {
+        setRoot("studentenroll");
+    }
+
+    /**
+     * Upon call, switches scene to studentschedule.fxml
+     */
+    public void goToSchedulePage() {
+        setRoot("studentschedule");
+    }
+
+    /**
+     * Upon call, switches scene to studentgrades.fxml
+     */
+    public void goToGradesPage() {
+        setRoot("studentgrades");
     }
 }
