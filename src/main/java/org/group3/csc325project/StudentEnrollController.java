@@ -13,7 +13,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Student;
@@ -36,6 +40,22 @@ public class StudentEnrollController {
 
     //Just took this from CoursesController, feel free to change as you'd like Yash
     private static final Logger logger = LoggerFactory.getLogger(CoursesController.class);
+    @FXML
+    public VBox studentVbox;
+    @FXML
+    public AnchorPane studentAnchorPane;
+    @FXML
+    public ImageView studentSideBackground;
+    @FXML
+    public ImageView studentHeader;
+    @FXML
+    public ImageView studentCoursesButton;
+    @FXML
+    public ImageView studentGradesButton;
+    @FXML
+    public ImageView studentSchedule;
+    @FXML
+    public HBox topHBox;
 
     //TableView where course information is stored
     @FXML
@@ -410,6 +430,26 @@ public class StudentEnrollController {
      */
     public void handleGoBackButton() {
         setRoot("student");
+    }
+    /**
+     * Upon call, switches scene to studentenroll.fxml
+     */
+    public void goToEnrollPage() {
+        setRoot("studentenroll");
+    }
+
+    /**
+     * Upon call, switches scene to studentschedule.fxml
+     */
+    public void goToSchedulePage() {
+        setRoot("studentschedule");
+    }
+
+    /**
+     * Upon call, switches scene to studentgrades.fxml
+     */
+    public void goToGradesPage() {
+        setRoot("studentgrades");
     }
 
 }
