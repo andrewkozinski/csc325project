@@ -156,11 +156,26 @@ public class StudentEnrollController {
         try {
             List<QueryDocumentSnapshot> studentDocs = studentQuery.get().getDocuments();
             if (!studentDocs.isEmpty()) {
-                DocumentSnapshot studentSnapshot = studentDocs.getFirst();
-                enrolledCourses = (Map<String, Object>) studentSnapshot.get("EnrolledCourses");
+                DocumentSnapshot studentSnapshot = studentDocs.get(0);
+
+                //Handle both Map and List for EnrolledCourses, Prevent ClassCastException
+                Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                if (enrolledCoursesObj instanceof Map) {
+                    enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
+                } else if (enrolledCoursesObj instanceof List) {
+                    // Convert List to Map
+                    List<Map<String, Object>> enrolledCoursesList = (List<Map<String, Object>>) enrolledCoursesObj;
+                    enrolledCourses = new HashMap<>();
+                    for (Map<String, Object> courseEntry : enrolledCoursesList) {
+                        String courseCRN = (String) courseEntry.get("courseCRN");
+                        enrolledCourses.put(courseCRN, courseEntry);
+                    }
+                } else {
+                    throw new IllegalStateException("Unexpected type for EnrolledCourses: " + (enrolledCoursesObj != null ? enrolledCoursesObj.getClass() : "null"));
+                }
             }
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error fetching enrolled courses for student", e);
         }
     }
 
