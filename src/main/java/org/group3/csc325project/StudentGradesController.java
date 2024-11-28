@@ -108,9 +108,12 @@ public class StudentGradesController {
 
                 //Now we need to get information about all the courses a student is enrolled in and put that information inside a grade object
                 //I just call a helper method to do this
-                List<Grade> enrolledCourseInformation = handleGetCourseInformation(student, enrolled, studentSnapshot);
-                //Now add the list of Grade objects to the table
-                gradesTable.getItems().addAll(enrolledCourseInformation);
+                if(enrolled != null) {
+                    List<Grade> enrolledCourseInformation = handleGetCourseInformation(student, enrolled, studentSnapshot);
+                    //Now add the list of Grade objects to the table
+                    gradesTable.getItems().addAll(enrolledCourseInformation);
+                }
+
             }
 
         } catch (InterruptedException | ExecutionException e) {
