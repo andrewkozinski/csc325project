@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="adminVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../../../CSS/courses.css" fx:controller="org.group3.csc325project.CoursesController">
+<VBox fx:id="adminVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.CoursesController">
    <children>
       <AnchorPane fx:id="coursesAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
          <children>
@@ -49,12 +49,12 @@
                   <TableColumn fx:id="columnCourseCapacity" prefWidth="83.0" text="Capacity" />
                </columns>
             </TableView>
-            <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
+            <HBox fx:id="topHBox" alignment="CENTER" layoutX="195.0" layoutY="405.0" prefHeight="44.0" prefWidth="559.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="47.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#handleAddCourseButton" text="Add Course" />
                   <Button mnemonicParsing="false" onAction="#handleEditCourseButton" text="Edit Course" />
                   <Button mnemonicParsing="false" onAction="#assignCourseButton" text="Assign Course" />
-                  <Button mnemonicParsing="false" onAction="#backButton" text="Back (temp button)" />
+                  <Button mnemonicParsing="false" onAction="#handleRemoveStudentButton" text="Remove Student" />
                </children>
             </HBox>
             <TabPane fx:id="tabPane" layoutX="126.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="153.0" prefWidth="675.0">
