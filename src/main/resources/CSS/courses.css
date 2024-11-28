@@ -3,6 +3,11 @@
     -fx-background-color: rgba(173, 216, 230, 0.5); /* Light blue with 50% transparency */
 }
 
+/* Disabled Row */
+.table-view .cell:disabled{
+    -fx-background-color: rgba(108, 122, 137, 0.3); /* Light blue with 30% transparency */
+}
+
 /* Table Columns */
 .table-column {
     -fx-background-color: rgba(173, 216, 230, 0.5); /* Light blue for each column */
