@@ -201,6 +201,8 @@ public class StudentScheduleController {
             course.setCourseTime(document.getString("courseTime"));
             course.setCourseLocation(document.getString("courseLocation"));
             course.setCredits(document.getLong("credits").intValue());
+            course.setCourseDescription(document.getString("courseDescription"));
+            course.setCourseTextbook(document.getString("courseTextbook"));
             course.setCapacity(document.getLong("capacity").intValue());
             course.setCurrentEnrolledCount(document.getLong("currentEnrolledCount").intValue());
             course.setCourseTextbook(document.getString("courseTextbook"));

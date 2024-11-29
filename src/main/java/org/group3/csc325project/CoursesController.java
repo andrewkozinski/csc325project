@@ -46,6 +46,12 @@ public class CoursesController {
     //Column where the number of credits a course is worth is displayed
     @FXML
     private TableColumn<Course, String> columnCredits;
+    //Column where the course description is displayed
+    @FXML
+    private TableColumn<Course, String> columnCourseDescription;
+    //Column where the course textbook is displayed
+    @FXML
+    private TableColumn<Course, String> columnCourseTextbook;
     //Column where the course meeting time is displayed
     @FXML
     private TableColumn<Course, String> columnCourseSchedule;
@@ -101,6 +107,8 @@ public class CoursesController {
             String returnString = String.format("%d", cellData.getValue().getCredits());
             return new SimpleStringProperty(returnString);
         });
+        columnCourseDescription.setCellValueFactory(new PropertyValueFactory<>("courseDescription"));
+        columnCourseTextbook.setCellValueFactory(new PropertyValueFactory<>("courseTextbook"));
         columnCourseSchedule.setCellValueFactory(new PropertyValueFactory<>("courseTime"));
         columnCourseDays.setCellValueFactory(new PropertyValueFactory<>("courseDays"));
         columnCourseLocation.setCellValueFactory(new PropertyValueFactory<>("courseLocation"));
@@ -156,6 +164,8 @@ public class CoursesController {
                 course.setCourseTime(document.getString("courseTime"));
                 course.setCourseLocation(document.getString("courseLocation"));
                 course.setCredits(document.getLong("credits").intValue());
+                course.setCourseDescription(document.getString("courseDescription"));
+                course.setCourseTextbook(document.getString("courseTextbook"));
                 course.setCapacity(document.getLong("capacity").intValue());
                 course.setCurrentEnrolledCount(document.getLong("currentEnrolledCount").intValue());
                 // Get the professor reference
@@ -301,6 +311,8 @@ public class CoursesController {
         TextField timeField = new TextField();
         TextField locationField = new TextField();
         TextField creditsField = new TextField();
+        TextField courseDescriptionField = new TextField();
+        TextField courseTextbookField = new TextField();
         TextField capacityField = new TextField();
         TextField waitlistField = new TextField();
         ComboBox<Professor> professorComboBox = new ComboBox<>();
@@ -337,12 +349,19 @@ public class CoursesController {
         grid.add(locationField, 1, 5);
         grid.add(new Label("Credits:"), 0, 6);
         grid.add(creditsField, 1, 6);
-        grid.add(new Label("Capacity:"), 0, 7);
-        grid.add(capacityField, 1, 7);
-        grid.add(new Label("Waitlist:"), 0, 8);
-        grid.add(waitlistField, 1, 8);
-        grid.add(new Label("Professor:"), 0, 9);
-        grid.add(professorComboBox, 1, 9);
+
+        grid.add(new Label("Course Description:"), 0, 7);
+        grid.add(courseDescriptionField, 1, 7);
+        grid.add(new Label("Course Textbook:"), 0, 8);
+        grid.add(courseTextbookField, 1, 8);
+
+
+        grid.add(new Label("Capacity:"), 0, 9);
+        grid.add(capacityField, 1, 9);
+        grid.add(new Label("Waitlist:"), 0, 10);
+        grid.add(waitlistField, 1, 10);
+        grid.add(new Label("Professor:"), 0, 11);
+        grid.add(professorComboBox, 1, 11);
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         // Wait for user response
@@ -357,6 +376,8 @@ public class CoursesController {
                     String time = timeField.getText().trim();
                     String location = locationField.getText().trim();
                     int credits = Integer.parseInt(creditsField.getText().trim());
+                    String courseDescription = courseDescriptionField.getText().trim();
+                    String courseTextbook = courseTextbookField.getText().trim();
                     int capacity = Integer.parseInt(capacityField.getText().trim());
                     int waitlist = Integer.parseInt(waitlistField.getText().trim());
                     Professor selectedProfessor = professorComboBox.getSelectionModel().getSelectedItem();
@@ -367,7 +388,7 @@ public class CoursesController {
                         professorFullName = selectedProfessor.getFirstName() + " " + selectedProfessor.getLastName();
                     }
                     // Create a new course object
-                    Course newCourse = new Course(crn, name, code, days, time, location, credits, selectedProfessor, capacity, 0, "N/A", "N/A", waitlist, 0, new ArrayList<>());
+                    Course newCourse = new Course(crn, name, code, days, time, location, credits, selectedProfessor, capacity, 0, courseDescription, courseTextbook, waitlist, 0, new ArrayList<>());
                     newCourse.setProfessorReference(professorReference);
                     newCourse.setProfessorName(professorFullName);  // Set the professor name for UI
                     // Save to Firebase - let Firestore generate the document ID automatically
@@ -427,6 +448,8 @@ public class CoursesController {
             TextField timeField = new TextField(selectedCourse.getCourseTime());
             TextField locationField = new TextField(selectedCourse.getCourseLocation());
             TextField creditsField = new TextField(String.valueOf(selectedCourse.getCredits()));
+            TextField descriptionField = new TextField(selectedCourse.getCourseDescription());
+            TextField textbookField = new TextField(selectedCourse.getCourseTextbook());
             TextField capacityField = new TextField(String.valueOf(selectedCourse.getCapacity()));
             TextField waitlistField = new TextField(String.valueOf(selectedCourse.getCurrentWaitlistCount()));
 
@@ -490,12 +513,19 @@ public class CoursesController {
             grid.add(locationField, 1, 5);
             grid.add(new Label("Credits:"), 0, 6);
             grid.add(creditsField, 1, 6);
-            grid.add(new Label("Capacity:"), 0, 7);
-            grid.add(capacityField, 1, 7);
-            grid.add(new Label("Waitlist:"), 0, 8);
-            grid.add(waitlistField, 1, 8);
-            grid.add(new Label("Professor:"), 0, 9);
-            grid.add(professorComboBox, 1, 9);
+
+
+            grid.add(new Label("Description:"), 0, 7);
+            grid.add(descriptionField, 1, 7);
+            grid.add(new Label("Textbook:"), 0, 8);
+            grid.add(textbookField, 1, 8);
+
+            grid.add(new Label("Capacity:"), 0, 9);
+            grid.add(capacityField, 1, 9);
+            grid.add(new Label("Waitlist:"), 0, 10);
+            grid.add(waitlistField, 1, 10);
+            grid.add(new Label("Professor:"), 0, 11);
+            grid.add(professorComboBox, 1, 11);
             dialog.getDialogPane().setContent(grid);
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
             dialog.showAndWait().ifPresent(response -> {
@@ -508,6 +538,8 @@ public class CoursesController {
                     selectedCourse.setCourseTime(timeField.getText().trim());
                     selectedCourse.setCourseLocation(locationField.getText().trim());
                     selectedCourse.setCredits(Integer.parseInt(creditsField.getText().trim()));
+                    selectedCourse.setCourseDescription(descriptionField.getText().trim());
+                    selectedCourse.setCourseTextbook(textbookField.getText().trim());
                     selectedCourse.setCapacity(Integer.parseInt(capacityField.getText().trim()));
                     selectedCourse.setCurrentWaitlistCount(Integer.parseInt(waitlistField.getText().trim()));
 
@@ -549,6 +581,8 @@ public class CoursesController {
                 updates.put("courseTime", course.getCourseTime());
                 updates.put("courseLocation", course.getCourseLocation());
                 updates.put("credits", course.getCredits());
+                updates.put("courseDescription", course.getCourseDescription());
+                updates.put("courseTextbook", course.getCourseTextbook());
                 updates.put("capacity", course.getCapacity());
                 updates.put("currentWaitlistCount", course.getCurrentWaitlistCount());
                 if (course.getProfessorReference() != null) {

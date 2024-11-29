@@ -42,6 +42,8 @@
                <TableColumn fx:id="columnCourseName" prefWidth="89.0" text="Course Name" />
                <TableColumn fx:id="columnInstructor" prefWidth="85.60002136230469" text="Instructor" />
                <TableColumn fx:id="columnCredits" prefWidth="57.59991455078125" text="Credits" />
+               <TableColumn fx:id="columnCourseDescription" prefWidth="57.59991455078125" text="Course Description" />
+               <TableColumn fx:id="columnCourseTextbook" prefWidth="57.59991455078125" text="Course Textbook" />
                <TableColumn fx:id="columnCourseSchedule" prefWidth="115.0" text="Course Schedule" />
                <TableColumn fx:id="columnCourseDays" prefWidth="89.0" text="Course Days" />
                <TableColumn fx:id="columnCourseLocation" prefWidth="100.0" text="Course Location" />
@@ -55,7 +57,7 @@
                <Button mnemonicParsing="false" onAction="#handleEditCourseButton" text="Edit Course" />
                <Button mnemonicParsing="false" onAction="#assignCourseButton" text="Assign Course" />
                   <Button mnemonicParsing="false" onAction="#handleDeleteCourse" text="Delete Course" />
-               <Button mnemonicParsing="false" onAction="#backButton" text="Back (temp button)" />
+               <Button mnemonicParsing="false" onAction="#handleRemoveStudentButton" text="Remove Student" />
             </children>
          </HBox>
          <TabPane fx:id="tabPane" layoutX="126.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="153.0" prefWidth="675.0">
