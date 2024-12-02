@@ -50,7 +50,7 @@ public class AccountSettingsController {
      */
     public User getCurrentUserFromFirebase() {
         Firestore db = FirestoreClient.getFirestore();
-        CollectionReference collection = db.collection(username);
+        CollectionReference collection = db.collection(role);
 
         try {
             ApiFuture<QuerySnapshot> future = collection.whereEqualTo("Username", username).get();
