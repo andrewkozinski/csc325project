@@ -41,6 +41,7 @@ public class AccountSettingsController {
      * Runs when the AccountSettings page is loaded
      */
     public void initialize() {
+        // Get the current user from Firebase
         selectedUser = getCurrentUserFromFirebase();
     }
 
