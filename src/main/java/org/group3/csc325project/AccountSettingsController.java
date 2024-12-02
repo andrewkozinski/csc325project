@@ -13,6 +13,9 @@ import user.User;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Controller class for the AccountSettings page. Allows users to edit their account information.
+ */
 public class AccountSettingsController {
     @FXML
     private TextField editFirstNameField;
