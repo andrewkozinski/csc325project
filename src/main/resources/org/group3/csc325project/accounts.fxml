@@ -10,73 +10,72 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="accountsHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/accounts.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AccountsController">
-    <children>
-        <AnchorPane fx:id="coursesAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
-            <children>
-                <ImageView fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../Images/general_button_background.png" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../Images/registrationSystem_header_no_user.png" />
-                    </image>
-                </ImageView>
-                <ImageView fx:id="adminCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" onMousePressed="#coursesBackButton" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../Images/admin_Courses_button.png" />
-                    </image>
-                </ImageView>
-                <ImageView fx:id="adminAccountButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="118.0" onMousePressed="#accountsBackButton" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../Images/admin_Account_button.png" />
-                    </image>
-                </ImageView>
-                <AnchorPane fx:id="editUserPane" layoutX="123.0" layoutY="64.0" prefHeight="386.0" prefWidth="676.0" visible="false">
-                    <children>
-                  <ImageView fitHeight="329.0" fitWidth="724.0" layoutX="8.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../Images/admin_edit_user_title.png" />
-                     </image>
-                  </ImageView>
-                        <TextField fx:id="editFirstNameField" layoutX="100.0" layoutY="95.0" promptText="First Name" />
-                        <TextField fx:id="editLastNameField" layoutX="100.0" layoutY="135.0" promptText="Last Name" />
-                        <TextField fx:id="editEmailField" layoutX="100.0" layoutY="175.0" promptText="Email Address" />
-                        <TextField fx:id="editAgeField" layoutX="100.0" layoutY="215.0" promptText="Age" />
-                        <ChoiceBox fx:id="editDepartmentField" layoutX="380.0" layoutY="115.0" prefWidth="150.0" />
-                        <ChoiceBox fx:id="editClassificationField" layoutX="380.0" layoutY="155.0" prefWidth="150.0" />
-                        <ChoiceBox fx:id="editAccountTypeField" layoutX="380.0" layoutY="195.0" prefWidth="150.0" />
-                        <HBox layoutX="240.0" layoutY="280.0" prefWidth="180.0" spacing="10.0">
-                            <children>
-                                <Button mnemonicParsing="false" onAction="#handleSaveUser" prefHeight="38.0" prefWidth="97.0" text="Save" />
-                                <Button mnemonicParsing="false" onAction="#handleCancelEdit" prefHeight="38.0" prefWidth="95.0" text="Cancel" />
-                            </children>
-                        </HBox>
-                    </children>
-                </AnchorPane>
-                <TableView fx:id="accountsTable" layoutX="126.0" layoutY="64.0" maxHeight="-Infinity" onMouseClicked="#handleAccountsTableViewMouseClick" prefHeight="329.0" prefWidth="676.0">
-                    <columns>
-                        <TableColumn fx:id="columnId" prefWidth="65.0" text="ID" />
-                        <TableColumn fx:id="columnUserType" prefWidth="75.0" text="User Type" />
-                        <TableColumn fx:id="columnUsername" prefWidth="90.0" text="Username" />
-                        <TableColumn fx:id="columnFirstName" prefWidth="95.0" text="First Name" />
-                        <TableColumn fx:id="columnLastName" prefWidth="87.0" text="Last Name" />
-                        <TableColumn fx:id="columnAge" prefWidth="90.0" text="Age" />
-                        <TableColumn fx:id="columnEmail" prefWidth="180.0" text="Email Address" />
-                        <TableColumn fx:id="columnDept" prefWidth="143.0" text="Department/Major" />
-                    </columns>
-                </TableView>
-                <HBox fx:id="adminTableBottonButtons" alignment="CENTER" layoutX="125.0" layoutY="400.0" prefHeight="44.0" prefWidth="676.0" spacing="5.0">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#handleCreateUser" text="New Account" />
-                        <Button mnemonicParsing="false" onAction="#handleEditUser" text="Edit Account" />
-                        <Button mnemonicParsing="false" onAction="#handleDeleteUser" prefHeight="39.0" prefWidth="167.0" text="Delete Account" />
-                        <Button mnemonicParsing="false" onAction="#backButton" text="Back (temporary)" />
-                    </children>
-                </HBox>
-            </children>
+<HBox fx:id="accountsHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.group3.csc325project.AccountsController">
+    <AnchorPane fx:id="coursesAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css">
+        <ImageView fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../../Images/general_button_background.png"/>
+            </image>
+        </ImageView>
+        <ImageView fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../Images/registrationSystem_header_no_user.png"/>
+        </ImageView>
+        <ImageView fx:id="adminCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0"
+                   onMousePressed="#coursesBackButton" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../Images/admin_Courses_button.png"/>
+        </ImageView>
+        <ImageView fx:id="adminAccountButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="118.0"
+                   onMousePressed="#accountsBackButton" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../Images/admin_Account_button.png"/>
+        </ImageView>
+        <AnchorPane fx:id="editUserPane" layoutX="123.0" layoutY="64.0" prefHeight="386.0" prefWidth="676.0"
+                    visible="false">
+            <ImageView fitHeight="329.0" fitWidth="724.0" layoutX="8.0" layoutY="11.0" pickOnBounds="true"
+                       preserveRatio="true">
+                <Image url="@../../../Images/admin_edit_user_title.png"/>
+            </ImageView>
+            <TextField fx:id="editFirstNameField" layoutX="100.0" layoutY="95.0" promptText="First Name"/>
+            <TextField fx:id="editLastNameField" layoutX="100.0" layoutY="135.0" promptText="Last Name"/>
+            <TextField fx:id="editEmailField" layoutX="100.0" layoutY="175.0" promptText="Email Address"/>
+            <TextField fx:id="editAgeField" layoutX="100.0" layoutY="215.0" promptText="Age"/>
+            <ChoiceBox fx:id="editDepartmentField" layoutX="380.0" layoutY="115.0" prefWidth="150.0"/>
+            <ChoiceBox fx:id="editClassificationField" layoutX="380.0" layoutY="155.0" prefWidth="150.0"/>
+            <ChoiceBox fx:id="editAccountTypeField" layoutX="380.0" layoutY="195.0" prefWidth="150.0"/>
+            <HBox layoutX="240.0" layoutY="280.0" prefWidth="180.0" spacing="10.0">
+                <children>
+                    <Button mnemonicParsing="false" onAction="#handleSaveUser" prefHeight="38.0"
+                            prefWidth="97.0" text="Save"/>
+                    <Button mnemonicParsing="false" onAction="#handleCancelEdit" prefHeight="38.0"
+                            prefWidth="95.0" text="Cancel"/>
+                </children>
+            </HBox>
         </AnchorPane>
-    </children>
+        <TableView fx:id="accountsTable" layoutX="126.0" layoutY="64.0" maxHeight="-Infinity"
+                   onMouseClicked="#handleAccountsTableViewMouseClick" prefHeight="329.0" prefWidth="676.0">
+            <columns>
+                <TableColumn fx:id="columnId" prefWidth="65.0" text="ID"/>
+                <TableColumn fx:id="columnUserType" prefWidth="75.0" text="User Type"/>
+                <TableColumn fx:id="columnUsername" prefWidth="90.0" text="Username"/>
+                <TableColumn fx:id="columnFirstName" prefWidth="95.0" text="First Name"/>
+                <TableColumn fx:id="columnLastName" prefWidth="87.0" text="Last Name"/>
+                <TableColumn fx:id="columnAge" prefWidth="90.0" text="Age"/>
+                <TableColumn fx:id="columnEmail" prefWidth="180.0" text="Email Address"/>
+                <TableColumn fx:id="columnDept" prefWidth="143.0" text="Department/Major"/>
+            </columns>
+        </TableView>
+        <HBox fx:id="adminTableBottonButtons" alignment="CENTER" layoutX="125.0" layoutY="400.0" prefHeight="44.0"
+              prefWidth="676.0" spacing="5.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#handleCreateUser" text="New Account"/>
+                <Button mnemonicParsing="false" onAction="#handleEditUser" text="Edit Account"/>
+                <Button mnemonicParsing="false" onAction="#handleDeleteUser" prefHeight="39.0" prefWidth="167.0"
+                        text="Delete Account"/>
+                <Button mnemonicParsing="false" onAction="#backButton" text="Back (temporary)"/>
+            </children>
+        </HBox>
+    </AnchorPane>
 </HBox>

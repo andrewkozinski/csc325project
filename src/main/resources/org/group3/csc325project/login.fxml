@@ -12,63 +12,68 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="login_screen" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" spacing="20.0" style="-fx-spacing: 10; -fx-padding: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.LoginController">
+<VBox fx:id="login_screen" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" spacing="20.0" style="-fx-spacing: 10; -fx-padding: 10;"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.group3.csc325project.LoginController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-    <children>
-        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0">
-            <children>
-                <ImageView fx:id="login_background_image_view" fitHeight="450.0" fitWidth="800.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../../../../../Documents/Atlantis/Atlantis_Background.png" />
-                    </image>
-                </ImageView>
-                <ImageView fx:id="login_title_background" fitHeight="450.0" fitWidth="800.0" layoutX="10.0" layoutY="10.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../../../../../Documents/Atlantis/registrationSystem_header_no_user.png" />
-                    </image>
-                </ImageView>
-                <AnchorPane fx:id="login_screen_anchor" prefHeight="450.0" prefWidth="800.0" StackPane.alignment="CENTER">
-                    <children>
-                        <ImageView fx:id="login_input_background" fitHeight="450.0" fitWidth="800.0" layoutX="-55.0" layoutY="55.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../../../../../../Documents/Atlantis/general_menu_background.png" />
-                            </image>
-                        </ImageView>
-                        <Label fx:id="login_userID_title" contentDisplay="CENTER" layoutX="93.0" layoutY="193.0" prefHeight="60.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="UserID:">
-                            <font>
-                                <Font name="Bell MT" size="40.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="login_password_title" contentDisplay="CENTER" layoutX="94.0" layoutY="262.0" prefHeight="60.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="Password:">
-                            <font>
-                                <Font name="Bell MT" size="40.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="login_userID_input_textField" layoutX="313.0" layoutY="193.0" prefHeight="60.0" prefWidth="425.0">
-                            <font>
-                                <Font name="Bell MT" size="40.0" />
-                            </font>
-                        </TextField>
-                        <PasswordField fx:id="login_password_input" layoutX="313.0" layoutY="262.0" prefHeight="60.0" prefWidth="425.0">
-                            <font>
-                                <Font name="Bell MT" size="40.0" />
-                            </font>
-                        </PasswordField>
-                        <Button fx:id="login_login_button" layoutX="153.0" layoutY="350.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleLoginButtonClick" prefHeight="80.0" prefWidth="160.0" text="Login">
-                            <font>
-                                <Font name="Bodoni MT" size="42.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="login_forgot_password_button" layoutX="329.0" layoutY="349.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleForgotPasswordButtonClick" prefHeight="80.0" prefWidth="380.0" text="Forgot Password">
-                            <font>
-                                <Font name="Bodoni MT" size="42.0" />
-                            </font>
-                        </Button>
-                    </children>
-                </AnchorPane>
-            </children>
-        </StackPane>
-    </children>
+    <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0"
+               prefWidth="800.0">
+        <ImageView fx:id="login_background_image_view" fitHeight="450.0" fitWidth="800.0" nodeOrientation="INHERIT"
+                   pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../../../../../../Documents/Atlantis/Atlantis_Background.png"/>
+        </ImageView>
+        <ImageView fx:id="login_title_background" fitHeight="450.0" fitWidth="800.0" layoutX="10.0" layoutY="10.0"
+                   nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../../../../../../Documents/Atlantis/registrationSystem_header_no_user.png"/>
+        </ImageView>
+        <AnchorPane fx:id="login_screen_anchor" prefHeight="450.0" prefWidth="800.0" StackPane.alignment="CENTER">
+            <ImageView fx:id="login_input_background" fitHeight="450.0" fitWidth="800.0" layoutX="-55.0"
+                       layoutY="55.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../../../../../../../Documents/Atlantis/general_menu_background.png"/>
+            </ImageView>
+            <Label fx:id="login_userID_title" contentDisplay="CENTER" layoutX="93.0" layoutY="193.0"
+                   prefHeight="60.0" prefWidth="210.0" style="-fx-background-color: transparent;"
+                   text="UserID:">
+                <font>
+                    <Font name="Bell MT" size="40.0"/>
+                </font>
+            </Label>
+            <Label fx:id="login_password_title" contentDisplay="CENTER" layoutX="94.0" layoutY="262.0"
+                   prefHeight="60.0" prefWidth="210.0" style="-fx-background-color: transparent;"
+                   text="Password:">
+                <font>
+                    <Font name="Bell MT" size="40.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="login_userID_input_textField" layoutX="313.0" layoutY="193.0" prefHeight="60.0"
+                       prefWidth="425.0">
+                <font>
+                    <Font name="Bell MT" size="40.0"/>
+                </font>
+            </TextField>
+            <PasswordField fx:id="login_password_input" layoutX="313.0" layoutY="262.0" prefHeight="60.0"
+                           prefWidth="425.0">
+                <font>
+                    <Font name="Bell MT" size="40.0"/>
+                </font>
+            </PasswordField>
+            <Button fx:id="login_login_button" layoutX="153.0" layoutY="350.0" minHeight="-Infinity"
+                    minWidth="-Infinity" onAction="#handleLoginButtonClick" prefHeight="80.0" prefWidth="160.0"
+                    text="Login">
+                <font>
+                    <Font name="Bodoni MT" size="42.0"/>
+                </font>
+            </Button>
+            <Button fx:id="login_forgot_password_button" layoutX="329.0" layoutY="349.0" minHeight="-Infinity"
+                    minWidth="-Infinity" onAction="#handleForgotPasswordButtonClick" prefHeight="80.0"
+                    prefWidth="380.0" text="Forgot Password">
+                <font>
+                    <Font name="Bodoni MT" size="42.0"/>
+                </font>
+            </Button>
+        </AnchorPane>
+    </StackPane>
 </VBox>

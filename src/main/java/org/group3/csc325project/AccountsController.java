@@ -31,6 +31,8 @@ import static org.group3.csc325project.RegistrationApp.setRoot;
  */
 public class AccountsController {
     private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
+    @FXML
+    public AnchorPane coursesAnchorPane;
 
     //TableView where accounts stored in Firebase are displayed
     @FXML
@@ -365,6 +367,12 @@ public class AccountsController {
         }
     }
 
+    public User getSelectedUser() {
+        return selectedUser;
+    }
+    public void setSelectedUser(User user) {
+        selectedUser = user;
+    }
     /**
      * Simply sets the root back to the base admin area
      * This button is temporary

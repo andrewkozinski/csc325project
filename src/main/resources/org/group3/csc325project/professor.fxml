@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="professorVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorController">
+<VBox fx:id="professorVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorController">
    <children>
       <AnchorPane fx:id="professorAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                  prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/courses.css">
+                  prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css">
          <ImageView fx:id="professorSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true"
                     preserveRatio="true">
             <Image url="@../../../Images/general_button_background.png"/>
