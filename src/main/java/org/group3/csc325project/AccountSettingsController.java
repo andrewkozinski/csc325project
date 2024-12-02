@@ -46,10 +46,10 @@ public class AccountSettingsController {
     }
 
     /**
-     * Gets user from firebase and stores information into a User instance
+     * Helper method that gets user from firebase and stores information into a User instance
      * @return A new User object instance
      */
-    public User getCurrentUserFromFirebase() {
+    private User getCurrentUserFromFirebase() {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference collection = db.collection(role);
 
