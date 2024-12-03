@@ -9,14 +9,23 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
 
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 import javafx.scene.image.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
@@ -24,6 +33,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.IOException;
 public class RegistrationApp extends Application {
+    private StackPane stackPane;
     private static Scene scene;
     private int heightScene = 450;
     private int widthScene = 800;
@@ -115,6 +125,26 @@ public class RegistrationApp extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    /**
+     * Opens account dropdown menu
+     */
+    public static void openAccount_button(MouseEvent event) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem accountInformationButton = new MenuItem("Account Information");
+        accountInformationButton.setOnAction(actionEvent -> {
+            setRoot("accountsettings");
+        });
+        MenuItem logoutButton = new MenuItem("Logout");
+        logoutButton.setOnAction(actionEvent -> {
+            setRoot("login");
+        });
+        contextMenu.getItems().addAll(accountInformationButton, logoutButton);
+
+        Node source = (Node) event.getSource();
+
+        contextMenu.show(source, event.getScreenX(), event.getScreenY());
     }
 
 }

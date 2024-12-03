@@ -16,11 +16,11 @@ module org.group3.csc325project {
     requires totp;
     requires com.google.zxing;
     requires org.slf4j;
-
     exports user;
 
     exports course;
 
     opens org.group3.csc325project to javafx.fxml;
     exports org.group3.csc325project;
+
 }

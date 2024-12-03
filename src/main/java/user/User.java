@@ -137,9 +137,19 @@ public abstract class User {
     public String getEmail() {
         return email;
     }
+
+    /**
+     * Gets the age of a user
+     * @return User's age
+     */
     public String getAge() {
         return age;
     }
+
+    /**
+     * Sets the age of a user
+     * @param age Age to be set
+     */
     public void setAge(String age) {
         this.age = age;
     }
@@ -153,7 +163,7 @@ public abstract class User {
     public Long getDateWaitlisted() {
         return dateWaitlisted;
     }
-
+    public void setPassword(String password){this.password = password;}
     public void setDateWaitlisted(Long dateWaitlisted) {
         this.dateWaitlisted = dateWaitlisted;
     }

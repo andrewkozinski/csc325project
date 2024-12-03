@@ -8,16 +8,16 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Student;
@@ -56,7 +56,12 @@ public class StudentEnrollController {
     public ImageView studentSchedule;
     @FXML
     public HBox topHBox;
-
+    @FXML
+    public ImageView account_button;
+    @FXML
+    public Label account_Name_label;
+    @FXML
+    public Label account_button_hiitbox;
     //TableView where course information is stored
     @FXML
     private TableView<Course> coursesTable;
@@ -142,7 +147,11 @@ public class StudentEnrollController {
 
         // Reads Course collection in the Firestore database and adds those courses to the TableView
         handleReadFirebase();
-
+        String username = SessionManager.getLoggedInUsername();
+        account_Name_label.setText(username);
+        account_Name_label.setAlignment(Pos.CENTER);
+        account_Name_label.setTextAlignment(TextAlignment.CENTER);
+        account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
     }
 
     /**
@@ -470,5 +479,11 @@ public class StudentEnrollController {
     public void goToGradesPage() {
         setRoot("studentgrades");
     }
+    /**
+     * Opens account dropdown menu
+     */
+    public void openAccount_button(MouseEvent event) {
+        RegistrationApp.openAccount_button(event);
 
+    }
 }

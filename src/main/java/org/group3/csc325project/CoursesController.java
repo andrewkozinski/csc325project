@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -14,6 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Professor;
@@ -28,6 +32,18 @@ import static org.group3.csc325project.RegistrationApp.setRoot;
  */
 public class CoursesController {
     private static final Logger logger = LoggerFactory.getLogger(CoursesController.class);
+    @FXML
+    public VBox adminVbox;
+    @FXML
+    public ImageView adminSideBackground;
+    @FXML
+    public ImageView adminHeader;
+    @FXML
+    public ImageView account_button;
+    @FXML
+    public Label account_Name_label;
+    @FXML
+    public Label account_button_hiitbox;
     //TableView where Courses stored in Firebase are displayed
     @FXML
     private TableView<Course> coursesTable;
@@ -143,7 +159,11 @@ public class CoursesController {
 
         // Reads Course collection in the Firestore database and adds those courses to the TableView
         handleReadFirebase();
-
+        String username = SessionManager.getLoggedInUsername();
+        account_Name_label.setText(username);
+        account_Name_label.setAlignment(Pos.CENTER);
+        account_Name_label.setTextAlignment(TextAlignment.CENTER);
+        account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
     }
     /**
      * Helper method which reads firestore course collection and adds courses to the tableview
@@ -1063,4 +1083,11 @@ public class CoursesController {
     }
     public void coursesBackButton() {setRoot("courses");}
     public void accountsBackButton() {setRoot("accounts");}
+    /**
+     * Opens account dropdown menu
+     */
+    public void openAccount_button(MouseEvent event) {
+        RegistrationApp.openAccount_button(event);
+
+    }
 }
