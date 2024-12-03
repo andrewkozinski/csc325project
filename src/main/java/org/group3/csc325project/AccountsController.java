@@ -6,11 +6,15 @@ import com.google.firebase.cloud.FirestoreClient;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Admin;
@@ -18,7 +22,6 @@ import user.Professor;
 import user.Student;
 import user.User;
 
-import javax.swing.text.html.ImageView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,12 @@ public class AccountsController {
     private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
     @FXML
     public AnchorPane coursesAnchorPane;
+    @FXML
+    public ImageView account_button;
+    @FXML
+    public Label account_Name_label;
+    @FXML
+    public Label account_button_hiitbox;
 
     //TableView where accounts stored in Firebase are displayed
     @FXML
@@ -111,6 +120,11 @@ public class AccountsController {
         //Now add accounts from Firebase to the TableView
         //Call to helper method where DB is actually read
         handleReadFirebase();
+        String username = SessionManager.getLoggedInUsername();
+        account_Name_label.setText(username);
+        account_Name_label.setAlignment(Pos.CENTER);
+        account_Name_label.setTextAlignment(TextAlignment.CENTER);
+        account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
     }
 
     /**
@@ -297,7 +311,7 @@ public class AccountsController {
         accountsTable.setVisible(true);
         adminTableBottonButtons.setVisible(true);
     }
-    private void saveUpdatedUserToDatabase(User user) {
+    public void saveUpdatedUserToDatabase(User user) {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference collection = db.collection(user.getClass().getSimpleName());
 
@@ -327,7 +341,7 @@ public class AccountsController {
             showAlert("Edit User", "Please try again. Failed to edit user.");
         }
     }
-    private void showAlert(String title, String content) {
+    public void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -367,12 +381,6 @@ public class AccountsController {
         }
     }
 
-    public User getSelectedUser() {
-        return selectedUser;
-    }
-    public void setSelectedUser(User user) {
-        selectedUser = user;
-    }
     /**
      * Simply sets the root back to the base admin area
      * This button is temporary
@@ -382,4 +390,11 @@ public class AccountsController {
     }
     public void coursesBackButton() {setRoot("courses");}
     public void accountsBackButton() {setRoot("accounts");}
+    /**
+     * Opens account dropdown menu
+     */
+    public void openAccount_button(MouseEvent event) {
+        RegistrationApp.openAccount_button(event);
+
+    }
 }

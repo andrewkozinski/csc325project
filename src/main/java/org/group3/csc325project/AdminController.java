@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
@@ -43,7 +44,7 @@ public class AdminController {
         account_Name_label.setText(username);
         account_Name_label.setAlignment(Pos.CENTER);
         account_Name_label.setTextAlignment(TextAlignment.CENTER);
-        account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 24));
+        account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
 
     }
     /**
@@ -59,7 +60,9 @@ public class AdminController {
     /**
      * Goes to accounts.fxml file where a mock tableview has been set up.
      */
-    public void goToAccountsView() { setRoot("accounts"); }
+    public void goToAccountsView() {
+        setRoot("accounts");
+        }
 
     /**
      * Goes to courses.fxml file where a tableview displaying courses will be displayed

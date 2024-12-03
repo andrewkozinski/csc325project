@@ -163,7 +163,7 @@ public abstract class User {
     public Long getDateWaitlisted() {
         return dateWaitlisted;
     }
-
+    public void setPassword(String password){this.password = password;}
     public void setDateWaitlisted(Long dateWaitlisted) {
         this.dateWaitlisted = dateWaitlisted;
     }

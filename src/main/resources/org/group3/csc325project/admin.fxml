@@ -24,12 +24,11 @@
          <ImageView fx:id="admin_sidebar_background" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../../Images/general_button_background.png" />
          </ImageView>
-         <Button layoutX="271.0" layoutY="208.0" mnemonicParsing="false" onAction="#returnToLogin" text="Return to login" />
-         <Button layoutX="454.0" layoutY="221.0" mnemonicParsing="false" onAction="#returnToCreateUser" text="create user" />
+         <Button layoutX="454.0" layoutY="221.0" mnemonicParsing="false" onAction="#returnToCreateUser" text="create user" visible="false" />
          <ImageView fx:id="admin_Courses_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" onMouseClicked="#goToCoursesView" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../../Images/admin_Courses_button.png" />
          </ImageView>
-         <ImageView fx:id="admin_Assign_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="120.0" onMouseClicked="#goToAccountsView" pickOnBounds="true" preserveRatio="true">
+         <ImageView fx:id="admin_Assign_button" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="118.0" onMouseClicked="#goToAccountsView" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../../Images/admin_Account_button.png" />
          </ImageView>
          <ImageView fx:id="account_button" fitHeight="450.0" fitWidth="120.0" layoutX="670.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">

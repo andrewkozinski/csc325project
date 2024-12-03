@@ -13,6 +13,8 @@ import user.User;
 
 import java.util.concurrent.ExecutionException;
 
+import static org.group3.csc325project.RegistrationApp.setRoot;
+
 /**
  * Controller class for the AccountSettings page. Allows users to edit their account information.
  */
@@ -31,8 +33,10 @@ public class AccountSettingsController {
     public ChoiceBox editClassificationField;
     @FXML
     public ChoiceBox editAccountTypeField;
+    @FXML
+    public TextField editPasswordField;
     private User selectedUser;
-
+    private AccountsController ac = new AccountsController();
     /**
      * When called, allows a selected user to be edited
      */
@@ -46,6 +50,13 @@ public class AccountSettingsController {
     public void initialize() {
         // Get the current user from Firebase
         selectedUser = getCurrentUserFromFirebase();
+        editDepartmentField.setDisable(true);
+        editClassificationField.setDisable(true);
+        editAccountTypeField.setDisable(true);
+        editFirstNameField.setDisable(true);
+        editLastNameField.setDisable(true);
+        editAgeField.setDisable(true);
+        handleEditUser();
     }
 
     /**
@@ -100,17 +111,25 @@ public class AccountSettingsController {
         return null;
 
     }
+    public void backHomeButton() {
+        switch (role) {
+            case "Admin" -> setRoot("admin");
+            case "Professor" -> setRoot("professor");
+            case "Student" -> setRoot("student");
+        }
+    }
 
-    /*
+
     public void handleEditUser() {
-        AccountsController ac = new AccountsController();
-        selectedUser =
+
+        selectedUser = getCurrentUserFromFirebase();
         if (selectedUser != null) {
             // Populate fields with user data
             editFirstNameField.setText(selectedUser.getFirstName());
             editLastNameField.setText(selectedUser.getLastName());
             editEmailField.setText(selectedUser.getEmail());
             editAgeField.setText(selectedUser.getAge());
+            editPasswordField.setText(selectedUser.getPassword());
 
             if (selectedUser instanceof Professor) {
                 editDepartmentField.setValue(((Professor) selectedUser).getDepartment());
@@ -122,10 +141,10 @@ public class AccountSettingsController {
                 editClassificationField.setDisable(true);
                 editDepartmentField.setDisable(true);
             }
-            // Show the edit pane
+
 
         } else {
-            //showAlert("Edit User", "Please select a user to edit.");
+            ac.showAlert("Edit User", "Please select a user to edit.");
         }
     }
     public void handleSaveUser() {
@@ -134,23 +153,22 @@ public class AccountSettingsController {
             selectedUser.setLastName(editLastNameField.getText());
             selectedUser.setEmail(editEmailField.getText());
             selectedUser.setAge(editAgeField.getText());
+            selectedUser.setPassword(editPasswordField.getText());
 
             if (selectedUser instanceof Professor) {
-                ((Professor) selectedUser).setDepartment(editDepartmentField.getValue());
+                ((Professor) selectedUser).setDepartment((String) editDepartmentField.getValue());
             } else if (selectedUser instanceof Student) {
-                ((Student) selectedUser).setClassification(editClassificationField.getValue());
+                ((Student) selectedUser).setClassification((String) editClassificationField.getValue());
             }
 
-            //saveUpdatedUserToDatabase(selectedUser);
+            ac.saveUpdatedUserToDatabase(selectedUser);
 
+            backHomeButton();
         }
     }
-    public void handleCancelEdit() {
-        // Simply hide the edit pane without saving
 
-    }
 
-     */
+
 
 
 }

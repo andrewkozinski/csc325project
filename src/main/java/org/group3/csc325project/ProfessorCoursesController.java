@@ -7,16 +7,16 @@ import course.Course;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextInputDialog;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import user.Professor;
 
 import java.util.ArrayList;
@@ -89,6 +89,12 @@ public class ProfessorCoursesController {
     @FXML
     private TableColumn<Course,String> columnCourseTextbook;
 
+    @FXML
+    public ImageView account_button;
+    @FXML
+    public Label account_Name_label;
+    @FXML
+    public Label account_button_hiitbox;
     //selectedCourse is the currently selected item from the TableView
     //Updated when user selects an item in the table view
     private static Course selectedCourse;
@@ -125,6 +131,11 @@ public class ProfessorCoursesController {
         for(Course course : courses) {
             assignedCoursesTable.getItems().add(course);
         }
+        String username = SessionManager.getLoggedInUsername();
+        account_Name_label.setText(username);
+        account_Name_label.setAlignment(Pos.CENTER);
+        account_Name_label.setTextAlignment(TextAlignment.CENTER);
+        account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
 
     }
 
@@ -299,6 +310,12 @@ public class ProfessorCoursesController {
         //Now finally, call refresh on the TableView
         assignedCoursesTable.refresh();
     }
+    /**
+     * Opens account dropdown menu
+     */
+    public void openAccount_button(MouseEvent event) {
+        RegistrationApp.openAccount_button(event);
 
+    }
 
 }

@@ -8,6 +8,7 @@ import course.Grade;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,6 +19,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import user.Student;
 
 import java.util.HashMap;
@@ -55,6 +58,12 @@ public class ProfessorCourseGrades {
     //Label for the current course
     @FXML
     private Label courseLabel;
+    @FXML
+    public ImageView account_button;
+    @FXML
+    public Label account_Name_label;
+    @FXML
+    public Label account_button_hiitbox;
     //The current course
     private Course currentCourse;
     //The selected Grade from the table
@@ -85,6 +94,11 @@ public class ProfessorCourseGrades {
 
         //Now read firebase for grades
         handleReadFirebase();
+        String username = SessionManager.getLoggedInUsername();
+        account_Name_label.setText(username);
+        account_Name_label.setAlignment(Pos.CENTER);
+        account_Name_label.setTextAlignment(TextAlignment.CENTER);
+        account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
     }
 
     /**
@@ -219,6 +233,10 @@ public class ProfessorCourseGrades {
      */
     public void handleGoBackToCourses() {
         setRoot("professorcourses");
+    }
+    public void openAccount_button(MouseEvent event) {
+        RegistrationApp.openAccount_button(event);
+
     }
 
 }
