@@ -1,18 +1,12 @@
 package org.group3.csc325project;
 
-import com.google.auth.Credentials;
-import com.google.cloud.Service;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
-
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -20,23 +14,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableView;
-import javafx.scene.image.*;
-import javafx.scene.input.DragEvent;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+
 public class RegistrationApp extends Application {
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationApp.class);
     private StackPane stackPane;
     private static Scene scene;
-    private int heightScene = 450;
-    private int widthScene = 800;
+    private final int heightScene = 450;
+    private final int widthScene = 800;
     @Override
     public void start(Stage stage) throws IOException {
         initializeFirebase();
@@ -97,12 +90,17 @@ public class RegistrationApp extends Application {
      */
     public static void setRoot(String fxml) {
         try {
-            scene.setRoot(loadFXML(fxml));
+            Parent root = loadFXML(fxml);
+            scene.setRoot(root);
+            Stage stage = (Stage) scene.getWindow();
+            if (stage.getScene() != scene) {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
+            logger.error("Error setting root for FXML: " + fxml, e);
             throw new RuntimeException(e);
         }
     }
-
     /**
      * Method that can be called to return to log in scene.
      * Intended to be used in Student, Professor and Admin controllers

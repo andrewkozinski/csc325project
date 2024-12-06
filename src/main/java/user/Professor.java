@@ -1,7 +1,6 @@
 package user;
 
 import course.Course;
-import org.group3.csc325project.AccountsController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,10 +17,10 @@ public class Professor extends User{
     private static final Logger logger = LoggerFactory.getLogger(Professor.class);
 
     //Department a Professor is apart of
-    private String department;
+    private String Department;
 
     //Courses a given Professor instance is assigned to
-    private List<Course> assignedCourses;
+    private List<Course> AssignedCourses;
 
     //Default constructor
     /**
@@ -29,34 +28,34 @@ public class Professor extends User{
      */
     public Professor() {
         super();
-        department = null;
-        assignedCourses = new ArrayList<Course>();
+        Department = null;
+        AssignedCourses = new ArrayList<Course>();
     }
     public Professor(String userId) {
         super();
-        this.userId = userId;
+        this.UserId = userId;
     }
     public Professor(String userId, String firstName, String lastName) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.UserId = userId;
+        this.FirstName = firstName;
+        this.LastName = lastName;
     }
 
     /**
      * Parameterized constructor, takes in variables and sets them to the corresponding user variables
-     * @param username Passed in username
+     * @param username Passed in Username
      * @param password Passed in password
      * @param firstName Passed in first name
      * @param lastName Passed in last name
      * @param userId Passed in user ID
-     * @param age Passed in age
+     * @param age Passed in Age
      * @param department Passed in department
      */
     public Professor(String username, String password, String firstName, String lastName, String userId, String age, String department) {
-        super(username, password, firstName, lastName, userId, age); // Set age in the User class
-        this.department = department;
-        assignedCourses = new ArrayList<Course>();
-        logger.info("Creating Professor with age: {}", age);
+        super(username, password, firstName, lastName, userId, age); // Set Age in the User class
+        this.Department = department;
+        AssignedCourses = new ArrayList<Course>();
+        logger.info("Creating Professor with Age: {}", age);
     }
 
 
@@ -65,7 +64,7 @@ public class Professor extends User{
      * @return Department
      */
     public String getDepartment() {
-        return department;
+        return Department;
     }
 
     /**
@@ -73,7 +72,7 @@ public class Professor extends User{
      * @param department Department to be set to
      */
     public void setDepartment(String department) {
-        this.department = department;
+        this.Department = department;
     }
 
     /**
@@ -81,7 +80,7 @@ public class Professor extends User{
      * @param course Course to be added
      */
     public void addCourse(Course course) {
-        assignedCourses.add(course);
+        AssignedCourses.add(course);
     }
 
     /**
@@ -89,8 +88,8 @@ public class Professor extends User{
      * @return Copy of the list of courses a professor is assigned to
      */
     public List<Course> getAssignedCourses() {
-        //Returns a copy of the assignedCourses list
-        return new ArrayList<>(assignedCourses);
+        //Returns a copy of the AssignedCourses list
+        return new ArrayList<>(AssignedCourses);
     }
 
     //Overrides
@@ -101,7 +100,7 @@ public class Professor extends User{
      */
     @Override
     public String userInfo() {
-        return String.format("Username: %s UserID: %s Department: %s", username, userId, department);
+        return String.format("Username: %s UserID: %s Department: %s", Username, UserId, Department);
     }
 
     /**
@@ -110,7 +109,7 @@ public class Professor extends User{
      */
     @Override
     public String getUserDept() {
-        return department;
+        return Department;
     }
 
     /**
@@ -120,6 +119,6 @@ public class Professor extends User{
      */
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return FirstName + " " + LastName;
     }
 }

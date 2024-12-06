@@ -3,7 +3,7 @@ package user;
 /**
  * Class which stores data of a user of the admin type
  * Contains information about an admin
- * Including but not limited to: userid, username, etc.
+ * Including but not limited to: userid, Username, etc.
  * @author Andrew Kozinski
  */
 public class Admin extends User{
@@ -19,7 +19,7 @@ public class Admin extends User{
     //Parameterized constructor
     /**
      * Parameterized constructor, takes in variables and sets them to the corresponding user variables
-     * @param username Passed in username
+     * @param username Passed in Username
      * @param password Passed in password
      * @param firstName Passed in first name
      * @param lastName Passed in last name
@@ -35,7 +35,7 @@ public class Admin extends User{
      */
     @Override
     public String userInfo() {
-        return String.format("Username: %s UserID: %s FirstName: %s LastName: %s", username, userId, firstName, lastName);
+        return String.format("Username: %s UserID: %s FirstName: %s LastName: %s", Username, UserId, FirstName, LastName);
     }
 
     /**

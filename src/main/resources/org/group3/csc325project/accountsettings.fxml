@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AccountSettingsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.AccountSettingsController">
     <StackPane prefHeight="450.0" prefWidth="800.0">
         <ImageView fx:id="account_settings__background_image_view" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../../Images/Atlantis_Background.png" />
@@ -34,20 +35,22 @@
             <ChoiceBox fx:id="editClassificationField" layoutX="545.0" layoutY="236.0" prefWidth="150.0" />
             <ChoiceBox fx:id="editAccountTypeField" layoutX="545.0" layoutY="276.0" prefWidth="150.0" />
             <HBox layoutX="185.0" layoutY="364.0" prefHeight="62.0" prefWidth="460.0" spacing="10.0">
-            <children>
-                   <Button mnemonicParsing="false" onAction="#handleSaveUser" prefHeight="43.0" prefWidth="203.0" text="Save" />
-                   <Button mnemonicParsing="false" onAction="#backHomeButton" prefHeight="43.0" prefWidth="246.0" text="Cancel" />
-            </children>
+                <children>
+                    <Button mnemonicParsing="false" onAction="#handleSaveUser" prefHeight="43.0" prefWidth="203.0" text="Save" />
+                    <Button mnemonicParsing="false" onAction="#backHomeButton" prefHeight="43.0" prefWidth="246.0" text="Cancel" />
+                </children>
             </HBox>
-         <PasswordField fx:id="editPasswordField" layoutX="228.0" layoutY="314.0" promptText="password" />
-         <Label layoutX="112.0" layoutY="158.0" text="First Name:" />
-         <Label layoutX="112.0" layoutY="198.0" text="Last Name:" />
-         <Label layoutX="112.0" layoutY="279.0" text="Age:" />
-         <Label layoutX="112.0" layoutY="239.0" text="Email:" />
-         <Label layoutX="112.0" layoutY="313.0" text="Password:" />
-         <Label layoutX="415.0" layoutY="200.0" text="Department:" />
-         <Label layoutX="415.0" layoutY="239.0" text="Classification:" />
-         <Label layoutX="415.0" layoutY="280.0" text="Account Type:" />
+            <PasswordField fx:id="editPasswordField" layoutX="228.0" layoutY="314.0" promptText="Password" />
+            <Label layoutX="112.0" layoutY="158.0" text="First Name:" />
+            <Label layoutX="112.0" layoutY="198.0" text="Last Name:" />
+            <Label layoutX="112.0" layoutY="279.0" text="Age:" />
+            <Label layoutX="112.0" layoutY="239.0" text="Email:" />
+            <Label layoutX="112.0" layoutY="313.0" text="Password:" />
+            <Label layoutX="415.0" layoutY="200.0" text="Department:" />
+            <Label layoutX="415.0" layoutY="239.0" text="Classification:" />
+            <Label layoutX="415.0" layoutY="280.0" text="Account Type:" />
+            <Label layoutX="415.0" layoutY="320.0" text="2FA Enabled:" />
+            <CheckBox fx:id="edit2faToggle" layoutX="545.0" layoutY="320.0" />
         </AnchorPane>
     </StackPane>
 </VBox>

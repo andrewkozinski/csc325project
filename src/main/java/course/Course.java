@@ -42,11 +42,11 @@ public class Course {
     //The textbook required by a given course, if a course does not have a textbook can be set to null or none or something along those lines
     private String courseTextbook;
     private DocumentReference professorReference;
-    private int waitlistCap = 10;
+    private final int waitlistCap = 10;
     private int currentWaitlistCount;
     private List<String> enrolledStudents;
     private List<Map<String, Object>> waitlistedStudents;
-    private StringProperty professorName;
+    private final StringProperty professorName;
 
     /**
      * Default constructor, sets variables to default values

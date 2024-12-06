@@ -63,11 +63,11 @@ public class AccountsController {
     @FXML
     private TableColumn<User, String> columnLastName;
 
-    //Column where a users username is displayed
+    //Column where a users Username is displayed
     @FXML
     private TableColumn<User, String> columnUsername;
 
-    //Column where a users email is displayed
+    //Column where a users Email is displayed
     @FXML
     private TableColumn<User, String> columnEmail;
 
@@ -75,7 +75,7 @@ public class AccountsController {
     @FXML
     private TableColumn<User, String> columnDept;
 
-    //Column where a users age is displayed
+    //Column where a users Age is displayed
     @FXML
     private TableColumn<User, String> columnAge;
 
@@ -112,9 +112,9 @@ public class AccountsController {
         columnId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         columnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         columnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        columnUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
-        columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        columnAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        columnUsername.setCellValueFactory(new PropertyValueFactory<>("Username"));
+        columnEmail.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        columnAge.setCellValueFactory(new PropertyValueFactory<>("Age"));
         columnDept.setCellValueFactory(new PropertyValueFactory<>("userDept"));
 
         //Now add accounts from Firebase to the TableView

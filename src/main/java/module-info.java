@@ -16,6 +16,7 @@ module org.group3.csc325project {
     requires totp;
     requires com.google.zxing;
     requires org.slf4j;
+    requires annotations;
     exports user;
 
     exports course;

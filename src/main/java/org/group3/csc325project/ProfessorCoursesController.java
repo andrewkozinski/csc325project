@@ -157,7 +157,7 @@ public class ProfessorCoursesController {
 
             if(!professorSnapshot.isEmpty()) {
                 //snapshot is not empty, so we found the professor we're looking for
-                //The list should only have one item (since every username should be unique), so just get the professor at first index
+                //The list should only have one item (since every Username should be unique), so just get the professor at first index
                 DocumentSnapshot professor = professorSnapshot.getDocuments().get(0);
 
                 //Note to self: Rewrite the code to get courses assigned to the currently logged in professor here

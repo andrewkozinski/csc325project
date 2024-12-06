@@ -1,6 +1,10 @@
 package org.group3.csc325project;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SessionManager {
+    private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
     private static String loggedInUsername;
     private static String loggedInUserRole;
     private static Boolean twoFAEnabled;
@@ -14,6 +18,7 @@ public class SessionManager {
     }
 
     public static String getLoggedInUserRole() {
+        logger.info("Retrieving user role: " + loggedInUserRole);
         return loggedInUserRole;
     }
 

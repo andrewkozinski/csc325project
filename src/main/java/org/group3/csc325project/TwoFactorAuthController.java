@@ -8,16 +8,17 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import de.taimos.totp.TOTP;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import org.apache.commons.codec.binary.Base32;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,6 @@ public class TwoFactorAuthController {
     private ImageView twoFactor_background_image_view;
     @FXML
     private ImageView twoFactor_title_background;
-
     @FXML
     private VBox twoFactor_screen;
     @FXML
@@ -77,6 +77,7 @@ public class TwoFactorAuthController {
             RegistrationApp.setRoot("login");
             return;
         }
+
         secretToken = fetchSecretToken(username, SessionManager.getLoggedInUserRole());
 
         if (secretToken == null) {
@@ -86,6 +87,7 @@ public class TwoFactorAuthController {
         } else if (qrcodeImage != null) {
             qrcodeImage.setVisible(false);
         }
+        verifyCode.setOnAction(event -> handleVerifyButtonClick());
     }
 
     @FXML
@@ -93,12 +95,19 @@ public class TwoFactorAuthController {
         String totpCode = totpCodeField.getText().trim();
 
         if (secretToken == null) {
-            secretToken = generateSecretToken();
-            saveSecretToken(SessionManager.getLoggedInUsername(), SessionManager.getLoggedInUserRole(), secretToken);
+            showAlert("Two-Factor Authentication is not set up for this account.");
+            return;
         }
 
         if (verifyTOTP(secretToken, totpCode)) {
-            saveSecretToken(SessionManager.getLoggedInUsername(), SessionManager.getLoggedInUserRole(), secretToken);
+            logger.info("TOTP verified successfully");
+
+            Platform.runLater(() -> {
+                if (verifyCode.getScene() != null && verifyCode.getScene().getWindow() != null) {
+                    ((Stage) verifyCode.getScene().getWindow()).close();
+                }
+            });
+
             redirectToUserRoleScreen();
         } else {
             showAlert("Invalid TOTP code. Please try again.");
@@ -191,29 +200,46 @@ public class TwoFactorAuthController {
             return false;
         }
     }
-
     private void redirectToUserRoleScreen() {
         String role = SessionManager.getLoggedInUserRole();
+        logger.info("Redirecting user with role: " + role);
+
+        if (role == null || role.isEmpty()) {
+            logger.error("Role is null or empty.");
+            showAlert("Error retrieving user role. Please try again.");
+            return;
+        }
         switch (role) {
             case "Admin":
+                logger.info("Redirecting to Admin screen.");
                 RegistrationApp.setRoot("admin");
                 break;
             case "Student":
+                logger.info("Redirecting to Student screen.");
                 RegistrationApp.setRoot("student");
                 break;
             case "Professor":
+                logger.info("Redirecting to Professor screen.");
                 RegistrationApp.setRoot("professor");
                 break;
             default:
+                logger.error("Invalid role detected: " + role);
                 showAlert("Invalid user role detected. Unable to proceed.");
                 break;
         }
     }
+
     private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("2FA Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Two-Factor Authentication");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
+    public String getSecretToken() {
+        return secretToken;
     }
 }

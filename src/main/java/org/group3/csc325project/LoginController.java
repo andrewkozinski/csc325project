@@ -1,11 +1,13 @@
 package org.group3.csc325project;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.*;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +17,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -99,7 +100,7 @@ public class LoginController {
             if (authenticateUser("Student", username, password)) return;
             if (authenticateUser("Professor", username, password)) return;
 
-            displayError("Invalid username or password! Please try again.");
+            displayError("Invalid Username or password! Please try again.");
 
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error: ", e);
