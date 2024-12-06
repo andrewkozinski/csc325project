@@ -27,7 +27,7 @@ class StudentTest {
         //String formattedDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(dateWaitlisted));
         student.setDateWaitlisted(dateWaitlisted);
         assertEquals(dateWaitlisted, student.getDateWaitlisted());
-    } //Figure this out later
+    }
 
 
 
