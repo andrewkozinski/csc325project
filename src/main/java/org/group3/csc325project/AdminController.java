@@ -2,17 +2,11 @@ package org.group3.csc325project;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.*;
-import javafx.scene.input.DragEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import static org.group3.csc325project.RegistrationApp.setRoot;
 
@@ -84,9 +78,8 @@ public class AdminController {
     /**
      * Opens account dropdown menu
      */
-    public void openAccount_button(MouseEvent event) {
+    public void openAccountButton(MouseEvent event) {
         RegistrationApp.openAccount_button(event);
-
     }
 
 

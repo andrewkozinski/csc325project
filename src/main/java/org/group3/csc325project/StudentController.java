@@ -95,6 +95,5 @@ public class StudentController {
      */
     public void openAccountButton(MouseEvent event) {
         RegistrationApp.openAccount_button(event);
-
     }
 }
