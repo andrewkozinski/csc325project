@@ -44,6 +44,9 @@ public class StudentController {
     public Label welcomeBackLabel;
     @FXML
     public Label welcomeBack2Label;
+    @FXML
+    public ImageView student_adminbackground;
+
     public void initialize() {
         String username = SessionManager.getLoggedInUsername();
         account_Name_label.setText(username);
