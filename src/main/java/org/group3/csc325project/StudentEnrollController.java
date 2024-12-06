@@ -169,6 +169,10 @@ public class StudentEnrollController {
 
                 //Handle both Map and List for EnrolledCourses, Prevent ClassCastException
                 Object enrolledCoursesObj = studentSnapshot.get("EnrolledCourses");
+                //Null check, if null then student has never been registered for a course
+                if(enrolledCoursesObj == null) {
+                    return;
+                }
                 if (enrolledCoursesObj instanceof Map) {
                     enrolledCourses = (Map<String, Object>) enrolledCoursesObj;
                 } else if (enrolledCoursesObj instanceof List) {
