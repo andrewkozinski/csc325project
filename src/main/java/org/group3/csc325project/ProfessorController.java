@@ -72,8 +72,7 @@ public class ProfessorController {
     /**
      * Opens account dropdown menu
      */
-    public void openAccount_button(MouseEvent event) {
+    public void openAccountButton(MouseEvent event) {
         RegistrationApp.openAccount_button(event);
-
     }
 }
