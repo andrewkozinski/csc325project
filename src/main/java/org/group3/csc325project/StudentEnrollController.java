@@ -335,6 +335,18 @@ public class StudentEnrollController {
                     //showAlert("Student " + studentUserId + " has been assigned to course " + course.getCourseCRN() + ".");
                     showAlert(String.format("Successfully registered to course %s.", course.getCourseCRN()));
                     coursesTable.refresh();
+                    //This should now disable that row for the course in the TableView
+                    coursesTable.setRowFactory(tv -> new TableRow<Course>() {
+                        @Override
+                        protected void updateItem(Course course, boolean empty) {
+                            super.updateItem(course, empty);
+                            if (course == null || empty) {
+                                setDisable(false);
+                            } else {
+                                setDisable(enrolledCourses != null && enrolledCourses.containsKey(course.getCourseCRN()));
+                            }
+                        }
+                    });
                 } else {
                     logger.error("No course found with CRN: {}", course.getCourseCRN());
                     showAlert("No course found with CRN: " + course.getCourseCRN());
