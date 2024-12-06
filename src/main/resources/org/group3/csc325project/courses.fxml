@@ -23,15 +23,13 @@
             </image>
          </ImageView>
          <ImageView fx:id="adminHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../Images/registrationSystem_header_no_user.png"/>
+            <Image url="@../../../Images/registrationSystem_header_no_user.png" />
          </ImageView>
-         <ImageView fx:id="adminCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0"
-                    onMouseClicked="#coursesBackButton" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../Images/admin_Courses_button.png"/>
+         <ImageView fx:id="adminCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" onMouseClicked="#coursesBackButton" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../Images/admin_Courses_button.png" />
          </ImageView>
-         <ImageView fx:id="adminAccountButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="118.0"
-                    onMouseClicked="#accountsBackButton" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../Images/admin_Account_button.png"/>
+         <ImageView fx:id="adminAccountButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="118.0" onMouseClicked="#accountsBackButton" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../../Images/admin_Account_button.png" />
          </ImageView>
          <TableView fx:id="coursesTable" layoutX="126.0" layoutY="63.0" maxHeight="-Infinity" onMouseClicked="#handleCoursesTableViewMouseClick" prefHeight="188.0" prefWidth="676.0" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="126.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="63.0">
             <columns>
@@ -49,13 +47,12 @@
                <TableColumn fx:id="columnCourseCapacity" prefWidth="83.0" text="Capacity" />
             </columns>
          </TableView>
-         <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0"
-               spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
-            <Button mnemonicParsing="false" onAction="#handleAddCourseButton" text="Add Course"/>
-            <Button mnemonicParsing="false" onAction="#handleEditCourseButton" text="Edit Course"/>
-            <Button mnemonicParsing="false" onAction="#assignCourseButton" text="Assign Course"/>
-            <Button mnemonicParsing="false" onAction="#handleDeleteCourse" text="Delete Course"/>
-            <Button mnemonicParsing="false" onAction="#handleRemoveStudentButton" text="Remove Student"/>
+         <HBox fx:id="topHBox" alignment="CENTER" layoutX="128.0" layoutY="405.0" prefHeight="44.0" prefWidth="675.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="128.0" AnchorPane.rightAnchor="-2.0">
+            <Button mnemonicParsing="false" onAction="#handleAddCourseButton" prefHeight="44.0" prefWidth="138.0" text="Add Course" />
+            <Button mnemonicParsing="false" onAction="#handleEditCourseButton" prefHeight="44.0" prefWidth="138.0" text="Edit Course" />
+            <Button mnemonicParsing="false" onAction="#assignCourseButton" prefHeight="44.0" prefWidth="138.0" text="Assign Course" />
+            <Button mnemonicParsing="false" onAction="#handleDeleteCourse" prefHeight="44.0" prefWidth="138.0" text="Delete Course" />
+            <Button mnemonicParsing="false" onAction="#handleRemoveStudentButton" prefHeight="44.0" prefWidth="131.0" text="Remove Student" />
          </HBox>
          <TabPane fx:id="tabPane" layoutX="126.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="153.0" prefWidth="675.0">
             <tabs>
@@ -70,12 +67,11 @@
                   </content>
                </Tab>
                <Tab text="Waitlisted Students">
-                  <TableView fx:id="waitlistTable" onMouseClicked="#handleWaitlistTableViewMouseClick"
-                             prefHeight="300.0">
+                  <TableView fx:id="waitlistTable" onMouseClicked="#handleWaitlistTableViewMouseClick" prefHeight="300.0">
                      <columns>
-                        <TableColumn fx:id="columnWaitlistStudentName" text="Student Name"/>
-                        <TableColumn fx:id="columnWaitlistStudentID" text="Student ID"/>
-                        <TableColumn fx:id="columnWaitlistDate" text="Date Waitlisted"/>
+                        <TableColumn fx:id="columnWaitlistStudentName" text="Student Name" />
+                        <TableColumn fx:id="columnWaitlistStudentID" text="Student ID" />
+                        <TableColumn fx:id="columnWaitlistDate" text="Date Waitlisted" />
                      </columns>
                   </TableView>
                </Tab>

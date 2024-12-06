@@ -44,6 +44,16 @@
                <Font name="Bell MT" size="18.0" />
             </font>
          </Label>
+         <Label fx:id="welcomeBack2Label" layoutX="180.0" layoutY="129.0" prefHeight="209.0" prefWidth="563.0">
+            <font>
+               <Font name="Bell MT Bold" size="48.0" />
+            </font>
+         </Label>
+         <Label fx:id="welcomeBackLabel" layoutX="187.0" layoutY="129.0" prefHeight="209.0" prefWidth="563.0">
+            <font>
+               <Font name="Bell MT Bold" size="48.0" />
+            </font>
+         </Label>
       </AnchorPane>
    </StackPane>
 </VBox>

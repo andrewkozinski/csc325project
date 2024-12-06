@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -33,6 +34,11 @@ public class ProfessorController {
     public Label account_Name_label;
     @FXML
     public Label account_button_hiitbox;
+    @FXML
+    public Label welcomeBackLabel;
+    @FXML
+    public Label welcomeBack2Label;
+
     public void initialize() {
         String username = SessionManager.getLoggedInUsername();
         account_Name_label.setText(username);
@@ -40,6 +46,14 @@ public class ProfessorController {
         account_Name_label.setTextAlignment(TextAlignment.CENTER);
         account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
 
+        welcomeBackLabel.setText("Welcome " + username + " to Atlantis University's Homepage!" );
+        welcomeBackLabel.setTextFill(Color.rgb(173, 236, 250));
+        welcomeBackLabel.setTextAlignment(TextAlignment.CENTER);
+        welcomeBackLabel.setWrapText(true);
+        welcomeBack2Label.setText("Welcome " + username + " to Atlantis University's Homepage!" );
+        welcomeBack2Label.setTextFill(Color.rgb(0, 105, 148));
+        welcomeBack2Label.setTextAlignment(TextAlignment.CENTER);
+        welcomeBack2Label.setWrapText(true);
     }
 
     /**

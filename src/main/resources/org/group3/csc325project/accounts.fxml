@@ -60,9 +60,9 @@
         </TableView>
         <HBox fx:id="adminTableBottonButtons" alignment="CENTER" layoutX="125.0" layoutY="400.0" prefHeight="44.0" prefWidth="676.0" spacing="5.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#handleCreateUser" text="New Account" />
-                <Button mnemonicParsing="false" onAction="#handleEditUser" text="Edit Account" />
-                <Button mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete Account" />
+                <Button mnemonicParsing="false" onAction="#handleCreateUser" prefHeight="44.0" prefWidth="141.0" text="New Account" />
+                <Button mnemonicParsing="false" onAction="#handleEditUser" prefHeight="44.0" prefWidth="141.0" text="Edit Account" />
+                <Button mnemonicParsing="false" onAction="#handleDeleteUser" prefHeight="44.0" prefWidth="141.0" text="Delete Account" />
             </children>
         </HBox>
       <ImageView fx:id="account_button" fitHeight="450.0" fitWidth="120.0" layoutX="670.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">

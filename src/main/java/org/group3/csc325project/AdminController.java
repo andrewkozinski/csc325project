@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.control.MenuItem;
@@ -37,6 +38,10 @@ public class AdminController {
     public ImageView admin_adminbackground;
     @FXML
     public Label account_button_hiitbox;
+    @FXML
+    public Label welcomeBackLabel;
+    @FXML
+    public Label welcomeBack2Label;
 
 
     public void initialize() {
@@ -46,6 +51,14 @@ public class AdminController {
         account_Name_label.setTextAlignment(TextAlignment.CENTER);
         account_Name_label.setFont(Font.font(account_Name_label.getFont().getFamily(), 20));
 
+        welcomeBackLabel.setText("Welcome " + username + " to Atlantis University's Homepage!" );
+        welcomeBackLabel.setTextFill(Color.rgb(173, 236, 250));
+        welcomeBackLabel.setTextAlignment(TextAlignment.CENTER);
+        welcomeBackLabel.setWrapText(true);
+        welcomeBack2Label.setText("Welcome " + username + " to Atlantis University's Homepage!" );
+        welcomeBack2Label.setTextFill(Color.rgb(0, 105, 148));
+        welcomeBack2Label.setTextAlignment(TextAlignment.CENTER);
+        welcomeBack2Label.setWrapText(true);
     }
     /**
      * Upon call, switches scene back to login.fxml.
