@@ -333,7 +333,7 @@ public class StudentEnrollController {
                     course.getEnrolledStudents().add(studentUserId);
                     logger.info("Student {} has been assigned to course {} successfully.", studentUserId, course.getCourseCRN());
                     //showAlert("Student " + studentUserId + " has been assigned to course " + course.getCourseCRN() + ".");
-                    showAlert(String.format("Successfully registered to course %s successfully.", course.getCourseCRN()));
+                    showAlert(String.format("Successfully registered to course %s.", course.getCourseCRN()));
                     coursesTable.refresh();
                 } else {
                     logger.error("No course found with CRN: {}", course.getCourseCRN());
