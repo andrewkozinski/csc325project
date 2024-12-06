@@ -41,7 +41,7 @@ public class AccountsController {
     @FXML
     public Label account_Name_label;
     @FXML
-    public Label account_button_hiitbox;
+    public Label account_button_hitbox;
 
     //TableView where accounts stored in Firebase are displayed
     @FXML

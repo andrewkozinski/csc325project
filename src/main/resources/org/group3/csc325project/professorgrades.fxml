@@ -13,13 +13,13 @@
 
 <VBox fx:id="professorVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group3.csc325project.ProfessorCourseGrades">
    <AnchorPane fx:id="professorAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="800.0" stylesheets="@../../../CSS/general.css">
-      <ImageView fx:id="proffessorSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="professorSideBackground" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@../../../Images/general_button_background.png" />
       </ImageView>
-      <ImageView fx:id="proffessorHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="professorHeader" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@../../../Images/registrationSystem_header_no_user.png" />
       </ImageView>
-      <ImageView fx:id="proffessorCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" onMouseClicked="#handleGoBackToCourses" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="professorCourseButton" fitHeight="450.0" fitWidth="120.0" layoutX="3.0" layoutY="70.0" onMouseClicked="#handleGoBackToCourses" pickOnBounds="true" preserveRatio="true">
          <Image url="@../../../Images/admin_Courses_button.png" />
       </ImageView>
       <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
@@ -42,7 +42,7 @@
             <Font name="Bell MT" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="account_button_hiitbox" layoutX="666.0" layoutY="3.0" onMouseClicked="#openAccount_button" prefHeight="56.0" prefWidth="130.0" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="account_button_hitbox" layoutX="666.0" layoutY="3.0" onMouseClicked="#openAccount_button" prefHeight="56.0" prefWidth="130.0" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Bell MT" size="18.0" />
          </font>

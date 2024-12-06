@@ -23,7 +23,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import user.Student;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -37,11 +36,11 @@ public class ProfessorCourseGrades {
     @FXML
     public AnchorPane professorAnchorPane;
     @FXML
-    public ImageView proffessorSideBackground;
+    public ImageView professorSideBackground;
     @FXML
-    public ImageView proffessorHeader;
+    public ImageView professorHeader;
     @FXML
-    public ImageView proffessorCourseButton;
+    public ImageView professorCourseButton;
     @FXML
     public HBox topHBox;
     //Table to display student grades
@@ -63,7 +62,7 @@ public class ProfessorCourseGrades {
     @FXML
     public Label account_Name_label;
     @FXML
-    public Label account_button_hiitbox;
+    public Label account_button_hitbox;
     //The current course
     private Course currentCourse;
     //The selected Grade from the table
