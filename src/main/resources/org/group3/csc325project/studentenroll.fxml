@@ -45,7 +45,7 @@
          </columns>
       </TableView>
       <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
-         <Button mnemonicParsing="false" onAction="#handleRegisterButton" text="Register" />
+         <Button mnemonicParsing="false" onAction="#handleRegisterButton" prefHeight="44.0" prefWidth="141.0" text="Register" />
       </HBox>
       <ImageView fx:id="account_button" fitHeight="450.0" fitWidth="120.0" layoutX="670.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
          <image>

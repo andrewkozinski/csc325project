@@ -29,7 +29,7 @@
          <Image url="@../../../Images/student_schedule_button.png" />
       </ImageView>
       <HBox fx:id="topHBox" alignment="CENTER" layoutX="242.0" layoutY="405.0" prefHeight="44.0" prefWidth="445.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="114.0">
-         <Button mnemonicParsing="false" onAction="#handleGoBackButton" text="Go back" />
+         <Button mnemonicParsing="false" onAction="#handleGoBackButton" prefHeight="44.0" prefWidth="141.0" text="Go back" />
       </HBox>
       <TableView fx:id="gradesTable" layoutX="125.0" layoutY="65.0" prefHeight="338.0" prefWidth="676.0">
          <columns>
