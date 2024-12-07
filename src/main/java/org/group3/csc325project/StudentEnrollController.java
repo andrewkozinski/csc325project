@@ -20,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import user.Student;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +60,7 @@ public class StudentEnrollController {
     @FXML
     public Label account_Name_label;
     @FXML
-    public Label account_button_hiitbox;
+    public Label account_button_hitbox;
     //TableView where course information is stored
     @FXML
     private TableView<Course> coursesTable;
