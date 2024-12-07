@@ -1,6 +1,6 @@
 # Atlantis University Registration System Overview:
 
-#### This system provides functionality for students, professors, and administrators to manage course enrollments, grades, user accounts, and course information. It supports various user roles and provides features such as course enrollment, viewing grades, managing course information, user account management, two-factor authentication, and more.
+#### This program provides functionality for Students, Professors, and Administrators to manage course enrollments, grades, user accounts, and course information. It supports various user types and provides features such as course enrollment, viewing grades, managing course information, user account management, two-factor authentication, and more.
 ---
 ## Table of Contents
 1. **[Features](#features)**
