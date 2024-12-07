@@ -173,7 +173,13 @@ public class LoginController {
     }
     @FXML
     private void handleForgotPasswordButtonClick() {
-        System.out.println("Forgot Password button clicked.");
-        // work in progress - yash
+        showAlert("Forgot Password", "Please contact an administrator to change your password.");
+    }
+    public void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
