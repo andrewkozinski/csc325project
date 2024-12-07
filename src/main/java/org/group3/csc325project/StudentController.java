@@ -39,7 +39,7 @@ public class StudentController {
     @FXML
     public Label account_Name_label;
     @FXML
-    public Label account_button_hiitbox;
+    public Label account_button_hitbox;
     @FXML
     public Label welcomeBackLabel;
     @FXML
