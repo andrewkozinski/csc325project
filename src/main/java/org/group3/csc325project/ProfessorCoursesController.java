@@ -17,7 +17,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import user.Professor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +36,11 @@ public class ProfessorCoursesController {
     @FXML
     public VBox professorVbox;
     @FXML
-    public ImageView proffessorSideBackground;
+    public ImageView professorSideBackground;
     @FXML
     public ImageView professorHeader;
     @FXML
-    public ImageView proffessorCourseButton;
+    public ImageView professorCourseButton;
     @FXML
     public HBox topHBox;
 
@@ -94,7 +93,7 @@ public class ProfessorCoursesController {
     @FXML
     public Label account_Name_label;
     @FXML
-    public Label account_button_hiitbox;
+    public Label account_button_hitbox;
     //selectedCourse is the currently selected item from the TableView
     //Updated when user selects an item in the table view
     private static Course selectedCourse;
