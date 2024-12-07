@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import user.Professor;
 import user.Student;
-import javafx.geometry.Insets;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -43,7 +42,7 @@ public class CoursesController {
     @FXML
     public Label account_Name_label;
     @FXML
-    public Label account_button_hiitbox;
+    public Label account_button_hitbox;
     //TableView where Courses stored in Firebase are displayed
     @FXML
     private TableView<Course> coursesTable;
